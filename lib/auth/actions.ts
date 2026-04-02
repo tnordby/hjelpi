@@ -11,6 +11,7 @@ import {
   resendConfirmationSchema,
 } from '@/lib/auth/schemas'
 import { authCallbackUrl } from '@/lib/auth/callback-next'
+import { parseSafeNextPath } from '@/lib/auth/safe-next-path'
 import { resolveAccountHrefAfterAuth } from '@/lib/seller/post-auth'
 
 export type AuthActionState = {
@@ -57,7 +58,9 @@ export async function loginAction(
     data: { user },
   } = await supabase.auth.getUser()
   const locale = await getLocale()
-  const href = user ? await resolveAccountHrefAfterAuth(supabase, user.id) : '/min-konto'
+  const nextPath = parseSafeNextPath(formData.get('next'))
+  const fallback = user ? await resolveAccountHrefAfterAuth(supabase, user.id) : '/min-side'
+  const href = nextPath ?? fallback
   redirect({ href, locale })
 }
 
@@ -85,7 +88,7 @@ export async function registerAction(
   const supabase = await createSupabaseServerClient()
   const origin = publicBaseUrl()
   const locale = await getLocale()
-  const emailRedirectTo = authCallbackUrl(origin, locale, '/min-konto')
+  const emailRedirectTo = authCallbackUrl(origin, locale, '/min-side')
 
   const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
@@ -103,8 +106,9 @@ export async function registerAction(
     return { error: error.message }
   }
 
-  if (data.session) {
-    redirect({ href: '/min-konto', locale })
+  if (data.session && data.user) {
+    const href = await resolveAccountHrefAfterAuth(supabase, data.user.id)
+    redirect({ href, locale })
   }
 
   return { success: 'emailConfirm' }
@@ -220,7 +224,7 @@ export async function resendSignupConfirmationAction(
   const supabase = await createSupabaseServerClient()
   const origin = publicBaseUrl()
   const locale = await getLocale()
-  const emailRedirectTo = authCallbackUrl(origin, locale, '/min-konto')
+  const emailRedirectTo = authCallbackUrl(origin, locale, '/min-side')
 
   const { error } = await supabase.auth.resend({
     type: 'signup',

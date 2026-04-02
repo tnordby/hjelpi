@@ -1,11 +1,13 @@
 {
   "meta": {
-    "title": "Hjelpi – Find your next expert in Norway",
-    "description": "Hjelpi connects you with the best local experts in Norway. Stub locale — add full translations before enabling /en."
+    "title": "Local services in Norway | Hjelpi – find and book helpers",
+    "description": "Local services in Norway on Hjelpi: a marketplace to find, compare and book helpers near you for cleaning, crafts, photography, tutoring and more."
   },
   "notFound": {
     "title": "Page not found",
     "description": "We could not find the page you were looking for. Check the URL or return to the homepage.",
+    "metaTitle": "Page not found | Hjelpi",
+    "metaDescription": "Page not found. Explore local services and helpers on Hjelpi — homepage and all services.",
     "backHome": "Back to home"
   }
 }

@@ -5,6 +5,13 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      // Old /dashboard URLs → canonical /min-side
+      { source: '/:locale/dashboard', destination: '/:locale/min-side', permanent: true },
+      { source: '/:locale/dashboard/:path*', destination: '/:locale/min-side/:path*', permanent: true },
+    ]
+  },
   async rewrites() {
     return [
       {

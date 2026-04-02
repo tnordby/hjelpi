@@ -1,5 +1,21 @@
-import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
+import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
+import { withPageSeo } from '@/lib/seo/build-metadata'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
+  const t = await getTranslations({ locale, namespace: 'notFound' })
+  return withPageSeo(
+    { title: t('metaTitle'), description: t('metaDescription') },
+    {
+      locale,
+      pathSegments: [],
+      indexable: false,
+      includeCanonical: false,
+    },
+  )
+}
 
 export default async function NotFound() {
   const t = await getTranslations('notFound')

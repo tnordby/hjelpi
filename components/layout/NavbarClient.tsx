@@ -2,23 +2,35 @@
 
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/routing'
+import { NavbarModeToggle } from '@/components/layout/NavbarModeToggle'
 import type { NavbarUserMenuProps } from '@/components/layout/NavbarUserMenu'
+import { NavbarNotificationBell } from '@/components/layout/NavbarNotificationBell'
 import { NavbarUserMenu } from '@/components/layout/NavbarUserMenu'
+import type { NavbarNotificationCounts } from '@/lib/dashboard/data'
 import { cn } from '@/lib/utils'
 
 type Props = {
   isLoggedIn: boolean
   userMenu: NavbarUserMenuProps | null
+  notificationCounts: NavbarNotificationCounts | null
+  modeToggle: { isSeller: boolean } | null
+  dashboardHomeHref: '/min-side/kunde' | '/min-side/hjelper' | null
 }
 
-export function NavbarClient({ isLoggedIn, userMenu }: Props) {
+export function NavbarClient({
+  isLoggedIn,
+  userMenu,
+  notificationCounts,
+  modeToggle,
+  dashboardHomeHref,
+}: Props) {
   const t = useTranslations('nav')
   const pathname = usePathname()
   const isServicesIndex = pathname === '/tjenester'
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/50 bg-white/95 shadow-sm backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex min-h-[var(--hj-navbar-height)] w-full max-w-7xl items-center justify-between px-6 py-3 sm:py-4">
         <div className="flex items-center gap-8">
           <Link
             href="/"
@@ -26,25 +38,29 @@ export function NavbarClient({ isLoggedIn, userMenu }: Props) {
           >
             {t('brand')}
           </Link>
-          <div className="hidden space-x-6 md:flex">
-            <Link
-              href="/tjenester"
-              className={cn(
-                'font-medium tracking-tight transition-colors',
-                isServicesIndex
-                  ? 'border-b-2 border-primary font-bold text-primary'
-                  : 'text-on-surface-variant hover:text-primary',
-              )}
-            >
-              {t('findServices')}
-            </Link>
-            <Link
-              href="/bli-hjelper"
-              className="font-medium text-on-surface-variant transition-colors hover:text-primary"
-            >
-              {t('becomeHelper')}
-            </Link>
-          </div>
+          {isLoggedIn && modeToggle ? (
+            <NavbarModeToggle isSeller={modeToggle.isSeller} />
+          ) : (
+            <div className="hidden space-x-6 md:flex">
+              <Link
+                href="/tjenester"
+                className={cn(
+                  'font-medium tracking-tight transition-colors',
+                  isServicesIndex
+                    ? 'border-b-2 border-primary font-bold text-primary'
+                    : 'text-on-surface-variant hover:text-primary',
+                )}
+              >
+                {t('findServices')}
+              </Link>
+              <Link
+                href="/bli-hjelper"
+                className="font-medium text-on-surface-variant transition-colors hover:text-primary"
+              >
+                {t('becomeHelper')}
+              </Link>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-4">
           {!isLoggedIn ? (
@@ -56,9 +72,10 @@ export function NavbarClient({ isLoggedIn, userMenu }: Props) {
             </Link>
           ) : null}
           {isLoggedIn ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              {notificationCounts ? <NavbarNotificationBell counts={notificationCounts} /> : null}
               <Link
-                href="/dashboard"
+                href={dashboardHomeHref ?? '/min-side/kunde'}
                 className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-all hover:opacity-90"
               >
                 {t('dashboard')}

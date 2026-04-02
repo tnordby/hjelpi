@@ -51,7 +51,7 @@ export async function completeSellerProviderAction(
 
   if (existing) {
     const locale = await getLocale()
-    redirect({ href: '/min-konto', locale })
+    redirect({ href: '/min-side', locale })
   }
 
   const locRaw = formData.get('location_id')
@@ -82,5 +82,5 @@ export async function completeSellerProviderAction(
   }
 
   const locale = await getLocale()
-  redirect({ href: '/min-konto', locale })
+  redirect({ href: '/min-side', locale })
 }

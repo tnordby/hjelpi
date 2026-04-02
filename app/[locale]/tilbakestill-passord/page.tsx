@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { AuthShell } from '@/components/auth/AuthShell'
 import { UpdatePasswordForm } from '@/components/auth/UpdatePasswordForm'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export async function generateMetadata({
   params,
@@ -10,10 +11,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'auth.meta' })
-  return {
-    title: t('resetTitle'),
-    description: t('resetDescription'),
-  }
+  return withPageSeo(
+    { title: t('resetTitle'), description: t('resetDescription') },
+    {
+      locale,
+      pathSegments: ['tilbakestill-passord'],
+      indexable: false,
+      keywords: ['nytt passord', 'Hjelpi'],
+    },
+  )
 }
 
 export default async function ResetPasswordPage() {

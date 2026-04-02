@@ -8,6 +8,7 @@ import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { profileDisplayName } from '@/lib/profiles/display-name'
 import { resolveAccountHrefAfterAuth } from '@/lib/seller/post-auth'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,10 +19,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'auth.meta' })
-  return {
-    title: t('accountTitle'),
-    description: t('accountDescription'),
-  }
+  return withPageSeo(
+    { title: t('accountTitle'), description: t('accountDescription') },
+    {
+      locale,
+      pathSegments: ['min-konto'],
+      indexable: false,
+      keywords: ['min konto', 'Hjelpi', 'lokale tjenester'],
+    },
+  )
 }
 
 export default async function MinKontoPage() {
@@ -94,7 +100,7 @@ export default async function MinKontoPage() {
         ) : null}
         <div className="flex flex-col gap-4">
           <Link
-            href="/dashboard"
+            href="/min-side"
             className="inline-flex w-full justify-center rounded-full bg-primary py-3.5 text-center text-sm font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90 sm:w-auto sm:px-8"
           >
             {t('openDashboard')}

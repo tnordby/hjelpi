@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
+import { CategoryBreadcrumbJsonLd } from '@/components/seo/CategoryBreadcrumbJsonLd'
 import { notFound } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -13,6 +14,8 @@ import { getSubcategoryHeroImage } from '@/lib/categories/subcategory-hero'
 import { getCategoryMaterialIcon } from '@/lib/categories/category-material-icons'
 import { ServiceBreadcrumbs } from '@/components/categories/ServiceBreadcrumbs'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { seoLowercaseLabel } from '@/lib/seo/display-label'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export const dynamicParams = false
 
@@ -28,16 +31,32 @@ export async function generateMetadata({
   const { locale, kategori } = await params
   const cat = getCategoryBySlug(kategori)
   if (!cat) return {}
+  const categoryLc = seoLowercaseLabel(cat.title)
   const t = await getTranslations({
     locale,
     namespace: 'categoryPage',
   })
-  return {
-    title: t('metaTitle', { category: cat.title }),
-    description: t('metaDescription', {
-      category: cat.title,
-    }),
-  }
+  return withPageSeo(
+    {
+      title: t('metaTitle', { category: categoryLc }),
+      description: t('metaDescription', {
+        category: categoryLc,
+      }),
+    },
+    {
+      locale,
+      pathSegments: [kategori],
+      keywords: [
+        cat.title,
+        categoryLc,
+        'fagpersoner',
+        'nær deg',
+        'lokale tjenester',
+        'Hjelpi',
+        'Norge',
+      ],
+    },
+  )
 }
 
 export default async function CategoryPage({
@@ -45,22 +64,28 @@ export default async function CategoryPage({
 }: {
   params: Promise<{ locale: string; kategori: string }>
 }) {
-  const { kategori } = await params
+  const { kategori, locale } = await params
   const cat = getCategoryBySlug(kategori)
   if (!cat) notFound()
 
   const t = await getTranslations('categoryPage')
+  const categoryLc = seoLowercaseLabel(cat.title)
   const heroSrc = getSubcategoryHeroImage(cat.slug)
   const categoryIcon = getCategoryMaterialIcon(cat.slug)
 
   return (
     <>
+      <CategoryBreadcrumbJsonLd
+        locale={locale}
+        categoryTitle={cat.title}
+        categorySlug={cat.slug}
+      />
       <Navbar />
       <main className="min-h-screen bg-surface-container-lowest">
         <section className="relative min-h-[280px] overflow-hidden md:min-h-[340px]">
           <Image
             src={heroSrc}
-            alt={t('heroImageAlt', { category: cat.title })}
+            alt={t('heroImageAlt', { category: categoryLc })}
             fill
             className="object-cover"
             sizes="100vw"
@@ -93,7 +118,7 @@ export default async function CategoryPage({
                   {cat.title}
                 </h1>
                 <p className="text-lg leading-relaxed text-white/95">
-                  {t('intro', { category: cat.title })}
+                  {t('intro', { category: categoryLc })}
                 </p>
               </header>
             </div>
@@ -103,7 +128,7 @@ export default async function CategoryPage({
         <div className="mx-auto max-w-7xl px-6 py-14 md:py-16">
           <section aria-labelledby="subs-heading">
             <h2 id="subs-heading" className="sr-only">
-              {t('subsHeading', { category: cat.title })}
+              {t('subsHeading', { category: categoryLc })}
             </h2>
             <ul className="grid gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
               {cat.subs.map((sub) => (

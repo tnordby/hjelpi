@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { BliHjelperLanding } from '@/components/seller/BliHjelperLanding'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export async function generateMetadata({
   params,
@@ -11,10 +12,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'bliHjelperPage' })
-  return {
-    title: t('metaTitle'),
-    description: t('metaDescription'),
-  }
+  return withPageSeo(
+    { title: t('metaTitle'), description: t('metaDescription') },
+    {
+      locale,
+      pathSegments: ['bli-hjelper'],
+      keywords: ['bli hjelper', 'lokale tjenester', 'Hjelpi', 'Norge'],
+    },
+  )
 }
 
 export default function BliHjelperPage() {

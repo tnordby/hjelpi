@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fixed header: keep dashboard `pt-*` / `top-*` in sync (see NavbarClient, DashboardLayoutShell). */
+:root {
+  --hj-navbar-height: 4.5rem;
+}
+
 /* No elastic overscroll past the document end (avoids “scrolling past” the footer). */
 html {
   overscroll-behavior-y: none;

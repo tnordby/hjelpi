@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Navbar } from '@/components/layout/Navbar'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 import { Footer } from '@/components/layout/Footer'
 import { Link } from '@/i18n/routing'
 import { TAXONOMY } from '@/lib/categories/taxonomy'
@@ -16,10 +17,14 @@ export async function generateMetadata({
     locale,
     namespace: 'servicesIndex',
   })
-  return {
-    title: t('metaTitle'),
-    description: t('metaDescription'),
-  }
+  return withPageSeo(
+    { title: t('metaTitle'), description: t('metaDescription') },
+    {
+      locale,
+      pathSegments: ['tjenester'],
+      keywords: ['alle tjenester', 'lokale tjenester', 'Hjelpi', 'Norge'],
+    },
+  )
 }
 
 export default async function AllServicesPage() {
@@ -32,7 +37,7 @@ export default async function AllServicesPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-surface-container-lowest pt-24 pb-20">
+      <main className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)]">
         <div className="mx-auto max-w-7xl px-6">
           <ServiceBreadcrumbs
             items={[

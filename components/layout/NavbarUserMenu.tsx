@@ -104,7 +104,7 @@ export function NavbarUserMenu({ avatarUrl, fullName, email }: NavbarUserMenuPro
           </div>
           <div className="py-1">
             <Link
-              href="/dashboard/innstillinger"
+              href="/min-side/innstillinger"
               role="menuitem"
               className="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low"
               onClick={() => setOpen(false)}

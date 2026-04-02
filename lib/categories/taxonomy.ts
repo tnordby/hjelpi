@@ -161,6 +161,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Negletekniker"
       },
       {
+        "slug": "osteopat",
+        "title": "Osteopat"
+      },
+      {
         "slug": "sportsmassasje",
         "title": "Sportsmassasje"
       }
@@ -179,12 +183,24 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Bilmekaniker"
       },
       {
+        "slug": "bilpleie",
+        "title": "Bilpleie"
+      },
+      {
         "slug": "dekkskift",
         "title": "Dekkskift"
       },
       {
         "slug": "eu-kontroll-og-pkk",
         "title": "EU-kontroll og PKK"
+      },
+      {
+        "slug": "hjul-og-dekkskift",
+        "title": "Hjul og dekkskift"
+      },
+      {
+        "slug": "kilometerservice",
+        "title": "Kilometerservice"
       }
     ]
   },
@@ -459,6 +475,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Hundelufting"
       },
       {
+        "slug": "hundepass",
+        "title": "Hundepass"
+      },
+      {
         "slug": "husdyrpleier",
         "title": "Husdyrpleier"
       },
@@ -569,6 +589,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Bærehjelp"
       },
       {
+        "slug": "flyttebyra",
+        "title": "Flyttebyrå"
+      },
+      {
         "slug": "flytting-av-mobler",
         "title": "Flytting av møbler"
       },
@@ -653,6 +677,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "sportsfotografi",
         "title": "Sportsfotografi"
+      },
+      {
+        "slug": "videofotograf",
+        "title": "Videofotograf"
       }
     ]
   },
@@ -663,6 +691,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "barberer",
         "title": "Barberer"
+      },
+      {
+        "slug": "frisor",
+        "title": "Frisør"
       },
       {
         "slug": "harstylist",
@@ -1401,8 +1433,16 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Pop"
       },
       {
+        "slug": "saksofonist",
+        "title": "Saksofonist"
+      },
+      {
         "slug": "sanger",
         "title": "Sanger"
+      },
+      {
+        "slug": "sanger-og-gitarist",
+        "title": "Sanger og gitarist"
       },
       {
         "slug": "soloartist-og-vokalist",
@@ -1645,6 +1685,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Paragliding"
       },
       {
+        "slug": "personlig-trener-pt",
+        "title": "Personlig trener (PT)"
+      },
+      {
         "slug": "pilates",
         "title": "Pilates"
       },
@@ -1755,12 +1799,20 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Matematikk"
       },
       {
+        "slug": "mattehjelp",
+        "title": "Mattehjelp"
+      },
+      {
         "slug": "naturfag",
         "title": "Naturfag"
       },
       {
         "slug": "norsk",
         "title": "Norsk"
+      },
+      {
+        "slug": "privatlaerer",
+        "title": "Privatlærer"
       },
       {
         "slug": "spansk",
@@ -1841,6 +1893,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "dypvasktjenester",
         "title": "Dypvasktjenester"
+      },
+      {
+        "slug": "fasadevask",
+        "title": "Fasadevask"
       },
       {
         "slug": "flyttevask",
@@ -1931,6 +1987,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Rengjøring etter bygging"
       },
       {
+        "slug": "rengjoring-etter-fest",
+        "title": "Rengjøring etter fest"
+      },
+      {
         "slug": "rensing-av-avlop-og-kloakk",
         "title": "Rensing av avløp og kloakk"
       },
@@ -1947,8 +2007,16 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Stryketjenester"
       },
       {
+        "slug": "takvask",
+        "title": "Takvask"
+      },
+      {
         "slug": "tepperensing",
         "title": "Tepperensing"
+      },
+      {
+        "slug": "vaskehjelp",
+        "title": "Vaskehjelp"
       },
       {
         "slug": "vindusvask",
@@ -2225,6 +2293,18 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "levering-av-pakker",
         "title": "Levering av pakker"
+      },
+      {
+        "slug": "persontransport",
+        "title": "Persontransport"
+      },
+      {
+        "slug": "pianotransport",
+        "title": "Pianotransport"
+      },
+      {
+        "slug": "transport-av-bil-og-bat",
+        "title": "Transport av bil og båt"
       },
       {
         "slug": "varetransport",

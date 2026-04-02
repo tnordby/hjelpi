@@ -12,6 +12,7 @@ export type SubcategoryProviderItem = {
   totalBookings: number
   isVerified: boolean
   locationName: string | null
+  locationSlug: string | null
   serviceTitle: string
   basePriceOre: number | null
   pricingType: 'fixed' | 'hourly' | 'quote'
@@ -30,6 +31,7 @@ function num(v: string | number | null | undefined): number {
 export async function fetchProvidersForSubcategory(
   categorySlug: string,
   subcategorySlug: string,
+  options?: { filterByLocationSlug?: string },
 ): Promise<SubcategoryProviderItem[]> {
   try {
     const supabase = createSupabaseAnonServerClient()
@@ -66,7 +68,7 @@ export async function fetchProvidersForSubcategory(
           total_bookings,
           is_verified,
           bio,
-          locations (name),
+          locations (name, slug),
           profiles!inner (first_name, last_name, avatar_url, deleted_at)
         )
       `,
@@ -108,6 +110,10 @@ export async function fetchProvidersForSubcategory(
         loc && typeof loc === 'object' && 'name' in loc && typeof (loc as { name: unknown }).name === 'string'
           ? (loc as { name: string }).name
           : null
+      const locationSlug =
+        loc && typeof loc === 'object' && 'slug' in loc && typeof (loc as { slug: unknown }).slug === 'string'
+          ? (loc as { slug: string }).slug
+          : null
 
       mapped.push({
         providerId: String(p.id),
@@ -120,6 +126,7 @@ export async function fetchProvidersForSubcategory(
         totalBookings: typeof p.total_bookings === 'number' ? p.total_bookings : 0,
         isVerified: Boolean(p.is_verified),
         locationName,
+        locationSlug,
         serviceTitle: typeof r.title === 'string' ? r.title : 'Tjeneste',
         basePriceOre: typeof r.base_price_ore === 'number' ? r.base_price_ore : null,
         pricingType,
@@ -140,11 +147,16 @@ export async function fetchProvidersForSubcategory(
       }
     }
 
-    const list = Array.from(byProvider.values())
+    let list = Array.from(byProvider.values())
     list.sort((a, b) => {
       if (b.avgRating !== a.avgRating) return b.avgRating - a.avgRating
       return b.totalReviews - a.totalReviews
     })
+
+    const locFilter = options?.filterByLocationSlug?.trim()
+    if (locFilter) {
+      list = list.filter((x) => x.locationSlug === locFilter)
+    }
 
     return list
   } catch {

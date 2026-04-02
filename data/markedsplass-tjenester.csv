@@ -34,6 +34,7 @@ Behandling,Hudpleier
 Behandling,Negletekniker
 Behandling,Fotpleier
 Behandling,Kiropraktor
+Behandling,Osteopat
 Bryllup,Bilutleie for bryllup
 Bryllup,Brudekjoleendringer
 Bryllup,Brudekjoler
@@ -95,6 +96,7 @@ Dyrepass,Dyrepass
 Dyrepass,Kattepasser
 Dyrepass,Dyrepasser for smådyr
 Dyrepass,Hundelufting
+Dyrepass,Hundepass
 Dyrepass,Husdyrpleier
 Eldreomsorg,Handlehjelp
 Eldreomsorg,Følge til lege
@@ -110,6 +112,7 @@ Flislegging,Murstein og blokkbelegningstjenester
 Flislegging,Reparasjon av stein eller fliser
 Flislegging,Uteplasstjenester
 Flyttehjelp,Flytting av møbler
+Flyttehjelp,Flyttebyrå
 Flyttehjelp,Bærehjelp
 Flyttehjelp,Full flyttehjelp
 Flyttehjelp,Pakking til flytting
@@ -129,10 +132,12 @@ Fotografi,Sportsfotografi
 Fotografi,Dronefotografi
 Fotografi,Bedriftsfotografi
 Fotografi,Forlovelsesfotografi
+Fotografi,Videofotograf
 Fotografi,Modellfotografi
 Fotografi,Dronefotografering
 Frisør,Hårstylist
 Frisør,Barberer
+Frisør,Frisør
 Hage og landskap,Bygging av drivhus
 Hage og landskap,Bygging av hageskur
 Hage og landskap,Gjødsling
@@ -296,6 +301,8 @@ Musikk,Sanger
 Musikk,Live band
 Musikk,Soloartist og vokalist
 Musikk,Kor og ensemble
+Musikk,Saksofonist
+Musikk,Sanger og gitarist
 Musikkundervisning,Pianolærer
 Musikkundervisning,Gitarlærer
 Musikkundervisning,Ballroom Dance-klasser
@@ -409,7 +416,10 @@ Personlig trener,Wakeboard
 Personlig trener,Vannaerobic
 Personlig trener,Vannski
 Personlig trener,Yoga
+Personlig trener,Personlig trener (PT)
 Privatundervisning,Matematikk
+Privatundervisning,Mattehjelp
+Privatundervisning,Privatlærer
 Privatundervisning,Naturfag
 Privatundervisning,Fysikk
 Privatundervisning,Kjemi
@@ -462,6 +472,10 @@ Renhold,Sluttrengjøring av leieforhold
 Renhold,Tepperensing
 Renhold,Vindusvaskere
 Renhold,Stryketjenester
+Renhold,Fasadevask
+Renhold,Rengjøring etter fest
+Renhold,Takvask
+Renhold,Vaskehjelp
 Småreparasjoner,IKEA-montering
 Småreparasjoner,Opphenging av bilder og hyller
 Språkundervisning,Arabisk
@@ -485,6 +499,9 @@ Transport og bud,Levering av pakker
 Transport og bud,Kjøp og hent-tjenester
 Transport og bud,Varetransport
 Transport og bud,Godstransport
+Transport og bud,Persontransport
+Transport og bud,Pianotransport
+Transport og bud,Transport av bil og båt
 Boligstyling,Boligstyling før salg
 Boligstyling,Interiørkonsulent
 Boligstyling,Homestaging
@@ -492,6 +509,9 @@ Bilverksted og mekaniker,Bilmekaniker
 Bilverksted og mekaniker,Dekkskift
 Bilverksted og mekaniker,EU-kontroll og PKK
 Bilverksted og mekaniker,AC og klima bil
+Bilverksted og mekaniker,Bilpleie
+Bilverksted og mekaniker,Hjul og dekkskift
+Bilverksted og mekaniker,Kilometerservice
 Elektriker,El-installasjon bolig
 Elektriker,Feilsøking og reparasjon elektro
 Elektriker,Sikringsskap og kurser

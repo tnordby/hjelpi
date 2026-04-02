@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import type { SubcategoryProviderItem } from '@/lib/providers/subcategory-providers'
+import { formatServicePriceLabel } from '@/lib/provider-services/display'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
 import posthog from 'posthog-js'
 
@@ -13,17 +14,6 @@ export type SortKey =
   | 'reviews_desc'
   | 'bookings_desc'
   | 'name_asc'
-
-function formatPriceOre(ore: number | null, pricingType: SubcategoryProviderItem['pricingType']) {
-  if (pricingType === 'quote' || ore == null) return null
-  const kr = ore / 100
-  const formatted = new Intl.NumberFormat('nb-NO', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(kr)
-  if (pricingType === 'hourly') return `fra ${formatted} kr/t`
-  return `fra ${formatted} kr`
-}
 
 function sortProviders(list: SubcategoryProviderItem[], key: SortKey): SubcategoryProviderItem[] {
   const out = [...list]
@@ -110,15 +100,16 @@ export function SubcategoryProviderList({
       </div>
       <ul className="grid gap-4 md:grid-cols-2">
         {sorted.map((p) => {
-          const priceLabel = formatPriceOre(p.basePriceOre, p.pricingType)
+          const priceLabel = formatServicePriceLabel(p.basePriceOre, p.pricingType)
           return (
             <li key={p.providerId}>
               <Link
-                href={`/hjelpere/${p.providerId}`}
+                href={`/hjelpere/${p.providerId}/tjenester/${p.serviceId}`}
                 onClick={() =>
                   posthog.capture('provider_profile_clicked', {
                     provider_id: p.providerId,
                     provider_name: p.fullName,
+                    service_id: p.serviceId,
                     sort_key: sort,
                     is_verified: p.isVerified,
                     avg_rating: p.avgRating,

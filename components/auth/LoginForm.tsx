@@ -9,7 +9,11 @@ import posthog from 'posthog-js'
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
 
-export function LoginForm() {
+type Props = {
+  nextPath?: string | null
+}
+
+export function LoginForm({ nextPath }: Props) {
   const t = useTranslations('auth.login')
   const [error, setError] = useState<string | undefined>()
 
@@ -30,6 +34,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
+      {nextPath ? <input type="hidden" name="next" value={nextPath} /> : null}
       {error ? (
         <p
           className="rounded-xl bg-error-container/80 px-4 py-3 text-sm text-on-error-container"

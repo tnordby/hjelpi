@@ -6,6 +6,7 @@ import { CompleteSellerProfileForm } from '@/components/seller/CompleteSellerPro
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { resolveAccountHrefAfterAuth } from '@/lib/seller/post-auth'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,10 +17,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'auth.meta' })
-  return {
-    title: t('sellerOnboardingTitle'),
-    description: t('sellerOnboardingDescription'),
-  }
+  return withPageSeo(
+    { title: t('sellerOnboardingTitle'), description: t('sellerOnboardingDescription') },
+    {
+      locale,
+      pathSegments: ['bli-hjelper', 'fullfor-profil'],
+      indexable: false,
+      keywords: ['hjelperprofil', 'Hjelpi', 'lokale tjenester'],
+    },
+  )
 }
 
 export default async function FullforProfilPage() {
@@ -45,9 +51,9 @@ export default async function FullforProfilPage() {
   }
 
   const nextHref = await resolveAccountHrefAfterAuth(supabase, user.id)
-  if (nextHref === '/min-konto') {
+  if (nextHref !== '/bli-hjelper/fullfor-profil') {
     const locale = await getLocale()
-    return redirect({ href: '/min-konto', locale })
+    return redirect({ href: nextHref, locale })
   }
 
   const { data: locations } = await supabase

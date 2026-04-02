@@ -1,15 +1,20 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { Link } from '@/i18n/routing'
+import { formatServicePriceLabel } from '@/lib/provider-services/display'
+import { fetchPublicProviderServices } from '@/lib/provider-services/data'
 import { profileDisplayName } from '@/lib/profiles/display-name'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { withPageSeo } from '@/lib/seo/build-metadata'
 
 type Props = { params: Promise<{ locale: string; id: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params
+  const { locale, id } = await params
   const supabase = await createSupabaseServerClient()
   const { data } = await supabase
     .from('providers')
@@ -29,10 +34,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  return {
-    title: `${name} | Hjelpi`,
-    description: `Profil for ${name} på Hjelpi.`,
-  }
+  const t = await getTranslations({ locale, namespace: 'publicHelperProfile' })
+  return withPageSeo(
+    {
+      title: t('metaTitle', { name }),
+      description: t('metaDescription', { name }),
+    },
+    {
+      locale,
+      pathSegments: ['hjelpere', id],
+      keywords: [name, 'hjelper', 'lokale tjenester', 'Hjelpi'],
+    },
+  )
 }
 
 export default async function HjelperProfilePage({ params }: Props) {
@@ -77,11 +90,13 @@ export default async function HjelperProfilePage({ params }: Props) {
   }
 
   const rating = data.avg_rating != null ? Number(data.avg_rating) : 0
+  const services = await fetchPublicProviderServices(supabase, id)
+  const t = await getTranslations('publicHelperProfile')
 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-surface-container-lowest pt-24 pb-20">
+      <main className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)]">
         <div className="mx-auto max-w-3xl px-6">
           <div className="rounded-3xl border border-outline-variant/30 bg-white p-8 shadow-sm md:p-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
@@ -121,6 +136,51 @@ export default async function HjelperProfilePage({ params }: Props) {
               </div>
             </div>
           </div>
+
+          <section className="mt-10" aria-labelledby="helper-services-heading">
+            <h2
+              id="helper-services-heading"
+              className="font-headline text-xl font-bold text-on-surface md:text-2xl"
+            >
+              {t('servicesTitle')}
+            </h2>
+            <p className="mt-1 text-sm text-on-surface-variant">{t('servicesSubtitle')}</p>
+            {services.length === 0 ? (
+              <p className="mt-6 rounded-2xl border border-dashed border-outline-variant/50 bg-white/80 px-6 py-10 text-center text-on-surface-variant">
+                {t('servicesEmpty')}
+              </p>
+            ) : (
+              <ul className="mt-6 space-y-3">
+                {services.map((svc) => {
+                  const price = formatServicePriceLabel(svc.basePriceOre, svc.pricingType)
+                  return (
+                    <li key={svc.id}>
+                      <Link
+                        href={`/hjelpere/${id}/tjenester/${svc.id}`}
+                        className="group flex items-start justify-between gap-4 rounded-2xl border border-outline-variant/30 bg-white p-5 shadow-sm transition-all hover:border-primary/25 hover:shadow-md"
+                      >
+                        <div className="min-w-0">
+                          <p className="font-headline text-lg font-bold text-on-surface group-hover:text-primary">
+                            {svc.title}
+                          </p>
+                          {svc.subcategoryLabel ? (
+                            <p className="mt-0.5 text-sm text-on-surface-variant">{svc.subcategoryLabel}</p>
+                          ) : null}
+                          {price ? (
+                            <p className="mt-2 text-sm font-semibold text-primary">{price}</p>
+                          ) : null}
+                        </div>
+                        <MaterialIcon
+                          name="chevron_right"
+                          className="mt-1 shrink-0 text-on-surface-variant transition-transform group-hover:translate-x-0.5 group-hover:text-primary"
+                        />
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+          </section>
         </div>
       </main>
       <Footer />

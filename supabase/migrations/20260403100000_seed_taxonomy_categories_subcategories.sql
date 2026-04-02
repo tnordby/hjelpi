@@ -65,6 +65,7 @@ CROSS JOIN (VALUES
   ('Kiropraktor', 'kiropraktor', 'hourly'),
   ('Massør', 'massor', 'hourly'),
   ('Negletekniker', 'negletekniker', 'hourly'),
+  ('Osteopat', 'osteopat', 'hourly'),
   ('Sportsmassasje', 'sportsmassasje', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'behandling'
 ON CONFLICT (category_id, slug) DO UPDATE SET
@@ -80,8 +81,11 @@ FROM public.categories c
 CROSS JOIN (VALUES
   ('AC og klima bil', 'ac-og-klima-bil', 'fixed'),
   ('Bilmekaniker', 'bilmekaniker', 'fixed'),
+  ('Bilpleie', 'bilpleie', 'fixed'),
   ('Dekkskift', 'dekkskift', 'fixed'),
-  ('EU-kontroll og PKK', 'eu-kontroll-og-pkk', 'fixed')) AS v(name, slug, pricing)
+  ('EU-kontroll og PKK', 'eu-kontroll-og-pkk', 'fixed'),
+  ('Hjul og dekkskift', 'hjul-og-dekkskift', 'fixed'),
+  ('Kilometerservice', 'kilometerservice', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'bilverksted-og-mekaniker'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
@@ -192,6 +196,7 @@ CROSS JOIN (VALUES
   ('Dyrepass', 'dyrepass', 'hourly'),
   ('Dyrepasser for smådyr', 'dyrepasser-for-smadyr', 'hourly'),
   ('Hundelufting', 'hundelufting', 'hourly'),
+  ('Hundepass', 'hundepass', 'hourly'),
   ('Husdyrpleier', 'husdyrpleier', 'hourly'),
   ('Kattepasser', 'kattepasser', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'dyrepass'
@@ -272,6 +277,7 @@ SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
   ('Bærehjelp', 'baerehjelp', 'hourly'),
+  ('Flyttebyrå', 'flyttebyra', 'hourly'),
   ('Flytting av møbler', 'flytting-av-mobler', 'hourly'),
   ('Full flyttehjelp', 'full-flyttehjelp', 'hourly'),
   ('Pakking til flytting', 'pakking-til-flytting', 'hourly'),
@@ -303,7 +309,8 @@ CROSS JOIN (VALUES
   ('Nyfødtfotografi', 'nyfodtfotografi', 'fixed'),
   ('Portrettfotografi', 'portrettfotografi', 'fixed'),
   ('Reklamefotografi', 'reklamefotografi', 'fixed'),
-  ('Sportsfotografi', 'sportsfotografi', 'fixed')) AS v(name, slug, pricing)
+  ('Sportsfotografi', 'sportsfotografi', 'fixed'),
+  ('Videofotograf', 'videofotograf', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'fotografi'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
@@ -317,6 +324,7 @@ SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
   ('Barberer', 'barberer', 'hourly'),
+  ('Frisør', 'frisor', 'hourly'),
   ('Hårstylist', 'harstylist', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'frisor'
 ON CONFLICT (category_id, slug) DO UPDATE SET
@@ -627,7 +635,9 @@ CROSS JOIN (VALUES
   ('Lounge', 'lounge', 'quote'),
   ('Musikk for barn', 'musikk-for-barn', 'quote'),
   ('Pop', 'pop', 'quote'),
+  ('Saksofonist', 'saksofonist', 'quote'),
   ('Sanger', 'sanger', 'quote'),
+  ('Sanger og gitarist', 'sanger-og-gitarist', 'quote'),
   ('Soloartist og vokalist', 'soloartist-og-vokalist', 'quote'),
   ('Trance', 'trance', 'quote'),
   ('Trap', 'trap', 'quote')) AS v(name, slug, pricing)
@@ -709,6 +719,7 @@ CROSS JOIN (VALUES
   ('Kostholdsveileder', 'kostholdsveileder', 'hourly'),
   ('Løping', 'loping', 'hourly'),
   ('Paragliding', 'paragliding', 'hourly'),
+  ('Personlig trener (PT)', 'personlig-trener-pt', 'hourly'),
   ('Pilates', 'pilates', 'hourly'),
   ('Pilates-trener', 'pilates-trener', 'hourly'),
   ('Racketball', 'racketball', 'hourly'),
@@ -747,8 +758,10 @@ CROSS JOIN (VALUES
   ('Fysikk', 'fysikk', 'fixed'),
   ('Kjemi', 'kjemi', 'fixed'),
   ('Matematikk', 'matematikk', 'fixed'),
+  ('Mattehjelp', 'mattehjelp', 'fixed'),
   ('Naturfag', 'naturfag', 'fixed'),
   ('Norsk', 'norsk', 'fixed'),
+  ('Privatlærer', 'privatlaerer', 'fixed'),
   ('Spansk', 'spansk', 'fixed'),
   ('Tysk', 'tysk', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'privatundervisning'
@@ -790,6 +803,7 @@ CROSS JOIN (VALUES
   ('Damprengjøring', 'damprengjoring', 'hourly'),
   ('Dyprengjøring', 'dyprengjoring', 'hourly'),
   ('Dypvasktjenester', 'dypvasktjenester', 'hourly'),
+  ('Fasadevask', 'fasadevask', 'hourly'),
   ('Flyttevask', 'flyttevask', 'hourly'),
   ('Hagerydning', 'hagerydning', 'hourly'),
   ('Husrengjøring', 'husrengjoring', 'hourly'),
@@ -812,11 +826,14 @@ CROSS JOIN (VALUES
   ('Rengjøring av skorstein', 'rengjoring-av-skorstein', 'hourly'),
   ('Rengjøring av tepper og møbler', 'rengjoring-av-tepper-og-mobler', 'hourly'),
   ('Rengjøring etter bygging', 'rengjoring-etter-bygging', 'hourly'),
+  ('Rengjøring etter fest', 'rengjoring-etter-fest', 'hourly'),
   ('Rensing av avløp og kloakk', 'rensing-av-avlop-og-kloakk', 'hourly'),
   ('Rensing av renne', 'rensing-av-renne', 'hourly'),
   ('Sluttrengjøring av leieforhold', 'sluttrengjoring-av-leieforhold', 'hourly'),
   ('Stryketjenester', 'stryketjenester', 'hourly'),
+  ('Takvask', 'takvask', 'hourly'),
   ('Tepperensing', 'tepperensing', 'hourly'),
+  ('Vaskehjelp', 'vaskehjelp', 'hourly'),
   ('Vindusvask', 'vindusvask', 'hourly'),
   ('Vindusvaskere', 'vindusvaskere', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'renhold'
@@ -949,6 +966,9 @@ CROSS JOIN (VALUES
   ('Godstransport', 'godstransport', 'fixed'),
   ('Kjøp og hent-tjenester', 'kjop-og-hent-tjenester', 'fixed'),
   ('Levering av pakker', 'levering-av-pakker', 'fixed'),
+  ('Persontransport', 'persontransport', 'fixed'),
+  ('Pianotransport', 'pianotransport', 'fixed'),
+  ('Transport av bil og båt', 'transport-av-bil-og-bat', 'fixed'),
   ('Varetransport', 'varetransport', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'transport-og-bud'
 ON CONFLICT (category_id, slug) DO UPDATE SET

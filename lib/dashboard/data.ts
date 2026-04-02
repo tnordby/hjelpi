@@ -39,13 +39,43 @@ export async function loadDashboardUserContext(
   userId: string,
   email: string,
 ): Promise<DashboardUserContext | null> {
-  const { data: profile, error } = await supabase
+  type ProfileRow = {
+    id: string
+    first_name?: string | null
+    last_name?: string | null
+    role: string
+    active_mode?: string | null
+  }
+
+  const full = await supabase
     .from('profiles')
     .select('id, first_name, last_name, role, active_mode')
     .eq('user_id', userId)
     .maybeSingle()
 
-  if (error || !profile) return null
+  let profile: ProfileRow | null = null
+
+  if (full.error) {
+    // Keep in sync with resolveAccountHrefAfterAuth (id + role). A wider select can error on
+    // schema drift while the minimal select still works — that used to send users to /min-konto in a loop.
+    const minimal = await supabase
+      .from('profiles')
+      .select('id, role')
+      .eq('user_id', userId)
+      .maybeSingle()
+    if (minimal.error || !minimal.data) return null
+    profile = {
+      id: minimal.data.id as string,
+      role: minimal.data.role as string,
+      first_name: null,
+      last_name: null,
+      active_mode: null,
+    }
+  } else if (!full.data) {
+    return null
+  } else {
+    profile = full.data as ProfileRow
+  }
 
   const { data: provider } = await supabase
     .from('providers')
@@ -53,10 +83,15 @@ export async function loadDashboardUserContext(
     .eq('profile_id', profile.id)
     .maybeSingle()
 
-  const role = profile.role as DashboardUserContext['role']
+  const roleRaw = profile.role
+  const role: DashboardUserContext['role'] =
+    roleRaw === 'buyer' || roleRaw === 'seller' || roleRaw === 'admin'
+      ? roleRaw
+      : 'buyer'
+
   const providerId = provider?.id ?? null
   const isSeller = role === 'seller' && Boolean(providerId)
-  const rawMode = profile.active_mode as string | null
+  const rawMode = profile.active_mode
   const activeMode: DashboardUserContext['activeMode'] =
     rawMode === 'seller' ? 'seller' : 'buyer'
 
@@ -370,4 +405,78 @@ export async function fetchBuyerSpendSummary(
 
 export function countPendingSellerRequests(bookings: BookingRow[]): number {
   return bookings.filter((b) => b.status === 'pending').length
+}
+
+/** Unread incoming messages + pending booking activity for the global nav bell. */
+export type NavbarNotificationCounts = {
+  unreadMessages: number
+  pendingBuyer: number
+  pendingSeller: number
+  messagesHref: string
+  buyerBookingsHref: string
+  sellerRequestsHref: string
+}
+
+async function countSellerPendingBookings(
+  supabase: SupabaseClient,
+  providerId: string,
+): Promise<number> {
+  const { data: services } = await supabase
+    .from('provider_services')
+    .select('id')
+    .eq('provider_id', providerId)
+
+  const ids = services?.map((s) => s.id as string) ?? []
+  if (!ids.length) return 0
+
+  const { count } = await supabase
+    .from('bookings')
+    .select('id', { count: 'exact', head: true })
+    .in('provider_service_id', ids)
+    .eq('status', 'pending')
+
+  return count ?? 0
+}
+
+export async function fetchNavbarNotificationCounts(
+  supabase: SupabaseClient,
+  ctx: DashboardUserContext,
+): Promise<NavbarNotificationCounts> {
+  const profileId = ctx.profileId
+
+  const unreadReq = supabase
+    .from('messages')
+    .select('id', { count: 'exact', head: true })
+    .is('read_at', null)
+    .neq('sender_id', profileId)
+
+  const buyerPendingReq = supabase
+    .from('bookings')
+    .select('id', { count: 'exact', head: true })
+    .eq('buyer_id', profileId)
+    .eq('status', 'pending')
+
+  const sellerPendingReq = ctx.providerId
+    ? countSellerPendingBookings(supabase, ctx.providerId)
+    : Promise.resolve(0)
+
+  const [{ count: unread }, { count: buyerPending }, sellerPending] = await Promise.all([
+    unreadReq,
+    buyerPendingReq,
+    sellerPendingReq,
+  ])
+
+  const messagesHref =
+    ctx.activeMode === 'seller'
+      ? '/min-side/hjelper/meldinger'
+      : '/min-side/kunde/meldinger'
+
+  return {
+    unreadMessages: unread ?? 0,
+    pendingBuyer: buyerPending ?? 0,
+    pendingSeller: sellerPending,
+    messagesHref,
+    buyerBookingsHref: '/min-side/kunde/bestillinger',
+    sellerRequestsHref: '/min-side/hjelper/foresporsler',
+  }
 }
