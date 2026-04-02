@@ -1,0 +1,190 @@
+---
+description: Coding standards, naming conventions, component patterns, and Tailwind usage for Hjelpi
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# Coding standards
+
+## TypeScript
+
+- Strict mode is on. No `any`. No type assertions (`as Foo`) without a comment explaining why.
+- Use `type` for unions, primitives, and function signatures. Use `interface` for objects that may be extended.
+- All database row types come from `@/lib/supabase/types.ts` (generated). Never hand-write DB types.
+- Zod for all external input validation: form submissions, API route bodies, URL params, webhook payloads.
+
+```ts
+// Good
+const paramsSchema = z.object({
+  kategori: z.string().min(1),
+  subkategori: z.string().min(1),
+  by: z.string().optional(),
+})
+
+// Bad — trusting params directly
+const { kategori, subkategori } = params
+```
+
+## Naming conventions
+
+| Thing | Convention | Example |
+|---|---|---|
+| Components | PascalCase | `ProviderCard.tsx` |
+| Hooks | camelCase with `use` prefix | `useProviderList.ts` |
+| Lib functions | camelCase | `calculateFees()` |
+| DB column names | snake_case | `base_price_ore` |
+| URL slugs | kebab-case, ASCII | `bryllupsfotografi`, `oslo` |
+| Translation keys | dot-notation, snake_case | `provider.badge.verified` |
+| Env vars | SCREAMING_SNAKE_CASE | `STRIPE_SECRET_KEY` |
+| Constants | SCREAMING_SNAKE_CASE | `BUYER_FEE_RATE` |
+
+## Component patterns
+
+### Prefer Server Components
+Default to Server Components. Only add `'use client'` when you need:
+- `useState` / `useEffect`
+- Browser APIs (geolocation, localStorage)
+- Event handlers on interactive elements
+- Third-party client libs (Mapbox, Stripe Elements)
+
+### Component file structure
+```tsx
+// 1. Imports — external, then internal, then types
+import { type FC } from 'react'
+import { MapPin } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import type { ProviderWithServices } from '@/types/database'
+
+// 2. Types for this component only
+type Props = {
+  provider: ProviderWithServices
+  className?: string
+}
+
+// 3. Component — named export, no default export for components
+export function ProviderCard({ provider, className }: Props) {
+  return (
+    <div className={cn('...', className)}>
+      {/* ... */}
+    </div>
+  )
+}
+```
+
+No default exports for components. Default exports only for Next.js `page.tsx` and `layout.tsx`.
+
+### Props
+- `className` prop on every reusable component for composability
+- Use `cn()` (clsx + tailwind-merge) to merge classes
+- Never pass raw style objects — use Tailwind only
+
+## Tailwind usage
+
+This project uses the Hjelpi design system. Always use the custom tokens defined in `tailwind.config.ts`, not raw hex values.
+
+### Color tokens
+```
+bg-primary           #00606c  (deep teal — CTAs, active states)
+bg-secondary         #29657a  (soft azure)
+bg-surface           #f8f9ff  (page background)
+bg-surface-container-low      #eff4ff  (section backgrounds)
+bg-surface-container-lowest   #ffffff  (cards)
+text-on-surface      #0b1c30
+text-on-surface-variant  #3e494b
+text-tertiary        #745100  (gold accent — ratings, badges)
+bg-secondary-container  #ace5fe  (chip unselected state)
+border-outline-variant  #bdc8cb
+```
+
+### Typography tokens
+```
+font-headline        Manrope   (headings h1–h4)
+font-body            Inter     (body text, labels)
+```
+
+### The no-border rule
+Never use `border border-gray-200` or similar for section separation. Use background color shifts instead:
+```tsx
+// Bad
+<div className="border border-gray-200 rounded-xl p-4">
+
+// Good — card lifts from surface-container-low background
+<div className="bg-surface-container-lowest rounded-3xl p-8 shadow-[0px_10px_30px_rgba(11,28,48,0.03)]">
+```
+
+### Shadow token
+Always use the tonal shadow: `shadow-[0px_10px_30px_rgba(11,28,48,0.05)]`
+Never use `shadow-md`, `shadow-lg`, or any pure-black shadow.
+
+### Glassmorphism (nav and floating bars only)
+```tsx
+<nav className="bg-white/70 backdrop-blur-md shadow-[0px_10px_30px_rgba(11,28,48,0.05)]">
+```
+
+## Import order (enforced by ESLint)
+1. React
+2. Next.js (`next/...`)
+3. External packages (alphabetical)
+4. Internal aliases (`@/lib/...`, `@/components/...`, `@/types/...`)
+5. Relative imports (`./`, `../`)
+6. Type-only imports last
+
+## Error handling
+
+Use `Result` pattern for lib functions that can fail:
+```ts
+type Result<T> = { data: T; error: null } | { data: null; error: string }
+```
+
+In Server Components and API routes, catch Supabase and Stripe errors explicitly — never let them bubble as unhandled exceptions.
+
+```ts
+const { data, error } = await supabase.from('providers').select('*')
+if (error) {
+  // log to Sentry, return appropriate UI
+  return <ErrorState message="Kunne ikke laste leverandører" />
+}
+```
+
+## Internationalisation
+
+All user-facing strings go through `next-intl`. No hardcoded Norwegian strings in components.
+
+```tsx
+import { useTranslations } from 'next-intl'
+
+export function SearchBar() {
+  const t = useTranslations('search')
+  return <input placeholder={t('placeholder')} />
+}
+```
+
+Translation keys live in `messages/no.json`. Add the key there before using it.
+
+## Breadcrumbs
+
+Every category, subcategory, and provider page must render:
+1. A visible `<Breadcrumbs>` component using the `layout/Breadcrumbs` component
+2. A `BreadcrumbList` JSON-LD script in the page `<head>` via Next.js Metadata API
+
+```ts
+// Every subcategory page exports this
+export function generateBreadcrumbJsonLd(params) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Hjem', item: 'https://hjelpi.com/no' },
+      { '@type': 'ListItem', position: 2, name: kategoriName, item: `https://hjelpi.com/no/${params.kategori}` },
+      { '@type': 'ListItem', position: 3, name: subkategoriName, item: `https://hjelpi.com/no/${params.kategori}/${params.subkategori}` },
+    ],
+  }
+}
+```
+
+## Formatting
+
+- Prettier with default settings
+- 2-space indent
+- Single quotes
+- No semicolons (configured in prettier)
+- Trailing commas in multi-line structures

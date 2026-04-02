@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "title": "Hjelpi – Finn din neste ekspert i Norge",
+    "description": "Hjelpi kobler deg med de beste lokale ekspertene i Norge. Fra fotografering til hundepasning – vi har hjelpen du trenger."
+  },
+  "nav": {
+    "brand": "Hjelpi",
+    "findServices": "Finn tjenester",
+    "becomeHelper": "Bli en hjelper",
+    "logIn": "Logg inn",
+    "getStarted": "Kom i gang"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "SKANDINAVISK KVALITET",
+      "titleLine1": "Finn rett hjelp",
+      "titleLine2": "til rett tid.",
+      "imageAlt": "Moderne, lys skandinavisk hjemmekontor med en person som jobber på laptop, mykt naturlig morgenlys.",
+      "subtitle": "Hjelpi kobler deg med de beste lokale ekspertene i Norge. Fra fotografering til hundepasning – vi har hjelpen du trenger.",
+      "searchPlaceholder": "Hva trenger du hjelp til?",
+      "search": "Søk",
+      "popularLabel": "Populært:",
+      "popularTags": {
+        "photographer": "Fotograf",
+        "dogSitting": "Hundepasning",
+        "moveClean": "Flyttevask"
+      },
+      "trustTitle": "Godkjente Hjelpere",
+      "trustSubtitle": "Alle våre eksperter er ID-sjekket."
+    },
+    "categories": {
+      "title": "Populære kategorier",
+      "subtitle": "Utforsk de mest etterspurte tjenestene i ditt nærområde akkurat nå.",
+      "seeAll": "Se alle tjenester",
+      "fotografi": {
+        "title": "Fotografering",
+        "description": "Bryllup, portrett eller eiendom – finn den rette linsen for ditt øyeblikk.",
+        "imageAlt": "Profesjonelt kamera på stativ i et lyst studio, minimalistisk uttrykk og varmt lys."
+      },
+      "hundepasning": {
+        "title": "Hundepasning",
+        "imageAlt": "Glad person som går tur med to hunder i en grønn norsk park i solnedgang."
+      },
+      "tryllekunstnere": {
+        "title": "Tryllekunstnere",
+        "imageAlt": "Elegant tryllekunstnerhatt og tryllestav på fløyelsbord, stemningsfull belysning."
+      },
+      "renhold": {
+        "title": "Renhold",
+        "imageAlt": "Miljøvennlige rengjøringsmidler i en kurv på et rent eikegulv i et lyst nordisk hjem."
+      },
+      "handverker": {
+        "title": "Håndverker",
+        "imageAlt": "Elektriker som arbeider presist i et moderne hjem med jevnt, lyst lys."
+      }
+    },
+    "howItWorks": {
+      "title": "Slik fungerer det",
+      "subtitle": "Det har aldri vært enklere å få ting gjort. Tre steg for å realisere prosjektet ditt.",
+      "step1": {
+        "title": "1. Beskriv behovet",
+        "body": "Fortell oss hva du trenger hjelp til, når det passer og hvor du befinner deg."
+      },
+      "step2": {
+        "title": "2. Få tilbud",
+        "body": "Motta pristilbud fra kvalifiserte hjelpere. Sammenlign profiler, vurderinger og porteføljer."
+      },
+      "step3": {
+        "title": "3. Velg din ekspert",
+        "body": "Velg hjelperen som passer deg best og avtal tidspunkt. Trygt, enkelt og effektivt."
+      }
+    },
+    "cities": {
+      "title": "Vi er tilstede i hele landet",
+      "expertCount": "{count}+ eksperter",
+      "bySlug": {
+        "oslo": "Oslo",
+        "bergen": "Bergen",
+        "trondheim": "Trondheim",
+        "stavanger": "Stavanger",
+        "kristiansand": "Kristiansand",
+        "drammen": "Drammen",
+        "tromso": "Tromsø",
+        "fredrikstad": "Fredrikstad"
+      }
+    },
+    "testimonials": {
+      "title": "Hva våre brukere sier",
+      "quote1": "Veldig enkelt å bruke. Fant en fantastisk hundepasser til hunden vår på under en time. Trygt og profesjonelt.",
+      "quote2": "Jeg trengte rask hjelp med flyttevask i Bergen. Fikk tre gode tilbud med en gang. Strålende tjeneste!",
+      "quote3": "Fant en fantastisk fotograf til vårt bryllup via Hjelpi. Hele prosessen var sømløs fra start til slutt.",
+      "city1": "Oslo",
+      "city2": "Bergen",
+      "city3": "Stavanger",
+      "starsLabel": "5 av 5 stjerner",
+      "name1": "Magnus S.",
+      "name2": "Ingrid L.",
+      "name3": "Erik T.",
+      "avatarAlt1": "Portrett av Magnus S.",
+      "avatarAlt2": "Portrett av Ingrid L.",
+      "avatarAlt3": "Portrett av Erik T."
+    },
+    "cta": {
+      "title": "Er du en ekspert?",
+      "subtitle": "Bli en del av Norges raskest voksende nettverk av tjenesteytere. Vis frem ditt talent og få nye kunder hver uke.",
+      "primary": "Bli en hjelper",
+      "secondary": "Les mer"
+    }
+  },
+  "footer": {
+    "tagline": "Den ledende plattformen for lokale tjenester i Skandinavia. Kvalitet du kan stole på.",
+    "services": "Tjenester",
+    "company": "Selskapet",
+    "support": "Support",
+    "links": {
+      "photography": "Fotografering",
+      "dogSitting": "Hundepasning",
+      "entertainment": "Underholdning",
+      "homeService": "Hjemmeservice",
+      "about": "Om oss",
+      "security": "Sikkerhet",
+      "terms": "Vilkår",
+      "privacy": "Personvern",
+      "contact": "Kontakt",
+      "help": "Hjelpesenter",
+      "press": "Presse"
+    },
+    "copyright": "© {year} Hjelpi AS. Skandinavisk kvalitet.",
+    "safePayment": "Trygg betaling",
+    "bankId": "BankID verifisert"
+  }
+}

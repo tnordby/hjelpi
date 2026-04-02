@@ -1,0 +1,137 @@
+---
+description: Code review checklist for Hjelpi — correctness, performance, SEO, accessibility, and UX
+globs: ["**/*.ts", "**/*.tsx"]
+---
+
+# Code review checklist
+
+Apply these checks when reviewing any PR or before committing significant changes.
+
+## Correctness
+
+- [ ] All prices calculated via `lib/stripe/fees.ts`. No inline fee math anywhere.
+- [ ] All prices in **øre** (integers). No floats. No `kr` strings stored in DB.
+- [ ] `SUPABASE_SERVICE_ROLE_KEY` and `STRIPE_SECRET_KEY` only used server-side. Never in Client Components, never in `NEXT_PUBLIC_` variables.
+- [ ] Stripe webhook handler verifies signature with `stripe.webhooks.constructEvent()` before processing.
+- [ ] Supabase queries in Server Components use the server client (`createServerClient`), not the browser client.
+- [ ] Booking status transitions are validated — can only go `pending → confirmed → completed`, never backwards.
+- [ ] Quote expiry (48h) is enforced by a Trigger.dev job, not just a UI hint.
+- [ ] Simultaneous review reveal: neither review is readable by either party until both submit OR the 14-day window closes.
+
+## TypeScript and data
+
+- [ ] No `any` types introduced.
+- [ ] All external input (form data, URL params, API request bodies, webhook payloads) validated with Zod before use.
+- [ ] Database types from generated `@/lib/supabase/types.ts`, not hand-written.
+- [ ] Error states handled explicitly — no silent swallows. Errors logged to Sentry.
+- [ ] `Result<T>` pattern used in lib functions: `{ data, error }` not thrown exceptions.
+
+## Next.js and performance
+
+- [ ] New pages are Server Components by default. `'use client'` only added where necessary.
+- [ ] `generateStaticParams` implemented for `[kategori]`, `[subkategori]`, and `[by]` pages.
+- [ ] `revalidate` set: listing pages = 3600, provider profiles = 300.
+- [ ] No N+1 queries. Provider listing pages fetch all needed data in one Supabase query with joins.
+- [ ] Images use `next/image` with explicit `width`, `height`, and a meaningful `alt`.
+- [ ] No large client-side bundles from unused imports (Mapbox only imported where map is rendered).
+
+## SEO
+
+- [ ] Every page exports `generateMetadata()` with a unique `title` and `description`.
+- [ ] Subcategory pages include `title` pattern: `Finn [subkategori] i [by] – Hjelpi`.
+- [ ] JSON-LD structured data present:
+  - Category/subcategory pages: `BreadcrumbList`
+  - Provider profiles: `LocalBusiness` + `Service` + `AggregateRating`
+- [ ] `hreflang` alternate links on all locale pages.
+- [ ] Subcategory+city pages with zero providers return 200, not 404. Empty state has "Bli den første" CTA.
+- [ ] New slugs are ASCII-normalized (no Norwegian special characters in URL paths).
+- [ ] Provider profile slugs are SEO-meaningful: `anna-k-bryllupsfotograf-oslo`, not `user-8f3a2`.
+- [ ] Sitemap route handler updated if new page types added.
+
+## Accessibility
+
+- [ ] Interactive elements are keyboard navigable (no `onClick` on non-interactive elements like `div`).
+- [ ] All images have descriptive `alt` text. Decorative images have `alt=""`.
+- [ ] Form fields have associated `<label>` elements (not just placeholder text).
+- [ ] Color contrast meets WCAG AA. `text-on-surface-variant` on `surface-container-low` must pass.
+- [ ] Focus rings visible. Never `outline: none` without a replacement focus style.
+- [ ] Star ratings have `aria-label` like `aria-label="4.8 av 5 stjerner"`.
+
+## Internationalisation
+
+- [ ] No hardcoded Norwegian strings in components. All through `t('key')` from next-intl.
+- [ ] New translation keys added to `messages/no.json` (not just used inline).
+- [ ] Dates, times, and numbers formatted with `next-intl` formatters, not `toLocaleDateString()` directly.
+- [ ] City display names show diacritics (`Tromsø`, `Ålesund`) even though URL slugs are ASCII.
+
+## Design system
+
+- [ ] No raw hex color values in Tailwind classes. Only design token names (`bg-primary`, `text-on-surface`, etc.).
+- [ ] No `border border-*` used for section separation. Background color shifts only.
+- [ ] Shadows use the tonal pattern: `shadow-[0px_10px_30px_rgba(11,28,48,0.05)]`.
+- [ ] No pure black shadows.
+- [ ] Headings use `font-headline` (Manrope). Body text uses `font-body` (Inter).
+- [ ] Glassmorphism (`bg-white/70 backdrop-blur-md`) only on nav and floating bars, not general cards.
+
+## Security (quick pass — full security checklist in security.mdc)
+
+- [ ] No sensitive env vars exposed client-side.
+- [ ] Rate limiting applied to booking, quote, and auth endpoints.
+- [ ] User can only read/write their own data (enforced by RLS, not just application logic).
+- [ ] Uploaded files validated for type and size before upload to R2.
+- [ ] `active_mode` never used for RLS decisions — only `role`.
+- [ ] Admin routes call `requireAdmin()` and verify server-side, never trust client claims.
+
+## Cancellation policy
+
+- [ ] `bookings.cancellation_policy_id` is snapshotted at booking time — never look up the current `provider_services.cancellation_policy_id` after the booking exists.
+- [ ] `calculateRefund()` in `lib/bookings/cancellation.ts` used for all refund calculations — never inline math.
+- [ ] Provider cancellations always result in 100% buyer refund, regardless of policy.
+- [ ] Stripe refund is issued before updating `bookings.status` to `cancelled`.
+- [ ] `cancelled_by`, `cancelled_at`, `cancellation_reason`, and `refund_amount_ore` all recorded on the booking.
+
+## Availability
+
+- [ ] `isProviderAvailable()` called before confirming any booking (instant book AND quote acceptance).
+- [ ] The availability check covers: day-block exceptions, time-slot exceptions, weekly schedule, and conflicting confirmed bookings — in that order.
+- [ ] Date/time pickers call `/api/availability/check` to grey out slots before the buyer attempts to book.
+- [ ] If a double-booking is somehow detected at PaymentIntent creation, return a clear error and do not charge the buyer.
+
+## Notifications
+
+- [ ] New notifications created via `lib/notifications/send.ts` — never by inserting directly from a component or API route.
+- [ ] Every significant booking/quote/review state change fires the appropriate notification type.
+- [ ] Email is sent alongside the in-app notification for high-priority types (booking confirmations, payment events).
+- [ ] No PII (names, emails, phone numbers) stored in `notifications.data` jsonb — store IDs only, fetch display names at render time.
+
+## MVA / Tax
+
+- [ ] Provider VAT number validated against `NO[9 digits]MVA` format before storage.
+- [ ] `automatic_tax: { enabled: true }` included on PaymentIntent creation.
+- [ ] Vipps fee billing noted: Vipps fees are deducted daily from the platform Stripe balance — they are NOT per-transaction and should not appear in per-booking fee math.
+
+## Admin panel
+
+- [ ] All `/admin/*` routes and `/api/admin/*` routes call `requireAdmin()` on every request.
+- [ ] Admin actions (approve verification, resolve dispute, trigger refund) are logged with `admin_id`, `action`, and `timestamp` — either in a dedicated `admin_actions` table or as Sentry breadcrumbs.
+- [ ] Dispute resolution triggers both a Stripe refund and a `dispute_resolved` notification.
+
+## GDPR
+
+- [ ] No new analytics or tracking script added without updating Cookiebot config and privacy policy.
+- [ ] PostHog only initialises after Cookiebot `CookiebotOnAccept` event.
+- [ ] No PII in Sentry error breadcrumbs (no email, name, phone in error context).
+- [ ] Data export endpoint returns all data for the user, including bookings, messages, notifications.
+- [ ] Data deletion is two-phase: immediate anonymisation + async hard delete via Trigger.dev.
+- [ ] Booking records retained for 7 years (Norwegian accounting law) even after profile deletion — but de-identified.
+- [ ] New sub-processor added? Update `privacy_policy` page content before deploying.
+- [ ] Supabase project region confirmed as EU (Frankfurt or Stockholm) before launch.
+
+## UX
+
+- [ ] Lazy registration respected — no auth wall before the booking confirmation step.
+- [ ] Empty states have a clear CTA, not just "Ingen resultater funnet."
+- [ ] Loading states exist for async operations (skeleton cards, not spinners on full pages).
+- [ ] Destructive actions (cancel booking, delete service, delete account) require a confirmation step.
+- [ ] Mobile layout tested at 375px width.
+- [ ] Mode toggle (buyer ↔ seller) visible and accessible in the top nav for seller accounts.

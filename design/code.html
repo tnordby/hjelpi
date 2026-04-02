@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="light" lang="no"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hjelpi - Finn din neste ekspert i Norge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-variant": "#d3e4fe",
+              "surface-container": "#e5eeff",
+              "surface-tint": "#006875",
+              "on-error": "#ffffff",
+              "primary-container": "#007b8a",
+              "primary-fixed": "#9defff",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#3e494b",
+              "secondary-fixed-dim": "#96cfe7",
+              "on-tertiary": "#ffffff",
+              "secondary-fixed": "#baeaff",
+              "background": "#f8f9ff",
+              "error-container": "#ffdad6",
+              "tertiary": "#745100",
+              "on-secondary-container": "#2c687d",
+              "primary-fixed-dim": "#7ad4e4",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-tertiary-fixed": "#271900",
+              "tertiary-container": "#936800",
+              "on-primary-fixed": "#001f24",
+              "surface-container-high": "#dce9ff",
+              "outline-variant": "#bdc8cb",
+              "on-tertiary-container": "#fff3e5",
+              "outline": "#6e797b",
+              "tertiary-fixed-dim": "#f8bc4b",
+              "surface-container-highest": "#d3e4fe",
+              "surface-container-lowest": "#ffffff",
+              "primary": "#00606c",
+              "on-error-container": "#93000a",
+              "surface-container-low": "#eff4ff",
+              "surface-bright": "#f8f9ff",
+              "tertiary-fixed": "#ffdeaa",
+              "on-primary-container": "#ddf9ff",
+              "on-primary-fixed-variant": "#004f59",
+              "surface": "#f8f9ff",
+              "inverse-primary": "#7ad4e4",
+              "on-surface": "#0b1c30",
+              "inverse-surface": "#213145",
+              "on-background": "#0b1c30",
+              "secondary": "#29657a",
+              "on-secondary": "#ffffff",
+              "error": "#ba1a1a",
+              "on-secondary-fixed-variant": "#034d61",
+              "inverse-on-surface": "#eaf1ff",
+              "on-secondary-fixed": "#001f29",
+              "secondary-container": "#ace5fe",
+              "surface-dim": "#cbdbf5"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; color: #0b1c30; }
+      h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+      .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); }
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-[0px_10px_30px_rgba(11,28,48,0.05)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-8">
+<a class="text-2xl font-black text-[#00606c] tracking-tighter font-['Manrope']" href="#">Hjelpi</a>
+<div class="hidden md:flex space-x-6">
+<a class="text-[#00606c] border-b-2 border-[#00606c] font-bold tracking-tight" href="#">Finn tjenester</a>
+<a class="text-slate-600 font-medium hover:text-[#00606c] transition-colors" href="#">Bli en hjelper</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="hidden sm:block text-slate-600 font-medium hover:text-[#00606c] transition-colors" href="#">Logg inn</a>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-full font-bold text-sm hover:opacity-90 transition-all">
+                    Kom i gang
+                </button>
+</div>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="relative px-6 py-20 md:py-32 overflow-hidden">
+<div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+<div class="z-10">
+<span class="inline-block py-1 px-3 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold tracking-wider mb-6">
+                        SKANDINAVISK KVALITET
+                    </span>
+<h1 class="text-5xl md:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight mb-8">
+                        Finn rett hjelp <br/><span class="text-secondary">til rett tid.</span>
+</h1>
+<p class="text-lg md:text-xl text-on-surface-variant mb-10 max-w-lg leading-relaxed">
+                        Hjelpi kobler deg med de beste lokale ekspertene i Norge. Fra fotografering til hundepasning – vi har hjelpen du trenger.
+                    </p>
+<!-- Search Bar -->
+<div class="relative max-w-xl group">
+<div class="flex items-center bg-surface-container-lowest rounded-full p-2 shadow-[0px_10px_30px_rgba(11,28,48,0.08)] focus-within:ring-2 ring-primary/20 transition-all">
+<span class="material-symbols-outlined ml-4 text-primary" data-icon="search">search</span>
+<input class="w-full border-none focus:ring-0 bg-transparent text-on-surface px-4 py-3 placeholder:text-slate-400" placeholder="Hva trenger du hjelp til?" type="text"/>
+<button class="bg-primary text-white px-8 py-3 rounded-full font-bold hover:scale-[0.98] transition-transform">
+                                Søk
+                            </button>
+</div>
+<div class="mt-4 flex flex-wrap gap-2">
+<span class="text-sm text-slate-500 mr-2">Populært:</span>
+<button class="text-xs font-semibold bg-surface-container-low px-3 py-1 rounded-full text-primary hover:bg-surface-container transition-colors">Fotograf</button>
+<button class="text-xs font-semibold bg-surface-container-low px-3 py-1 rounded-full text-primary hover:bg-surface-container transition-colors">Hundepasning</button>
+<button class="text-xs font-semibold bg-surface-container-low px-3 py-1 rounded-full text-primary hover:bg-surface-container transition-colors">Flyttevask</button>
+</div>
+</div>
+</div>
+<div class="relative hidden lg:block">
+<div class="relative rounded-3xl overflow-hidden aspect-[4/5] shadow-2xl">
+<img alt="Person working on laptop in a bright scandinavian interior" class="w-full h-full object-cover" data-alt="Modern bright Scandinavian home office interior with a professional person working on a laptop, soft natural morning light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrnX8eQe1xJvul6fIZJ4rp5eJRyFmENvh0wBjrXlwuEhYAjVyo4lfqv45ryUiHogyeGkhbeBnpM6ln3K4RxLG1kxSlkgNh7WX6bfmI-COR2yhBjwNmnQ_w6pyWW_e0Tmk0V2xj_cbAMM4YhRZ6vmADgfdWNZXo8CZRhOteSHiAu5vpMBy7PmtZYJbh6PK0j0-e-fzp_5tV9mPqOQXFlF8c7fFvOpHzvDdR_dP0G2A0xRGshVX-gWRs3bUXPIM5UPOkyiPgBCR8BMk1"/>
+<div class="absolute bottom-6 left-6 right-6 p-6 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/20">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Godkjente Hjelpere</p>
+<p class="text-sm text-on-surface-variant">Alle våre eksperter er ID-sjekket.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative element -->
+<div class="absolute -top-10 -right-10 w-40 h-40 bg-secondary-container/30 rounded-full blur-3xl -z-10"></div>
+</div>
+</div>
+</section>
+<!-- Categories Section (Bento Grid) -->
+<section class="py-24 px-6 bg-surface-container-low">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-4 tracking-tight">Populære kategorier</h2>
+<p class="text-on-surface-variant max-w-md">Utforsk de mest etterspurte tjenestene i ditt nærområde akkurat nå.</p>
+</div>
+<a class="text-primary font-bold flex items-center gap-2 hover:underline underline-offset-8" href="#">
+                        Se alle tjenester <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- Category Card 1 (Large) -->
+<div class="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-500">
+<img alt="Professional photography camera equipment" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Professional camera on a tripod in a bright studio, minimalist aesthetic, warm lighting, high-end photography gear" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAjeiHheXRhTo4XOdj59neGSUZhKp5eHEzhlCPj4FJ-79_UGvpGGEwG6_yZq2beFWKaNCx59UIeelTmC_2Eoyd2gIICaonFVCf6wCRmDUjF2LoJtKCZojDmga99OIJh7Fihatrm3YbUvXt9EON8APerqdQa2tsuSP81o-Z71Xl3FQkTazkmCVRga59dSZs2jjCpRVzhnkAyOfH1wvfh5a79oNwd5A3g60s8Izouwf2eeW4EJkDckxIoi5qw3UDCIPwtLxaSbq2L5yv"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8 text-white">
+<span class="material-symbols-outlined text-4xl mb-4" data-icon="photo_camera">photo_camera</span>
+<h3 class="text-2xl font-bold mb-2">Fotografering</h3>
+<p class="text-white/80 text-sm max-w-xs">Bryllup, portrett eller eiendom – finn den rette linsen for ditt øyeblikk.</p>
+</div>
+</div>
+<!-- Category Card 2 -->
+<div class="group relative overflow-hidden rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-500 h-64">
+<img alt="Person walking dogs in a park" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A happy person walking two friendly dogs in a lush green Norwegian park during sunset, golden hour lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD8MB2fZRuOq19oPyCUSw1Mv2QWUP8ZTi1UyVZPpo7SVdTZA8eoOaBl_qrJUZmAX7ILgPSTSGuQP7COmn_tz_76j4pETMv2gX_A5mGruKZsNAjYHp4ZblyNhhF1AYonPjvGVMXP31DQnTAIw6V43klWNRZ-PZmEQL2k65rzraghrKaT8fs7wJyavy8obi1rG6GBsXbI8Mmm_seyJgKwMRu4XWbBfF17vM73t7bAUorfj0FBPSO5kj_Nn2JhgG8y6nw1ukCeMBHjyPR"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 text-white">
+<span class="material-symbols-outlined text-3xl mb-2" data-icon="pets">pets</span>
+<h3 class="text-xl font-bold">Hundepasning</h3>
+</div>
+</div>
+<!-- Category Card 3 -->
+<div class="group relative overflow-hidden rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-500 h-64">
+<img alt="Magician's top hat and wand" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Elegant magician's top hat and silver-tipped wand on a velvet table, moody spotlighting, atmospheric purple and blue tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyjboJTq2wzuI5zVi9_g2Uj4jr12rl_6BZo_zVsHXMHqGUX8JDhPRq6qQ2uwVilqT-2CgfqrDUzcMZE9L_DUGAYgl1VzvmIgylYb_mHUyHdbHMEJzm4TlSXliELN5j_ezyOv2EcPu1WufJc__prwYlnkBO-6DdTivqMhdiODGjEk5g16hpmRvio81ngUu0XUz7t-6caNKTm5jVvCC80d-AmeCLQ9ui3ShyaalYo1eVIv2nmliihhpa4PSncTYP9Boe2QJ9pFCQ-WZh"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 text-white">
+<span class="material-symbols-outlined text-3xl mb-2" data-icon="magic_button">magic_button</span>
+<h3 class="text-xl font-bold">Tryllekunstnere</h3>
+</div>
+</div>
+<!-- Category Card 4 -->
+<div class="group relative overflow-hidden rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-500 h-64">
+<img alt="Cleaning supplies on a wooden floor" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Eco-friendly cleaning supplies in a wooden basket on a clean oak floor, bright Scandinavian interior, minimalist home" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlE9IRa1ooLa9cr3pkKlqxGoMHc_Brb2VOMmnwOrlo2Dt_yQQFzY6lLBtohG3wwGKDa1FtlQdOZK6MuvSg8iUMHrgV2s4zv72vgHjqEs2LRXsvkZpnMDXU0xxa4P3NDCa_3nEsN_TDA0RSnXSmoNHg3ybywM6zxzswBm4hBJ7dp0mv7Mz5Uv3gh3rrBGvpQbq4nYkOpVGefuQAaK17ZmyhQlZqLyGMKs0OJLhjBVoWC2UkdaGrGvpOEa1Sz7ubYEgyT_89RFiZbyKV"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 text-white">
+<span class="material-symbols-outlined text-3xl mb-2" data-icon="cleaning_services">cleaning_services</span>
+<h3 class="text-xl font-bold">Renhold</h3>
+</div>
+</div>
+<!-- Category Card 5 -->
+<div class="group relative overflow-hidden rounded-3xl bg-white shadow-sm hover:shadow-xl transition-all duration-500 h-64">
+<img alt="Handyman working on electrical panel" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Professional electrician working with precision tools in a modern home, focused workspace, bright even lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC22NRGOngoypeQO_2nrh1UG_DEPlsScqBdyGTlefg_aTPh0NdCv675TD5TjF151JqTcBabBGem-4saopnGq1DRTVQW4OLTnL3LSKi6drlophLfzpcpeZWe7rY0lm8Rr0d-GLyt6DiEjqhOI0z2hBMbpwiC9hhKiIRwnnNbb79_zkCvRK6DWKH_cceIa1ckxFMb_uZMYXF0X51WsDlmeYV90Soup7yieT3-1qty9UDO9wIat97wdtl17bOVfCmXFyqi8umtHbEszGlU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 text-white">
+<span class="material-symbols-outlined text-3xl mb-2" data-icon="handyman">handyman</span>
+<h3 class="text-xl font-bold">Håndverker</h3>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How it Works -->
+<section class="py-24 px-6 bg-white">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-4 tracking-tight">Slik fungerer det</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Det har aldri vært enklere å få ting gjort. Tre steg for å realisere prosjektet ditt.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-12 relative">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl" data-icon="search_check">search_check</span>
+</div>
+<h3 class="text-xl font-bold mb-3">1. Beskriv behovet</h3>
+<p class="text-on-surface-variant leading-relaxed">Fortell oss hva du trenger hjelp til, når det passer og hvor du befinner deg.</p>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl" data-icon="reviews">reviews</span>
+</div>
+<h3 class="text-xl font-bold mb-3">2. Få tilbud</h3>
+<p class="text-on-surface-variant leading-relaxed">Motta pristilbud fra kvalifiserte hjelpere. Sammenlign profiler, vurderinger og porteføljer.</p>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
+<span class="material-symbols-outlined text-4xl" data-icon="task_alt">task_alt</span>
+</div>
+<h3 class="text-xl font-bold mb-3">3. Velg din ekspert</h3>
+<p class="text-on-surface-variant leading-relaxed">Velg hjelperen som passer deg best og avtal tidspunkt. Trygt, enkelt og effektivt.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- City Navigation -->
+<section class="py-24 px-6 bg-surface-container-low border-y border-surface-container">
+<div class="max-w-7xl mx-auto">
+<h2 class="text-2xl font-extrabold text-primary mb-12 text-center tracking-tight">Vi er tilstede i hele landet</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Oslo</h4>
+<p class="text-xs text-on-surface-variant mt-1">1,200+ eksperter</p>
+</a>
+<a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Bergen</h4>
+<p class="text-xs text-on-surface-variant mt-1">850+ eksperter</p>
+</a>
+<a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Trondheim</h4>
+<p class="text-xs text-on-surface-variant mt-1">620+ eksperter</p>
+</a>
+<a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Stavanger</h4>
+<p class="text-xs text-on-surface-variant mt-1">480+ eksperter</p>
+</a>
+<a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Kristiansand</h4>
+<p class="text-xs text-on-surface-variant mt-1">350+ eksperter</p>
+</a><a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Drammen</h4>
+<p class="text-xs text-on-surface-variant mt-1">280+ eksperter</p>
+</a><a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Tromsø</h4>
+<p class="text-xs text-on-surface-variant mt-1">150+ eksperter</p>
+</a><a class="group bg-white p-6 rounded-2xl flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-all text-center" href="#">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Fredrikstad</h4>
+<p class="text-xs text-on-surface-variant mt-1">220+ eksperter</p>
+</a></div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-24 px-6 overflow-hidden">
+<div class="max-w-7xl mx-auto">
+<h2 class="text-3xl font-extrabold text-primary mb-12 text-center tracking-tight">Hva våre brukere sier</h2>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-[0px_10px_30px_rgba(11,28,48,0.03)] border border-surface-container/50">
+<div class="flex text-tertiary mb-4">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface mb-6 italic">"Veldig enkelt å bruke. Fant en fantastisk hundepasser til hunden vår på under en time. Trygt og profesjonelt."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container">
+<img alt="Portrait of Magnus S." class="w-full h-full object-cover rounded-full" data-alt="Close-up headshot of a friendly Norwegian man with a slight beard, warm expression, natural outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0QEWh9V7YRyeLvb1CGAs4bdUwIi4oDzGtL8Op5sUfs02x6ZaeqE6U_nVKJhigYY15EX39nzwDNDkxe5FtNbFePRDeZsccjnf0ChK3seBE7h0GENwTxwdmNz3zVNnxlMyv78ZhXSlr2OKg1raA6lKm0INJThVdvhGD6J51tpD5D1cytU6X_8UGbtYj82S3-bWyuh8pBR6pwT5fBC0rvf-0eiN2hMhY1AjaeRiOaz-uTqofGpTlkFIRQ2OPR85TL5CTIHknPDy-OSO2"/>
+</div>
+<div>
+<p class="font-bold text-sm">Magnus S.</p>
+<p class="text-xs text-on-surface-variant">Oslo</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-[0px_10px_30px_rgba(11,28,48,0.03)] border border-surface-container/50">
+<div class="flex text-tertiary mb-4">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface mb-6 italic">"Jeg trengte rask hjelp med flyttevask i Bergen. Fikk tre gode tilbud med en gang. Strålende tjeneste!"</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container">
+<img alt="Portrait of Ingrid L." class="w-full h-full object-cover rounded-full" data-alt="Portrait of a young Scandinavian woman with blonde hair, smiling, in a bright modern urban setting, soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtfEgqTfa4IvzSH8ox1AEdODsx9WftHh_9a_otM3J0qsgOXWjsi53b0sOSBO75ZeuN7NTX5rvCuLW4pCoAZb5Nw6gfW3_I3C89dwLFrmLT9eypmWPODFtZKPljo52e211WBVryg2n_N7OiwByAqptLkNq0d2jjUOzgDOYFEvBaJmIu64Rxllko7qlJMOuyYF35BvotmhZ6EhZi2TFZ157DoEIJ35j0J40mHDNtkly_EYzUwvy2n3Io9MEu_Iz51ZrsC2r0fSMrEgiC"/>
+</div>
+<div>
+<p class="font-bold text-sm">Ingrid L.</p>
+<p class="text-xs text-on-surface-variant">Bergen</p>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-[0px_10px_30px_rgba(11,28,48,0.03)] border border-surface-container/50">
+<div class="flex text-tertiary mb-4">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface mb-6 italic">"Fant en fantastisk fotograf til vårt bryllup via Hjelpi. Hele prosessen var sømløs fra start til slutt."</p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container">
+<img alt="Portrait of Erik T." class="w-full h-full object-cover rounded-full" data-alt="Mid-age Norwegian man with glasses, professional appearance, smiling, indoor office background with soft bokeh" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXbXRq0jzY7G8M4pG5bt20nxGm1dGxTzDU4-5-V93Bx21UeQtMLiF2XzRTyhmLWSqaPUDiZUUGLRPO5VAocVbTIaBOsOkEkjtvMGUHFcRy3oGFz6Mdc7jDPkek-G-8-yce_0UYExjUTCHfZ4uG-Ey4IucYMDoK9Za1su6qNgwXOtz2Nn8z2XNgveAPZhIrA6Hm9U0raRLQaFEHuh8Zpmc_DSMybubMJeI8W29FzvurItNMdrUYMLeoWZcHJRw7uhcCBaEuMePXYopI"/>
+</div>
+<div>
+<p class="font-bold text-sm">Erik T.</p>
+<p class="text-xs text-on-surface-variant">Stavanger</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-6 pb-24">
+<div class="max-w-7xl mx-auto bg-primary rounded-[3rem] p-12 md:p-20 relative overflow-hidden text-center text-on-primary">
+<div class="relative z-10">
+<h2 class="text-4xl md:text-5xl font-extrabold mb-8 tracking-tighter">Er du en ekspert?</h2>
+<p class="text-lg md:text-xl text-primary-fixed mb-12 max-w-2xl mx-auto leading-relaxed opacity-90">
+                        Bli en del av Norges raskest voksende nettverk av tjenesteytere. Vis frem ditt talent og få nye kunder hver uke.
+                    </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="bg-surface-container-lowest text-primary px-10 py-4 rounded-full font-extrabold hover:scale-105 transition-transform shadow-xl">
+                            Bli en hjelper
+                        </button>
+<button class="bg-transparent border-2 border-primary-fixed text-primary-fixed px-10 py-4 rounded-full font-extrabold hover:bg-primary-fixed/10 transition-colors">
+                            Les mer
+                        </button>
+</div>
+</div>
+<!-- Abstract patterns -->
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-container rounded-full opacity-20 blur-3xl"></div>
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary rounded-full opacity-20 blur-3xl"></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#f8f9ff] w-full py-12 border-t border-slate-100 font-['Inter'] text-sm tracking-wide">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-7xl mx-auto px-6">
+<div class="col-span-1">
+<p class="font-['Manrope'] font-bold text-2xl text-[#00606c] mb-4">Hjelpi</p>
+<p class="text-slate-500 mb-6 max-w-xs">Den ledende plattformen for lokale tjenester i Skandinavia. Kvalitet du kan stole på.</p>
+<div class="flex space-x-4">
+<a class="text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</a>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Tjenester</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Fotografering</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Hundepasning</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Underholdning</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Hjemmeservice</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Selskapet</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Om oss</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Sikkerhet</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Vilkår</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Personvern</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h4>
+<ul class="space-y-4">
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Kontakt</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Hjelpesenter</a></li>
+<li><a class="text-slate-500 hover:text-[#00606c] underline-offset-4 hover:underline transition-colors" href="#">Presse</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-slate-500">© 2024 Hjelpi AS. Skandinavisk kvalitet.</p>
+<div class="flex gap-6">
+<span class="flex items-center gap-2 text-slate-400">
+<span class="material-symbols-outlined text-sm" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+                    Trygg betaling
+                </span>
+<span class="flex items-center gap-2 text-slate-400">
+<span class="material-symbols-outlined text-sm" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    BankID verifisert
+                </span>
+</div>
+</div>
+</footer>
+</body></html>

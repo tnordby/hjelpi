@@ -1,0 +1,567 @@
+---
+description: Security rules for Hjelpi — Supabase RLS, auth, Stripe, rate limiting, file uploads, BankID
+globs: ["**/*.ts", "**/*.tsx", "supabase/**", "**/*.sql", "**/next.config.*"]
+---
+
+# Security
+
+## Environment variables
+
+**Server-only secrets — never in `NEXT_PUBLIC_` and never imported in Client Components:**
+```
+SUPABASE_SERVICE_ROLE_KEY
+STRIPE_SECRET_KEY
+STRIPE_WEBHOOK_SECRET
+CLOUDFLARE_R2_SECRET_ACCESS_KEY
+TRIGGER_API_KEY
+RESEND_API_KEY
+```
+
+If Cursor or AI tooling suggests adding any of these as `NEXT_PUBLIC_*`, reject it immediately.
+
+Safe to expose (read-only / publishable keys):
+```
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+NEXT_PUBLIC_MAPBOX_TOKEN
+NEXT_PUBLIC_TYPESENSE_SEARCH_KEY   ← search-only key, not admin key
+NEXT_PUBLIC_POSTHOG_KEY
+```
+
+## Supabase Row Level Security (RLS)
+
+RLS must be enabled on every table. No exceptions. The service role key bypasses RLS — use it only in server-side admin operations and Trigger.dev jobs.
+
+### Required policies per table
+
+**`profiles`**
+```sql
+-- Users can read any profile (public)
+CREATE POLICY "profiles_public_read" ON profiles FOR SELECT USING (true);
+-- Users can only update their own profile
+CREATE POLICY "profiles_own_update" ON profiles FOR UPDATE USING (auth.uid() = user_id);
+```
+
+**`providers`**
+```sql
+-- Public read
+CREATE POLICY "providers_public_read" ON providers FOR SELECT USING (true);
+-- Provider can update their own record
+CREATE POLICY "providers_own_update" ON providers FOR UPDATE
+  USING (auth.uid() = (SELECT user_id FROM profiles WHERE id = profile_id));
+```
+
+**`provider_services`**
+```sql
+CREATE POLICY "services_public_read" ON provider_services FOR SELECT USING (true);
+CREATE POLICY "services_own_write" ON provider_services FOR ALL
+  USING (auth.uid() = (SELECT p.user_id FROM profiles p
+    JOIN providers pr ON pr.profile_id = p.id
+    WHERE pr.id = provider_id));
+```
+
+**`bookings`**
+```sql
+-- Buyer can read their own bookings; provider can read bookings for their services
+CREATE POLICY "bookings_participant_read" ON bookings FOR SELECT
+  USING (
+    auth.uid() = (SELECT user_id FROM profiles WHERE id = buyer_id)
+    OR
+    auth.uid() = (SELECT p.user_id FROM profiles p
+      JOIN providers pr ON pr.profile_id = p.id
+      JOIN provider_services ps ON ps.provider_id = pr.id
+      WHERE ps.id = provider_service_id)
+  );
+-- Only the buyer can create a booking
+CREATE POLICY "bookings_buyer_insert" ON bookings FOR INSERT
+  WITH CHECK (auth.uid() = (SELECT user_id FROM profiles WHERE id = buyer_id));
+-- Status updates only via service role (Trigger.dev jobs / webhooks)
+```
+
+**`reviews`**
+```sql
+CREATE POLICY "reviews_public_read" ON reviews FOR SELECT USING (true);
+-- Reviewer can only insert their own review, and only once per booking
+CREATE POLICY "reviews_own_insert" ON reviews FOR INSERT
+  WITH CHECK (
+    auth.uid() = (SELECT user_id FROM profiles WHERE id = reviewer_id)
+    AND NOT EXISTS (SELECT 1 FROM reviews WHERE booking_id = reviews.booking_id AND reviewer_id = reviews.reviewer_id)
+  );
+-- Reviews are immutable once submitted
+```
+
+**`messages`**
+```sql
+CREATE POLICY "messages_participant_read" ON messages FOR SELECT
+  USING (auth.uid() IN (
+    SELECT p.user_id FROM profiles p
+    JOIN bookings b ON b.buyer_id = p.id OR
+      b.provider_service_id IN (
+        SELECT ps.id FROM provider_services ps
+        JOIN providers pr ON pr.id = ps.provider_id
+        JOIN profiles pp ON pp.id = pr.profile_id
+        WHERE pp.user_id = auth.uid()
+      )
+    WHERE b.id = booking_id
+  ));
+CREATE POLICY "messages_participant_insert" ON messages FOR INSERT
+  WITH CHECK (auth.uid() = (SELECT user_id FROM profiles WHERE id = sender_id));
+```
+
+## Stripe
+
+### Webhook verification
+Every Stripe webhook handler must verify the signature before reading the event:
+
+```ts
+// app/api/webhooks/stripe/route.ts
+import Stripe from 'stripe'
+import { headers } from 'next/headers'
+
+export async function POST(req: Request) {
+  const body = await req.text()
+  const headerStore = await headers()
+  const sig = headerStore.get('stripe-signature')
+
+  let event: Stripe.Event
+  try {
+    event = stripe.webhooks.constructEvent(body, sig!, process.env.STRIPE_WEBHOOK_SECRET!)
+  } catch (err) {
+    return new Response('Webhook signature verification failed', { status: 400 })
+  }
+
+  // Only then process the event
+  switch (event.type) {
+    case 'payment_intent.succeeded': ...
+  }
+}
+```
+
+### Payment methods
+
+Hjelpi accepts **card and Vipps**. Vipps is the dominant payment method in Norway and must always be offered.
+
+#### Vipps — important facts from Stripe docs
+
+- **Private preview status:** Vipps is currently in private preview on Stripe. Every API request that includes Vipps must include the header `vipps_preview: v1`. Without this header the request will fail.
+- **Payment flow:** Customer enters their phone number → receives a push notification in the Vipps app → authorises in-app. This is NOT a browser redirect — the user stays on the Hjelpi page.
+- **Currency:** NOK only.
+- **Single-use only.** Vipps cannot be used for subscriptions or saved payment methods.
+- **No recurring payments.** Do not offer Vipps for any future subscription feature.
+- **Use Payment Element, not Express Checkout Element.** The Express Checkout Element explicitly does NOT support Vipps.
+- **Fees:** Vipps incurs Stripe's standard card processing fees + a separate Vipps transaction fee. The Vipps fee is NOT deducted per transaction — Stripe bills it daily from the platform's Stripe balance. This means payout calculations should not include the Vipps fee in per-transaction math.
+- **Disputes:** Customers can dispute via their card issuer. Handle the same way as card disputes.
+- **Refunds:** Full and partial refunds supported.
+- **Connect:** Destination charges and separate charges & transfers both supported.
+
+#### Enabling Vipps on connected accounts
+
+When a provider connects their Stripe Express account, request the `vipps_payments` capability:
+```ts
+await stripe.accounts.update(accountId, {
+  capabilities: { vipps_payments: { requested: true } },
+})
+```
+
+Check capability status before showing Vipps as an option at checkout:
+```ts
+const account = await stripe.accounts.retrieve(provider.stripe_account_id)
+const vippsActive = account.capabilities?.vipps_payments === 'active'
+```
+
+#### PaymentIntent creation (server-side only)
+
+```ts
+await stripe.paymentIntents.create(
+  {
+    amount: buyerTotal,
+    currency: 'nok',
+    payment_method_types: ['card', 'vipps'],
+    metadata: {
+      booking_id: booking.id,
+      buyer_id: buyer.id,
+      provider_id: provider.id,
+    },
+    application_fee_amount: buyerFee + sellerFee,
+    transfer_data: { destination: provider.stripe_account_id },
+  },
+  {
+    headers: { 'vipps_preview': 'v1' },  // Required while in private preview
+  }
+)
+```
+
+#### Checkout UI — use Payment Element
+
+```tsx
+// components/bookings/CheckoutForm.tsx  ('use client')
+import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
+
+export function CheckoutForm() {
+  const stripe = useStripe()
+  const elements = useElements()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const { error } = await stripe!.confirmPayment({
+      elements: elements!,
+      confirmParams: {
+        // Required even for Vipps (in-app auth, but Stripe still needs it)
+        return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/no/bestilling/bekreftelse`,
+      },
+    })
+    if (error) {
+      // Show error to user — do NOT log card details to Sentry
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />  {/* Renders both card fields and Vipps phone input */}
+      <button type="submit">Betal</button>
+    </form>
+  )
+}
+```
+
+#### Webhook events to handle for Vipps
+
+```
+payment_intent.succeeded        → mark booking confirmed, release hold
+payment_intent.payment_failed   → notify buyer, return booking to pending
+payment_intent.canceled         → release booking hold, notify buyer
+charge.dispute.created          → alert admin, pause provider payout
+charge.refunded                 → update booking status to refunded
+```
+
+### Never create PaymentIntents client-side
+All Stripe PaymentIntent creation happens in API routes, not Client Components.
+
+## Rate limiting
+
+Use Upstash Redis for rate limiting on sensitive endpoints. Apply via middleware or route handler wrapper.
+
+Limits:
+```
+POST /api/bookings          10 requests / hour per user
+POST /api/quotes            10 requests / hour per user
+POST /api/auth/signup       5 requests / hour per IP
+POST /api/auth/login        10 requests / 15 minutes per IP
+POST /api/reviews           5 requests / hour per user
+GET  /api/search            100 requests / minute per IP (Typesense has its own limits too)
+```
+
+```ts
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, '1 h'),
+})
+
+// In API route:
+const identifier = `booking:${userId}`
+const { success } = await ratelimit.limit(identifier)
+if (!success) return new Response('For mange forespørsler', { status: 429 })
+```
+
+## File uploads (provider photos)
+
+Files go to Cloudflare R2 via a signed URL flow — never directly from the browser to an unvalidated endpoint.
+
+Validation before generating an upload URL:
+```ts
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB
+
+if (!ALLOWED_TYPES.includes(file.type)) throw new Error('Filtype ikke tillatt')
+if (file.size > MAX_SIZE_BYTES) throw new Error('Filen er for stor (maks 10 MB)')
+```
+
+File paths in R2: `providers/{provider_id}/{uuid}.{ext}` — never user-supplied filenames.
+
+## BankID / identity verification
+
+Identity verification uses Signicat or Criipto. Flow:
+1. Provider initiates verification from dashboard
+2. Backend creates a verification session (server-side API call with client credentials)
+3. Provider redirected to BankID flow
+4. Callback received server-side → `is_verified = true` set via service role (bypasses RLS intentionally)
+5. Provider's `stripe_account_id` onboarding also required before they can receive payouts
+
+`is_verified` can only be set to `true` by server-side code using the service role. No RLS policy allows users to update this field.
+
+## Input sanitisation
+
+- All user-generated content (bios, service descriptions, review text) sanitised before storage with a library like `dompurify` (server-side via `isomorphic-dompurify`).
+- Slug generation: strip all non-alphanumeric characters, replace spaces with `-`, lowercase, normalize to ASCII. Never store user-supplied slugs verbatim.
+- Search queries sent to Typesense are the raw user string — Typesense handles its own injection safety. Do not build Supabase SQL queries from user search strings.
+
+## Auth
+
+### Providers at launch
+- **Email + password** — only method active at launch
+- **Google OAuth** — configured in Supabase but disabled at launch, enable when ready
+- **Facebook OAuth** — configured in Supabase but disabled at launch, enable when ready
+
+Set up OAuth clients in Google Cloud Console and Facebook Developer portal in advance so they're ready to toggle on. Supabase handles the OAuth flow — no custom callback routes needed.
+
+### Session management
+- Supabase Auth handles all sessions via httpOnly cookies using `@supabase/ssr`.
+- Never store session tokens in localStorage.
+- `createServerClient` in middleware uses the `cookies()` adapter from `next/headers`.
+- Protected routes: `/no/dashboard/*`, `/no/bestill/*`, `/no/tilbud/*` — redirect to `/no/logg-inn` if unauthenticated.
+
+### Roles
+
+Three roles: `buyer`, `seller`, `admin`. Stored as an enum on the `profiles` table.
+
+```sql
+CREATE TYPE user_role AS ENUM ('buyer', 'seller', 'admin');
+
+ALTER TABLE profiles ADD COLUMN role user_role NOT NULL DEFAULT 'buyer';
+ALTER TABLE profiles ADD COLUMN active_mode user_role NOT NULL DEFAULT 'buyer';
+-- role = highest permission level the account has
+-- active_mode = which mode the user is currently in (buyer or seller)
+```
+
+**Role rules:**
+- Every new account starts as `buyer`.
+- When a user completes provider onboarding (BankID + Stripe Express), their `role` is upgraded to `seller`. They can still act as a buyer.
+- `admin` is set manually via service role — never via user-facing flow.
+- `active_mode` can only be `buyer` or `seller` — never `admin`. Admins always see the admin UI alongside normal mode.
+
+**Mode switching (Airbnb-style):**
+```ts
+// API route: PATCH /api/profile/mode
+// Switches active_mode between 'buyer' and 'seller'
+// Only allowed if role === 'seller' or role === 'admin'
+
+export async function PATCH(req: Request) {
+  const supabase = createServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const { mode } = await req.json()  // 'buyer' | 'seller'
+
+  if (!['buyer', 'seller'].includes(mode)) {
+    return new Response('Invalid mode', { status: 400 })
+  }
+
+  // Verify user has seller role before allowing seller mode
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+
+  if (mode === 'seller' && profile.role === 'buyer') {
+    return new Response('Onboarding required', { status: 403 })
+  }
+
+  await supabase
+    .from('profiles')
+    .update({ active_mode: mode })
+    .eq('user_id', user.id)
+
+  return new Response(null, { status: 204 })
+}
+```
+
+**RLS using roles:**
+```sql
+-- Only admins can read all bookings
+CREATE POLICY "bookings_admin_read" ON bookings FOR SELECT
+  USING (
+    EXISTS (SELECT 1 FROM profiles WHERE user_id = auth.uid() AND role = 'admin')
+  );
+
+-- Sellers can only manage their own services
+CREATE POLICY "services_seller_write" ON provider_services FOR ALL
+  USING (
+    EXISTS (SELECT 1 FROM profiles WHERE user_id = auth.uid() AND role IN ('seller', 'admin'))
+  );
+```
+
+**Never trust `active_mode` for RLS.** RLS policies use `role` (what the account IS), not `active_mode` (what the UI is currently showing). A seller switched to buyer mode must still be prevented from accessing another seller's bookings — `active_mode` is a UI hint only.
+
+### RLS for new tables
+
+**`availability_slots` and `availability_exceptions`**
+```sql
+-- Anyone can read availability (needed to show available booking slots)
+CREATE POLICY "availability_public_read" ON availability_slots FOR SELECT USING (true);
+CREATE POLICY "exceptions_public_read" ON availability_exceptions FOR SELECT USING (true);
+
+-- Only the provider can write their own availability
+CREATE POLICY "availability_own_write" ON availability_slots FOR ALL
+  USING (auth.uid() = (
+    SELECT p.user_id FROM profiles p
+    JOIN providers pr ON pr.profile_id = p.id
+    WHERE pr.id = provider_id
+  ));
+CREATE POLICY "exceptions_own_write" ON availability_exceptions FOR ALL
+  USING (auth.uid() = (
+    SELECT p.user_id FROM profiles p
+    JOIN providers pr ON pr.profile_id = p.id
+    WHERE pr.id = provider_id
+  ));
+```
+
+**`notifications`**
+```sql
+-- Users can only read their own notifications
+CREATE POLICY "notifications_own_read" ON notifications FOR SELECT
+  USING (auth.uid() = (SELECT user_id FROM profiles WHERE id = user_id));
+
+-- Mark as read: own only
+CREATE POLICY "notifications_own_update" ON notifications FOR UPDATE
+  USING (auth.uid() = (SELECT user_id FROM profiles WHERE id = user_id));
+
+-- Insert only via service role (server-side lib/notifications/send.ts)
+-- No INSERT policy for authenticated users
+```
+
+**`saved_providers`**
+```sql
+CREATE POLICY "saved_own_all" ON saved_providers FOR ALL
+  USING (auth.uid() = (SELECT user_id FROM profiles WHERE id = profile_id));
+```
+
+**`deletion_requests`**
+```sql
+-- Users can insert their own deletion request
+CREATE POLICY "deletion_own_insert" ON deletion_requests FOR INSERT
+  WITH CHECK (auth.uid() = user_id);
+-- Processing and completion only via service role
+```
+
+**Soft-deleted profiles — exclude from all queries:**
+```sql
+-- Add to ALL existing profile policies:
+AND (deleted_at IS NULL)
+-- Or create a view:
+CREATE VIEW active_profiles AS SELECT * FROM profiles WHERE deleted_at IS NULL;
+```
+
+---
+
+## GDPR / Personvern
+
+Hjelpi processes personal data of Norwegian residents. The following requirements are non-negotiable.
+
+### Cookie consent
+
+Use **Cookiebot** (configured via `COOKIEBOT_ID` env var). Load the Cookiebot script in the root layout before any analytics or tracking scripts:
+
+```tsx
+// app/layout.tsx
+<Script
+  id="cookiebot"
+  src="https://consent.cookiebot.com/uc.js"
+  data-cbid={process.env.COOKIEBOT_ID}
+  strategy="beforeInteractive"
+/>
+```
+
+PostHog and Sentry must not initialise until Cookiebot fires the `CookiebotOnAccept` event. Never load analytics in `beforeInteractive` — only after consent.
+
+Cookie categories:
+- **Necessary:** Supabase auth session cookie — always active, no consent needed
+- **Statistics:** PostHog — requires consent
+- **Marketing:** none at launch
+
+### Required pages
+
+Every page links to these in the footer:
+- `/no/personvern` — Privacy policy (who we are, what data, why, how long, rights)
+- `/no/vilkar` — Terms of service
+- `/no/cookie-policy` — Cookie details
+
+These pages must be translated for every locale before that locale goes live.
+
+### Data minimisation
+
+- Only collect data you actually use. Don't store buyer's phone number unless they provide it.
+- Provider images stored in R2 under `/providers/{provider_id}/` — never in a public, guessable path.
+- Booking `cancellation_reason` is visible to admin only — not to the other party unless they're involved.
+
+### User data rights (GDPR Articles 15–22)
+
+All accessible from `/no/min-konto/innstillinger`:
+
+**Export (Art. 15 / 20):** `GET /api/user/export`
+Returns a JSON file of everything stored: profile, bookings, reviews, messages, notifications, saved providers.
+```ts
+// Must complete within 30 days of request. For large accounts, generate async and email a download link.
+```
+
+**Deletion (Art. 17):** `DELETE /api/user`
+Two-phase:
+1. Immediate: set `profiles.deleted_at = now()`, anonymise `full_name` to "Slettet bruker", clear `phone`, `avatar_url`. RLS now hides the profile from all queries.
+2. Async (Trigger.dev job, runs within 30 days): delete `auth.users` record via service role, delete R2 files, delete Stripe customer data, remove from Typesense.
+
+```ts
+// Bookings are retained for accounting/legal purposes (7 years per Norwegian bokføringsloven)
+// but are de-identified: buyer_id / provider references anonymised
+```
+
+**Correction (Art. 16):** Users can update their profile data at any time via `/no/min-konto/innstillinger`.
+
+**Objection to processing (Art. 21):** Contact form — handled manually by Hjelpi team.
+
+### Sub-processors
+
+Hjelpi's privacy policy must list all sub-processors. Current list:
+| Processor | Data shared | Purpose |
+|---|---|---|
+| Supabase (EU region) | All user & booking data | Database & auth |
+| Stripe | Payment data, identity | Payments & payouts |
+| Cloudflare R2 | Provider photos | File storage |
+| Resend | Email address, name | Transactional email |
+| PostHog (EU) | Anonymised analytics | Product analytics |
+| Signicat/Criipto | Name, national ID number | BankID verification |
+| Typesense | Provider public data | Search index |
+| Trigger.dev | Job metadata | Background jobs |
+| Vercel | IP address, request logs | Hosting |
+| Sentry | Error traces (no PII in breadcrumbs) | Error monitoring |
+
+**Never add a new sub-processor without updating the privacy policy first.**
+
+### Data residency
+
+All Supabase data must be in an EU region (Frankfurt or Stockholm). Verify in Supabase project settings before launch. PostHog must be on the EU cloud (`eu.posthog.com`).
+
+### Retention periods
+
+| Data | Retention |
+|---|---|
+| Active profiles | Until deletion request |
+| Soft-deleted profiles | 30 days, then hard delete |
+| Booking records | 7 years (Norwegian accounting law) |
+| Payment records | 7 years |
+| Messages | 2 years after booking completion |
+| Notifications | 1 year |
+| Analytics events | 1 year (PostHog setting) |
+| Server logs (Vercel) | 30 days |
+
+Trigger.dev jobs enforce these retention periods automatically. Add a scheduled job `cleanup-expired-data` that runs weekly.
+
+---
+
+## Content Security Policy
+
+Headers set in `next.config.ts`:
+```ts
+{
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://js.stripe.com https://cdn.jsdelivr.net https://consent.cookiebot.com",
+    "frame-src https://js.stripe.com",
+    "img-src 'self' data: blob: https://*.r2.dev https://lh3.googleusercontent.com",
+    "connect-src 'self' https://*.supabase.co https://api.stripe.com https://*.typesense.net wss://*.supabase.co https://app.posthog.com https://eu.posthog.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+  ].join('; ')
+}
+```

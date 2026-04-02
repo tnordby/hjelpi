@@ -1,0 +1,470 @@
+---
+description: Hjelpi system architecture, tech stack, folder structure, and data flow patterns
+globs: ["**/*.ts", "**/*.tsx", "**/supabase/**", "**/lib/**", "**/*.sql"]
+---
+
+# Architecture
+
+## Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 App Router (TypeScript strict) |
+| Database | Supabase (PostgreSQL + PostGIS for geo queries) |
+| Auth | Supabase Auth + BankID via Signicat/Criipto |
+| Payments | Stripe Connect (platform fee model) + Vipps via Stripe Payment Element |
+| Search | Typesense (geo-aware, synced from Supabase via webhooks) |
+| i18n | next-intl |
+| Email | Resend + React Email |
+| Background jobs | Trigger.dev |
+| File storage | Cloudflare R2 (S3-compatible) |
+| Cache / rate limiting | Upstash Redis |
+| Maps | Mapbox GL JS |
+| Analytics | PostHog |
+| Error monitoring | Sentry |
+| Hosting | Vercel (app) + separate VPS for Typesense |
+
+## Folder structure
+
+```
+app/
+  [locale]/
+    page.tsx                                   # Homepage
+    [kategori]/
+      page.tsx                                 # Category listing (/no/fotografi)
+      [subkategori]/
+        page.tsx                               # Subcategory national (/no/fotografi/bryllupsfotografi)
+        [by]/
+          page.tsx                             # Subcategory + city (/no/fotografi/bryllupsfotografi/oslo)
+    hjelpere/
+      [slug]/
+        page.tsx                               # Provider profile
+    [by]/
+      page.tsx                                 # City hub (/no/oslo)
+      [kategori]/
+        page.tsx                               # City + category (/no/oslo/fotografi)
+    bestill/[id]/page.tsx                      # Instant book checkout
+    tilbud/[id]/page.tsx                       # Quote request flow
+    bestilling/bekreftelse/page.tsx            # Post-payment confirmation (Vipps return_url)
+    dashboard/
+      layout.tsx                               # Auth guard + seller mode required
+      page.tsx                                 # Dashboard home (earnings summary)
+      tjenester/
+        page.tsx                               # My services list
+        ny/page.tsx                            # New service form
+        [id]/rediger/page.tsx                  # Edit service
+      tilgjengelighet/page.tsx                 # Availability calendar
+      bestillinger/page.tsx                    # Bookings as seller
+      meldinger/page.tsx                       # Message inbox
+      inntekter/page.tsx                       # Earnings + payout history
+      innstillinger/
+        page.tsx                               # Profile settings
+        konto/page.tsx                         # Account / auth settings
+        betaling/page.tsx                      # Stripe Express onboarding
+        verifisering/page.tsx                  # BankID verification
+    min-konto/
+      bestillinger/page.tsx                    # Bookings as buyer
+      lagrede/page.tsx                         # Saved providers
+      innstillinger/page.tsx                   # Buyer account settings
+    bli-hjelper/page.tsx                       # Seller onboarding landing
+    personvern/page.tsx                        # Privacy policy (GDPR)
+    vilkar/page.tsx                            # Terms of service
+    cookie-policy/page.tsx                     # Cookie policy
+
+  admin/                                       # Separate route group — role=admin only
+    layout.tsx                                 # Admin auth guard
+    page.tsx                                   # Admin dashboard
+    leverandorer/
+      page.tsx                                 # All providers + verification queue
+      [id]/page.tsx                            # Provider detail + approve/reject
+    brukere/page.tsx                           # All users
+    bestillinger/page.tsx                      # All bookings (dispute view)
+    tvister/page.tsx                           # Active disputes
+    utbetalinger/page.tsx                      # Payout oversight
+    kategorier/page.tsx                        # Manage service categories
+
+components/
+  ui/                      # Primitive components (Button, Input, Badge, etc.)
+  providers/               # ProviderCard, ProviderGrid, ProviderMap
+  bookings/                # BookingForm, QuoteForm, BookingStatus, CancellationModal
+  reviews/                 # ReviewCard, ReviewForm, StarRating
+  search/                  # SearchBar, FilterPanel, SortDropdown
+  layout/                  # Navbar, Footer, Breadcrumbs, ModeToggle
+  categories/              # CategoryCard, SubcategoryGrid
+  availability/            # WeeklySchedule, ExceptionPicker, DateRangePicker
+  notifications/           # NotificationBell, NotificationList, NotificationItem
+  admin/                   # AdminTable, VerificationQueue, DisputePanel
+  gdpr/                    # CookieBanner, ConsentManager
+
+lib/
+  supabase/
+    client.ts              # Browser client (createBrowserClient)
+    server.ts              # Server client (createServerClient, cookies)
+    admin.ts               # Service role client — server-only, never in components
+    types.ts               # Generated types from supabase gen types
+    realtime.ts            # Supabase Realtime subscription helpers
+  stripe/
+    client.ts              # Stripe instance
+    fees.ts                # Fee calculation helpers (BUYER_FEE=0.12, SELLER_FEE=0.03)
+    webhooks.ts            # Webhook event handlers
+    tax.ts                 # Stripe Tax helpers (MVA calculation)
+  typesense/
+    client.ts              # Typesense client
+    sync.ts                # Supabase → Typesense sync helpers
+  i18n/
+    request.ts             # next-intl server config
+  geo/
+    cities.ts              # Norwegian city list with kommune_nr, lat/lng, slugs
+    distance.ts            # Haversine helpers
+  availability/
+    check.ts               # Check if a provider is available for a date/time
+    conflicts.ts           # Detect double-booking conflicts
+  notifications/
+    send.ts                # Create notification records + trigger email if needed
+    types.ts               # NotificationType enum
+
+hooks/
+  useProviders.ts          # SWR/React Query for provider list
+  useBooking.ts
+  useGeolocation.ts
+  useNotifications.ts      # Realtime notification subscription
+  useAvailability.ts       # Provider calendar state
+
+types/
+  database.ts              # Re-export from lib/supabase/types.ts
+  api.ts                   # API request/response shapes
+
+messages/
+  no.json                  # Norwegian translations (only language at launch)
+  en.json                  # Stub — add translations before enabling
+
+supabase/
+  migrations/              # All schema changes as numbered SQL files
+  seed.sql                 # Categories, subcategories, cities, cancellation policies
+  functions/               # Edge Functions for webhooks + Trigger.dev
+```
+
+## Database schema (key tables)
+
+Full schema lives in `supabase/migrations/`. That folder is the canonical source of truth for table structure. The SQL below is illustrative for quick reference — always verify against the latest migration files before implementing.
+
+```sql
+-- Roles
+CREATE TYPE user_role AS ENUM ('buyer', 'seller', 'admin');
+CREATE TYPE pricing_type AS ENUM ('fixed', 'hourly', 'quote');
+CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'completed', 'cancelled', 'disputed');
+CREATE TYPE notification_type AS ENUM (
+  'booking_request', 'booking_confirmed', 'booking_cancelled',
+  'quote_received', 'quote_accepted', 'quote_declined', 'quote_expired',
+  'review_request', 'review_posted', 'message_received',
+  'payout_sent', 'verification_approved', 'verification_rejected',
+  'dispute_opened', 'dispute_resolved'
+);
+CREATE TYPE cancellation_policy_type AS ENUM ('flexible', 'moderate', 'strict');
+CREATE TYPE day_of_week AS ENUM ('mon','tue','wed','thu','fri','sat','sun');
+
+-- Profiles (extends Supabase auth.users)
+CREATE TABLE profiles (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id         uuid UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
+  full_name       text NOT NULL,
+  avatar_url      text,
+  phone           text,
+  role            user_role NOT NULL DEFAULT 'buyer',
+  active_mode     user_role NOT NULL DEFAULT 'buyer',  -- UI mode, not permissions
+  deleted_at      timestamptz,                          -- GDPR soft delete
+  created_at      timestamptz NOT NULL DEFAULT now()
+);
+
+-- Providers (sellers only — created during onboarding)
+CREATE TABLE providers (
+  id                    uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  profile_id            uuid UNIQUE REFERENCES profiles(id) ON DELETE CASCADE,
+  location_id           uuid REFERENCES locations(id),
+  bio                   text,
+  service_radius_km     int NOT NULL DEFAULT 20,
+  avg_rating            numeric(3,2) DEFAULT 0,
+  total_reviews         int DEFAULT 0,
+  total_bookings        int DEFAULT 0,
+  response_rate         numeric(5,2) DEFAULT 0,       -- % responded within 24h
+  typical_response_min  int,                           -- median response time in minutes
+  is_verified           boolean NOT NULL DEFAULT false, -- BankID
+  stripe_account_id     text,                          -- Stripe Express account ID
+  stripe_onboarded      boolean NOT NULL DEFAULT false,
+  vat_registered        boolean NOT NULL DEFAULT false,
+  vat_number            text,                          -- MVA-nummer if registered
+  created_at            timestamptz NOT NULL DEFAULT now()
+);
+
+-- Locations (Norwegian kommuner)
+CREATE TABLE locations (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name          text NOT NULL,        -- "Tromsø" (display name with diacritics)
+  slug          text UNIQUE NOT NULL, -- "tromso" (ASCII-normalized for URLs)
+  kommune_nr    text UNIQUE NOT NULL, -- "5401" (Kartverket code)
+  fylke         text NOT NULL,
+  lat           double precision NOT NULL,
+  lng           double precision NOT NULL,
+  geom          geometry(Point, 4326) -- PostGIS
+);
+
+-- Categories / Subcategories
+CREATE TABLE categories (
+  id        uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name      text NOT NULL,
+  slug      text UNIQUE NOT NULL,
+  icon_name text,
+  sort_order int DEFAULT 0
+);
+
+CREATE TABLE subcategories (
+  id                       uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  category_id              uuid REFERENCES categories(id) ON DELETE CASCADE,
+  name                     text NOT NULL,
+  slug                     text NOT NULL,
+  default_pricing_type     pricing_type NOT NULL DEFAULT 'fixed',
+  UNIQUE (category_id, slug)
+);
+
+-- Cancellation policies (seeded — providers pick one per service)
+CREATE TABLE cancellation_policies (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  type        cancellation_policy_type UNIQUE NOT NULL,
+  name        text NOT NULL,   -- "Fleksibel", "Moderat", "Streng"
+  description text NOT NULL,
+  -- Refund rules stored as hours_before_start → refund_percent
+  -- Evaluated top-down; first matching rule wins
+  rules       jsonb NOT NULL
+  -- Example for 'moderate':
+  -- [{"hours_before": 48, "refund_percent": 100},
+  --  {"hours_before": 24, "refund_percent": 50},
+  --  {"hours_before": 0,  "refund_percent": 0}]
+);
+
+-- Provider services
+CREATE TABLE provider_services (
+  id                      uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  provider_id             uuid REFERENCES providers(id) ON DELETE CASCADE,
+  subcategory_id          uuid REFERENCES subcategories(id),
+  cancellation_policy_id  uuid REFERENCES cancellation_policies(id),
+  title                   text NOT NULL,
+  description             text,
+  pricing_type            pricing_type NOT NULL,
+  base_price_ore          int,          -- null for 'quote' type
+  instant_book            boolean NOT NULL DEFAULT false,
+  is_active               boolean NOT NULL DEFAULT true,
+  created_at              timestamptz NOT NULL DEFAULT now()
+);
+
+-- Provider availability (recurring weekly schedule)
+CREATE TABLE availability_slots (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  provider_id uuid REFERENCES providers(id) ON DELETE CASCADE,
+  day         day_of_week NOT NULL,
+  start_time  time NOT NULL,   -- e.g. 09:00
+  end_time    time NOT NULL,   -- e.g. 17:00
+  UNIQUE (provider_id, day, start_time)
+);
+
+-- Availability exceptions (specific date overrides — blocked or custom hours)
+CREATE TABLE availability_exceptions (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  provider_id   uuid REFERENCES providers(id) ON DELETE CASCADE,
+  date          date NOT NULL,
+  is_blocked    boolean NOT NULL DEFAULT true,  -- true = unavailable all day
+  start_time    time,   -- if not blocked: custom start
+  end_time      time,   -- if not blocked: custom end
+  reason        text,   -- internal note
+  UNIQUE (provider_id, date)
+);
+
+-- Bookings
+CREATE TABLE bookings (
+  id                      uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  buyer_id                uuid REFERENCES profiles(id),
+  provider_service_id     uuid REFERENCES provider_services(id),
+  cancellation_policy_id  uuid REFERENCES cancellation_policies(id),  -- snapshot at booking time
+  status                  booking_status NOT NULL DEFAULT 'pending',
+  scheduled_at            timestamptz NOT NULL,
+  duration_minutes        int,
+  total_amount_ore        int NOT NULL,        -- amount buyer was charged
+  base_amount_ore         int NOT NULL,        -- provider's base price
+  buyer_fee_ore           int NOT NULL,
+  seller_fee_ore          int NOT NULL,
+  stripe_payment_intent_id text,
+  cancelled_at            timestamptz,
+  cancelled_by            uuid REFERENCES profiles(id),
+  cancellation_reason     text,
+  refund_amount_ore       int,
+  created_at              timestamptz NOT NULL DEFAULT now()
+);
+
+-- Reviews
+CREATE TABLE reviews (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  booking_id    uuid REFERENCES bookings(id),
+  reviewer_id   uuid REFERENCES profiles(id),
+  provider_id   uuid REFERENCES providers(id),
+  rating        smallint NOT NULL CHECK (rating BETWEEN 1 AND 5),
+  comment       text,
+  is_public     boolean NOT NULL DEFAULT false, -- flipped to true on reveal
+  created_at    timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (booking_id, reviewer_id)
+);
+
+-- Messages (per booking thread)
+CREATE TABLE messages (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  booking_id  uuid REFERENCES bookings(id) ON DELETE CASCADE,
+  sender_id   uuid REFERENCES profiles(id),
+  body        text NOT NULL,
+  read_at     timestamptz,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+
+-- Notifications (in-app + drives email)
+CREATE TABLE notifications (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id     uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  type        notification_type NOT NULL,
+  data        jsonb NOT NULL DEFAULT '{}',  -- context: booking_id, provider_name, etc.
+  read_at     timestamptz,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+
+-- Saved providers
+CREATE TABLE saved_providers (
+  profile_id  uuid REFERENCES profiles(id) ON DELETE CASCADE,
+  provider_id uuid REFERENCES providers(id) ON DELETE CASCADE,
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (profile_id, provider_id)
+);
+
+-- GDPR data deletion requests
+CREATE TABLE deletion_requests (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id       uuid REFERENCES auth.users(id),
+  requested_at  timestamptz NOT NULL DEFAULT now(),
+  completed_at  timestamptz,
+  status        text NOT NULL DEFAULT 'pending'  -- pending | processing | completed
+);
+```
+
+### Key DB rules
+- `bookings.cancellation_policy_id` is a **snapshot** of the policy at booking time — never rely on the current policy on the service, which the provider may have changed since.
+- `reviews.is_public` starts `false`. A Trigger.dev job flips both reviews to `true` when both are submitted OR the 14-day window expires.
+- `notifications` are created server-side via `lib/notifications/send.ts`. Supabase Realtime broadcasts inserts to the relevant user's subscription.
+- `profiles.deleted_at` is set on GDPR deletion. RLS prevents reading soft-deleted profiles. Auth user is deleted separately via `supabase.auth.admin.deleteUser()`.
+
+
+
+### Server Components fetch directly from Supabase
+Use the server client in any `page.tsx` or `layout.tsx`. Never pass the Supabase server client to a Client Component.
+
+```ts
+// app/[locale]/[kategori]/[subkategori]/[by]/page.tsx
+import { createServerClient } from '@/lib/supabase/server'
+
+export default async function SubcategoryPage({ params }) {
+  const supabase = createServerClient()
+  const providers = await supabase
+    .from('provider_services')
+    .select('...')
+    .eq('subcategory_slug', params.subkategori)
+    .eq('location_slug', params.by)
+  // ...
+}
+```
+
+### Client Components use SWR or React Query for interactive data
+Filtered lists, map interactions, and real-time booking status use client-side fetching via `/api` routes.
+
+### API routes are thin
+Route handlers in `app/api/` should do only: validate input → call a lib function → return response. No business logic inline.
+
+### Stripe fee calculation is always in `lib/stripe/fees.ts`
+```ts
+export const BUYER_FEE_RATE = 0.12
+export const SELLER_FEE_RATE = 0.03
+
+export function calculateFees(baseAmountOre: number) {
+  const buyerFee = Math.round(baseAmountOre * BUYER_FEE_RATE)
+  const sellerFee = Math.round(baseAmountOre * SELLER_FEE_RATE)
+  const buyerTotal = baseAmountOre + buyerFee
+  const sellerPayout = baseAmountOre - sellerFee
+  return { baseAmountOre, buyerFee, sellerFee, buyerTotal, sellerPayout }
+}
+```
+
+All prices are stored and calculated in **øre** (Norwegian cents). Never use floats for money.
+
+## URL structure
+
+All Norwegian pages: `/no/[kategori]/[subkategori]` and `/no/[kategori]/[subkategori]/[by]`
+
+City slugs are ASCII-normalized: `tromso` not `tromsø`, `alesund` not `ålesund`.
+Display names retain diacritics in all UI text.
+
+The subcategory page without a city (`/no/fotografi/bryllupsfotografi`) shows all Norwegian providers nationally and is the primary SEO landing page for that term.
+
+## ISR and static generation
+
+- Category and subcategory pages: `export const revalidate = 3600`
+- `generateStaticParams` for all known category + subcategory + city combos
+- Subcategory+city pages with zero providers: return 200 with empty state + CTA — never 404
+- Provider profiles: `revalidate = 300` (5 min)
+
+### Supabase Auth
+- Launch: email + password only
+- Pre-configured but disabled: Google OAuth, Facebook OAuth
+- All sessions via `@supabase/ssr` httpOnly cookies — never localStorage
+
+### User roles
+`profiles.role` — the account's maximum permission: `buyer | seller | admin`
+`profiles.active_mode` — current UI mode: `buyer | seller` (sellers can toggle)
+
+New accounts default to `role = buyer`, `active_mode = buyer`. Provider onboarding upgrades `role` to `seller`.
+
+## Environment variables
+
+Required in `.env.local`:
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=          # server-only, never NEXT_PUBLIC_
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=                  # server-only
+STRIPE_WEBHOOK_SECRET=              # server-only
+STRIPE_TAX_RATE_ID=                 # Stripe Tax rate ID for 25% Norwegian MVA
+
+NEXT_PUBLIC_MAPBOX_TOKEN=
+
+TYPESENSE_HOST=
+TYPESENSE_API_KEY=
+NEXT_PUBLIC_TYPESENSE_SEARCH_KEY=   # search-only key, safe to expose
+
+CLOUDFLARE_R2_ACCOUNT_ID=
+CLOUDFLARE_R2_ACCESS_KEY_ID=
+CLOUDFLARE_R2_SECRET_ACCESS_KEY=
+NEXT_PUBLIC_R2_PUBLIC_URL=          # CDN URL for serving provider images
+
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=                  # e.g. hei@hjelpi.com
+
+TRIGGER_API_KEY=
+
+SIGNICAT_CLIENT_ID=                 # BankID verification
+SIGNICAT_CLIENT_SECRET=             # server-only
+SIGNICAT_ENVIRONMENT=               # 'sandbox' | 'production'
+
+NEXT_PUBLIC_POSTHOG_KEY=
+SENTRY_DSN=
+NEXT_PUBLIC_BASE_URL=               # https://hjelpi.com (used in Vipps return_url etc.)
+
+COOKIEBOT_ID=                       # Cookie consent (Cookiebot.com)
+```
+

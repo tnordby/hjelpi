@@ -1,0 +1,437 @@
+---
+description: Hjelpi product overview — what it is, how it works, pricing model, booking flows, service taxonomy
+globs: ["**/*.ts", "**/*.tsx", "messages/**"]
+---
+
+# Product: Hjelpi
+
+## What it is
+
+Hjelpi is a Norwegian local services marketplace — similar to Bark.com and Thumbtack, but with Airbnb-style direct booking. Buyers browse and book local service providers (eksperter) across hundreds of categories. Providers set their own pricing and availability. The platform handles payment, trust signals, and reviews.
+
+**Primary market:** Norway. First language: Norwegian (Bokmål). Multi-language infrastructure is in place but only `/no` is live at launch.
+
+## Roles
+
+Three roles, stored on `profiles.role`:
+
+| Role | Who | What they can do |
+|---|---|---|
+| `buyer` | Default for all new accounts | Browse, book services, leave reviews |
+| `seller` | Unlocked after BankID + Stripe onboarding | Everything a buyer can + offer services, manage bookings, receive payouts |
+| `admin` | Hjelpi staff only, set manually | Full access — manage disputes, verify providers, view all data |
+
+### Mode switching (Airbnb-style)
+Users with `seller` role have two **modes**: buyer mode and seller mode. They switch via a UI toggle (top nav, similar to Airbnb's "Switch to hosting"). The current mode is stored as `profiles.active_mode`.
+
+- **Buyer mode** shows: search, browse, bookings-as-buyer, reviews-given
+- **Seller mode** shows: provider dashboard, my services, bookings-as-seller, earnings, reviews-received
+
+`active_mode` is a UI hint only. RLS uses `role`. A seller in buyer mode is still a seller at the database level.
+
+### Onboarding gate
+A buyer becomes a seller by completing:
+1. BankID verification (Signicat/Criipto)
+2. Stripe Express account onboarding
+3. At least one service created
+
+Until both are complete, a user attempting to list a service sees a guided onboarding flow, not an error.
+
+
+
+## Pricing model
+
+Platform takes fees on every completed booking:
+- **12% buyer-side fee** added on top of the provider's base price
+- **3% seller-side fee** deducted from the provider's payout
+- All amounts stored in **øre** (Norwegian cents). Never floats.
+- Stripe Connect handles the split. Provider must onboard via Stripe Express.
+
+```
+Example: Provider sets base price 1000 kr (100 000 øre)
+→ Buyer pays: 112 000 øre (100 000 + 12 000 fee)
+→ Provider receives: 97 000 øre (100 000 − 3 000 fee)
+→ Hjelpi gross: 15 000 øre
+```
+
+Fee calculation always via `lib/stripe/fees.ts` — never inline.
+
+## Payment methods
+
+Buyers pay with **card or Vipps**. Vipps is the dominant Norwegian payment method and must always be presented alongside card.
+
+**Vipps flow:** buyer enters their phone number → receives a push notification in the Vipps app → authorises in-app. The buyer stays on the Hjelpi page throughout (not a browser redirect).
+
+**Vipps is currently in Stripe private preview.** All API calls involving Vipps require the `vipps_preview: v1` header. See `security.mdc` for the full integration detail. Do not use the Express Checkout Element — use the Payment Element only.
+
+**Vipps is single-use only.** It cannot be used for recurring charges.
+
+## Pricing types
+
+Providers choose one of three pricing types per service:
+
+| Type | Description | Booking flow |
+|---|---|---|
+| `fixed` | Set price for a defined deliverable | Instant book or quote |
+| `hourly` | Rate × estimated hours | Quote flow (hours confirmed after) |
+| `quote` | No upfront price — provider sends custom offer | Quote flow only |
+
+Categories like Juridisk rådgivning, Arrangement, and Bryllup should default to `quote`. Categories like Rengjøring, Dyrepass, and Småreparasjoner can support `fixed` or `hourly`.
+
+## Booking flows
+
+### Instant book
+1. Buyer selects service + date/time
+2. Stripe PaymentIntent created (buyer charged immediately, funds held)
+3. Booking confirmed automatically
+4. Reminder emails sent (Trigger.dev): 24h before, 2h before
+5. After service: both parties prompted to leave review (14-day window, simultaneous reveal)
+6. Funds released to provider 24h after scheduled end time
+
+### Quote request
+1. Buyer fills in a brief (what they need, when, any details)
+2. Provider notified (email + in-app)
+3. Provider sends offer with price + message within 48h
+4. Buyer accepts or declines
+5. On acceptance: Stripe PaymentIntent created → same flow as instant book from step 3 above
+6. If provider doesn't respond in 48h: booking auto-expires, buyer notified
+
+## Reviews
+
+- Both buyer and provider review each other after a completed booking
+- **Simultaneous reveal:** neither party sees the other's review until both submit, or the 14-day window closes
+- Rating: 1–5 stars
+- `avg_rating` and `total_reviews` are denormalised on the `providers` table (updated by DB trigger)
+- Review stars use `text-tertiary` (#745100) — the gold accent, not yellow
+
+## Provider trust signals
+
+Shown on provider cards and profile pages:
+- ★ Average rating + review count
+- BankID-verified badge (via Signicat/Criipto — stored as `is_verified` on providers table)
+- Response rate (% of requests responded to within 24h)
+- Typical response time ("svarer vanligvis innen 2 timer")
+- Total completed bookings count
+- Member since date
+
+Verified providers rank higher in Typesense search results (boost factor in search config).
+
+## Service taxonomy
+
+Two-level hierarchy: **Category → Subcategory**. ~30 categories, ~450 subcategories total.
+
+Key categories (from `seed.sql`):
+```
+Arrangement, Barnevakt, Behandling, Bryllup, Design, Dyrepass,
+Eldreomsorg, Eventutleie, Flislegging, Flyttehjelp, Fotografi,
+Frisør, Hage og landskap, Håndverker, Helse, IKEA, IT-hjelp,
+Juridisk rådgivning, Kampsport, Kokk, Kurs og opplæring, Mat,
+Musikk, Musikkundervisning, Personlig trener, Privatundervisning,
+Regnskap, Rengjøring, Renhold, Småreparasjoner, Språk,
+Språkundervisning, Stylist, Transport og bud, Underholdning
+```
+
+Slugs are generated from the Norwegian name: `Hage og landskap` → `hage-og-landskap`.
+
+## URL structure
+
+```
+/no                                                     Homepage
+/no/[kategori]                                          Category listing (subcategory grid)
+/no/[kategori]/[subkategori]                            All Norwegian providers for this sub
+/no/[kategori]/[subkategori]/[by]                       Providers filtered by city
+/no/hjelpere/[slug]                                     Provider profile
+/no/[by]                                                City hub
+/no/[by]/[kategori]                                     City + category
+/no/bestill/[service-id]                                Instant book checkout
+/no/tilbud/[service-id]                                 Quote request
+/no/dashboard/*                                         Provider dashboard (auth required)
+```
+
+City slugs are ASCII-normalized: `tromsø` → `tromso`, `ålesund` → `alesund`.
+The display name (with diacritics) is always shown in UI and breadcrumbs.
+
+## Pages with zero providers
+
+Subcategory+city pages with zero providers return HTTP 200 with:
+- Empty state illustration
+- "Bli den første eksperten her" CTA → provider onboarding
+- National subcategory page linked ("Se alle leverandører i Norge")
+- **Never return 404** — Google should index the intent
+
+## Breadcrumbs
+
+Required on every category, subcategory, and provider page:
+- Visible `<Breadcrumbs>` component
+- `BreadcrumbList` JSON-LD in `<head>`
+
+Example: `Hjem > Fotografi > Bryllupsfotografi > Oslo`
+
+## Key UX decisions
+
+- **Lazy registration:** Buyers can browse freely. Login/signup prompt only at booking confirmation step.
+- **Map toggle:** Subcategory listing pages have list view (default) and map view (Mapbox). User preference persisted in localStorage.
+- **Saved providers:** Heart icon on provider cards. Merged from localStorage to DB on login.
+- **Provider slugs:** SEO-rich. Format: `[fornavn]-[by]-[subkategori-hint]`, e.g. `anna-k-bryllupsfotograf-oslo`. Collision: append `-2`, `-3` etc.
+- **hreflang:** Every page includes `<link rel="alternate" hreflang="no">` even in single-language launch.
+
+## Internationalisation
+
+- `next-intl` with App Router
+- Locale in path: `/no/...`, future: `/en/...`, `/pl/...`
+- All UI strings in `messages/no.json`
+- Never hardcode Norwegian text in components — always use `t('key')`
+- Translation key structure: `[page/component].[element]`, e.g. `provider.badge.verified`, `search.placeholder`
+
+---
+
+## Cancellation policies
+
+Providers choose one policy per service. Three options, seeded in `cancellation_policies` table:
+
+| Policy | Name | Rules |
+|---|---|---|
+| `flexible` | Fleksibel | Full refund up to 24h before start; no refund after |
+| `moderate` | Moderat | Full refund up to 48h before; 50% refund 24–48h before; no refund within 24h |
+| `strict` | Streng | No refund once booked |
+
+Rules are stored as a `jsonb` array on `cancellation_policies.rules` and evaluated at cancellation time:
+```ts
+// lib/bookings/cancellation.ts
+export function calculateRefund(
+  policy: CancellationPolicy,
+  scheduledAt: Date,
+  cancelledAt: Date,
+  totalAmountOre: number
+): number {
+  const hoursUntilStart = differenceInHours(scheduledAt, cancelledAt)
+  const rule = policy.rules
+    .sort((a, b) => b.hours_before - a.hours_before)
+    .find(r => hoursUntilStart >= r.hours_before)
+  const refundPercent = rule?.refund_percent ?? 0
+  return Math.round(totalAmountOre * (refundPercent / 100))
+}
+```
+
+**Key rules:**
+- `bookings.cancellation_policy_id` is always a snapshot of the policy at booking time — never look up the current service policy after booking, the provider may have changed it.
+- Stripe refunds are issued via `stripe.refunds.create()` in the cancellation API route.
+- If the provider cancels (not the buyer), the buyer always receives a 100% refund regardless of policy.
+- Admin can override cancellation policy in dispute resolution.
+
+---
+
+## MVA (Norwegian VAT)
+
+Norwegian VAT rate: **25%**. Relevant rules for Hjelpi:
+
+**Provider MVA registration:** Providers earning over 50,000 kr/year from services must register for MVA with Skatteetaten. Hjelpi cannot enforce this — providers self-declare during onboarding.
+
+**Platform MVA on fees:** Hjelpi's platform fees (12% + 3%) are subject to MVA. Use **Stripe Tax** with a configured 25% Norwegian tax rate.
+
+```ts
+// When creating PaymentIntent, include tax if provider is MVA-registered
+await stripe.paymentIntents.create({
+  amount: buyerTotal,
+  currency: 'nok',
+  // ...
+  automatic_tax: { enabled: true },  // Stripe Tax handles MVA automatically
+})
+```
+
+**Provider VAT fields on the `providers` table:**
+- `vat_registered: boolean` — provider self-declares during onboarding
+- `vat_number: text` — Norwegian MVA-nummer (format: `NO[9 digits]MVA`)
+
+**VAT number validation:** Validate format and optionally verify against the Brønnøysundregistrene BRREG API before storing.
+
+**Invoices:** Stripe automatically generates VAT-compliant invoices when Stripe Tax is enabled. Link buyers to their invoice from the booking confirmation page.
+
+**What Hjelpi does NOT do:** Collect or remit VAT on behalf of providers. Providers are responsible for their own VAT obligations. Make this clear in the provider terms of service.
+
+---
+
+## Provider availability
+
+Providers set their availability in two layers:
+
+### 1. Weekly schedule (`availability_slots`)
+Recurring availability by day of week. Providers set this in `/dashboard/tilgjengelighet`.
+
+```
+Monday:    09:00–17:00
+Wednesday: 09:00–17:00
+Saturday:  10:00–16:00
+```
+
+If a provider has no slots configured, they are treated as available all the time (opt-in scheduling, not opt-out).
+
+### 2. Exceptions (`availability_exceptions`)
+Specific date overrides — either full-day blocks or custom hours for a date.
+
+```
+2025-06-17: blocked (Constitution Day)
+2025-07-15: available 12:00–16:00 (custom hours, overrides weekly)
+```
+
+### Booking availability check
+Before confirming any booking (instant or quote-accepted), run:
+
+```ts
+// lib/availability/check.ts
+export async function isProviderAvailable(
+  providerId: string,
+  scheduledAt: Date,
+  durationMinutes: number
+): Promise<boolean> {
+  const endTime = addMinutes(scheduledAt, durationMinutes)
+  const date = format(scheduledAt, 'yyyy-MM-dd')
+  const daySlug = format(scheduledAt, 'EEE').toLowerCase() as DayOfWeek
+
+  // 1. Check for full-day block exception
+  const exception = await getException(providerId, date)
+  if (exception?.is_blocked) return false
+
+  // 2. Check if time falls within available slot (exception hours or weekly)
+  const slot = exception ?? await getWeeklySlot(providerId, daySlug)
+  if (!slot) return true  // no schedule configured = always available
+  if (!isWithinSlot(scheduledAt, endTime, slot)) return false
+
+  // 3. Check for conflicting confirmed bookings
+  const conflict = await getConflictingBooking(providerId, scheduledAt, endTime)
+  return !conflict
+}
+```
+
+The UI date/time picker should call a lightweight `/api/availability/check` endpoint to grey out unavailable slots before the buyer tries to book.
+
+---
+
+## Notification system
+
+All in-app notifications are rows in the `notifications` table. Supabase Realtime broadcasts new inserts to the authenticated user's client subscription.
+
+### Notification types
+
+| Type | Trigger | Who receives |
+|---|---|---|
+| `booking_request` | Buyer submits instant book | Seller |
+| `booking_confirmed` | Booking confirmed | Buyer |
+| `booking_cancelled` | Either party cancels | Both parties |
+| `quote_received` | Seller sends quote offer | Buyer |
+| `quote_accepted` | Buyer accepts quote | Seller |
+| `quote_declined` | Buyer declines quote | Seller |
+| `quote_expired` | 48h elapsed, no response | Buyer |
+| `review_request` | Booking completed | Both parties |
+| `review_posted` | Both reviews revealed | Both parties |
+| `message_received` | New message in thread | Recipient |
+| `payout_sent` | Stripe payout triggered | Seller |
+| `verification_approved` | Admin approves BankID | Seller |
+| `dispute_opened` | Buyer/seller opens dispute | Admin + counterparty |
+
+### Creating notifications (always server-side)
+
+```ts
+// lib/notifications/send.ts
+export async function sendNotification({
+  userId,
+  type,
+  data,
+  sendEmail = true,
+}: NotificationInput) {
+  const supabase = createAdminClient()
+
+  // Insert to DB (Realtime will push to client)
+  await supabase.from('notifications').insert({ user_id: userId, type, data })
+
+  // Send email for high-priority types
+  if (sendEmail && EMAIL_NOTIFICATION_TYPES.includes(type)) {
+    await sendTransactionalEmail({ userId, type, data })
+  }
+}
+```
+
+### Client subscription (Realtime)
+
+```ts
+// hooks/useNotifications.ts  ('use client')
+export function useNotifications(userId: string) {
+  const [notifications, setNotifications] = useState<Notification[]>([])
+
+  useEffect(() => {
+    const channel = supabase
+      .channel(`notifications:${userId}`)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'notifications',
+        filter: `user_id=eq.${userId}`,
+      }, (payload) => {
+        setNotifications(prev => [payload.new as Notification, ...prev])
+      })
+      .subscribe()
+
+    return () => { supabase.removeChannel(channel) }
+  }, [userId])
+
+  return notifications
+}
+```
+
+The `<NotificationBell>` in the nav shows an unread count badge and drops down to a list. Mark-as-read sets `notifications.read_at`.
+
+---
+
+## Admin panel
+
+Routes: `/admin/*` — role `admin` required. The admin layout redirects to `/no/logg-inn` if not `admin`.
+
+### Features
+
+**Provider verification queue** (`/admin/leverandorer`)
+- Lists providers awaiting BankID verification
+- Admin can view the Signicat verification result, approve, or reject with a reason
+- Approval sets `providers.is_verified = true` via service role and sends a `verification_approved` notification
+
+**Dispute management** (`/admin/tvister`)
+- Lists bookings in `disputed` status
+- Admin can view full booking + message thread + both reviews
+- Resolution options: full refund to buyer, release payment to seller, partial split
+- Triggers Stripe refund and updates `bookings.status`
+
+**User management** (`/admin/brukere`)
+- Search all users
+- View profile, role, booking history
+- Soft-ban: set `profiles.deleted_at` without deleting data
+- Hard-delete: process GDPR deletion request
+
+**Payout oversight** (`/admin/utbetalinger`)
+- Lists all Stripe Connect payouts
+- Flag and hold a provider's payout if needed (via `stripe.transfers.cancel()`)
+
+**Category management** (`/admin/kategorier`)
+- Add/edit/deactivate categories and subcategories
+- Changes propagate to Typesense via webhook
+
+### Admin-only API routes
+
+All under `/api/admin/*`. Each route checks `role === 'admin'` server-side using the service role client — never trust a client-supplied claim.
+
+```ts
+// Reusable admin guard
+export async function requireAdmin() {
+  const supabase = createServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Response('Unauthorized', { status: 401 })
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+
+  if (profile?.role !== 'admin') throw new Response('Forbidden', { status: 403 })
+  return user
+}
+```
+
