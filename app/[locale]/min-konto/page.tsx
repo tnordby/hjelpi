@@ -6,6 +6,7 @@ import { ResendSignupEmailForm } from '@/components/auth/ResendSignupEmailForm'
 import { SignOutForm } from '@/components/auth/SignOutForm'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { profileDisplayName } from '@/lib/profiles/display-name'
 import { resolveAccountHrefAfterAuth } from '@/lib/seller/post-auth'
 
 export const dynamic = 'force-dynamic'
@@ -61,14 +62,19 @@ export default async function MinKontoPage() {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name')
+    .select('first_name, last_name')
     .eq('user_id', user.id)
     .maybeSingle()
 
-  const displayName = profile?.full_name?.trim() || null
+  const displayNameRaw = profileDisplayName(profile?.first_name, profile?.last_name)
+  const displayName = displayNameRaw.length > 0 ? displayNameRaw : null
 
   return (
-    <AuthShell title={t('title')} subtitle={t('subtitle')}>
+    <AuthShell
+      title={t('title')}
+      subtitle={t('subtitle')}
+      backLink={{ href: '/', label: tAuth('backToHome') }}
+    >
       <div className="space-y-6">
         {displayName ? (
           <div>

@@ -18,9 +18,14 @@ export async function generateMetadata({
 
 export default async function ResetPasswordPage() {
   const t = await getTranslations('auth.reset')
+  const tAuth = await getTranslations('auth')
 
   return (
-    <AuthShell title={t('title')} subtitle={t('subtitle')}>
+    <AuthShell
+      title={t('title')}
+      subtitle={t('subtitle')}
+      backLink={{ href: '/', label: tAuth('backToHome') }}
+    >
       <UpdatePasswordForm />
     </AuthShell>
   )

@@ -72,7 +72,8 @@ export async function registerAction(
   }
 
   const parsed = registerSchema.safeParse({
-    fullName: formData.get('fullName'),
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
     email: formData.get('email'),
     password: formData.get('password'),
   })
@@ -92,7 +93,8 @@ export async function registerAction(
     options: {
       emailRedirectTo,
       data: {
-        full_name: parsed.data.fullName,
+        first_name: parsed.data.firstName,
+        last_name: parsed.data.lastName,
       },
     },
   })
@@ -119,7 +121,8 @@ export async function registerSellerAction(
   }
 
   const parsed = registerSchema.safeParse({
-    fullName: formData.get('fullName'),
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
     email: formData.get('email'),
     password: formData.get('password'),
   })
@@ -140,7 +143,8 @@ export async function registerSellerAction(
     options: {
       emailRedirectTo,
       data: {
-        full_name: parsed.data.fullName,
+        first_name: parsed.data.firstName,
+        last_name: parsed.data.lastName,
         register_as_seller: 'true',
       },
     },

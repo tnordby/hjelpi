@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { profileDisplayName } from '@/lib/profiles/display-name'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 type Props = { params: Promise<{ locale: string; id: string }> }
@@ -12,15 +13,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = await createSupabaseServerClient()
   const { data } = await supabase
     .from('providers')
-    .select('profiles(full_name)')
+    .select('profiles(first_name, last_name)')
     .eq('id', id)
     .maybeSingle()
 
   let name = 'Hjelper'
   if (data?.profiles) {
     const p = Array.isArray(data.profiles) ? data.profiles[0] : data.profiles
-    if (p && typeof p === 'object' && 'full_name' in p && typeof p.full_name === 'string') {
-      name = p.full_name
+    if (p && typeof p === 'object') {
+      const display = profileDisplayName(
+        'first_name' in p ? (p.first_name as string | null) : null,
+        'last_name' in p ? (p.last_name as string | null) : null,
+      )
+      if (display.length > 0) name = display
     }
   }
 
@@ -42,7 +47,7 @@ export default async function HjelperProfilePage({ params }: Props) {
       avg_rating,
       total_reviews,
       is_verified,
-      profiles (full_name, avatar_url, deleted_at)
+      profiles (first_name, last_name, avatar_url, deleted_at)
     `,
     )
     .eq('id', id)
@@ -53,12 +58,19 @@ export default async function HjelperProfilePage({ params }: Props) {
   const rawProfile = data.profiles
   const profile = Array.isArray(rawProfile) ? rawProfile[0] : rawProfile
 
+  const publicName = profileDisplayName(
+    profile && typeof profile === 'object' && 'first_name' in profile
+      ? (profile.first_name as string | null)
+      : null,
+    profile && typeof profile === 'object' && 'last_name' in profile
+      ? (profile.last_name as string | null)
+      : null,
+  )
+
   if (
     !profile ||
     typeof profile !== 'object' ||
-    !('full_name' in profile) ||
-    typeof profile.full_name !== 'string' ||
-    profile.full_name.length === 0 ||
+    publicName.length === 0 ||
     ('deleted_at' in profile && profile.deleted_at != null)
   ) {
     notFound()
@@ -91,7 +103,7 @@ export default async function HjelperProfilePage({ params }: Props) {
               </div>
               <div className="min-w-0 flex-1 text-center sm:text-left">
                 <h1 className="font-headline text-3xl font-extrabold text-primary">
-                  {profile.full_name}
+                  {publicName}
                 </h1>
                 {data.is_verified ? (
                   <p className="mt-2 text-sm font-semibold text-primary">Verifisert hjelper</p>

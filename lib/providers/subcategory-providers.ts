@@ -1,3 +1,4 @@
+import { profileDisplayName } from '@/lib/profiles/display-name'
 import { createSupabaseAnonServerClient } from '@/lib/supabase/server'
 
 export type SubcategoryProviderItem = {
@@ -66,7 +67,7 @@ export async function fetchProvidersForSubcategory(
           is_verified,
           bio,
           locations (name),
-          profiles!inner (full_name, avatar_url, deleted_at)
+          profiles!inner (first_name, last_name, avatar_url, deleted_at)
         )
       `,
       )
@@ -90,8 +91,11 @@ export async function fetchProvidersForSubcategory(
 
       const profile = prof as Record<string, unknown>
       if (profile.deleted_at != null) continue
-      const fullName = profile.full_name
-      if (typeof fullName !== 'string' || !fullName.trim()) continue
+      const fullName = profileDisplayName(
+        profile.first_name as string | null | undefined,
+        profile.last_name as string | null | undefined,
+      )
+      if (!fullName.trim()) continue
 
       const pricingType = r.pricing_type as SubcategoryProviderItem['pricingType']
       if (pricingType !== 'fixed' && pricingType !== 'hourly' && pricingType !== 'quote') {

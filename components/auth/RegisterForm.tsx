@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { Link } from '@/i18n/routing'
 import { registerAction, registerSellerAction } from '@/lib/auth/actions'
+import { profileDisplayName } from '@/lib/profiles/display-name'
 import { ResendSignupEmailForm } from '@/components/auth/ResendSignupEmailForm'
 import posthog from 'posthog-js'
 
@@ -28,7 +29,8 @@ export function RegisterForm({ variant = 'buyer' }: Props) {
     const form = e.currentTarget
     const formData = new FormData(form)
     const emailField = form.elements.namedItem('email') as HTMLInputElement | null
-    const fullNameField = form.elements.namedItem('fullName') as HTMLInputElement | null
+    const firstNameField = form.elements.namedItem('firstName') as HTMLInputElement | null
+    const lastNameField = form.elements.namedItem('lastName') as HTMLInputElement | null
     const action = variant === 'seller' ? registerSellerAction : registerAction
     const result = await action(undefined, formData)
     if (result?.error) {
@@ -37,12 +39,15 @@ export function RegisterForm({ variant = 'buyer' }: Props) {
     if (result?.success === 'emailConfirm') {
       setSuccess(t('successEmail'))
       const email = emailField?.value ?? ''
-      const fullName = fullNameField?.value ?? ''
+      const displayName = profileDisplayName(
+        firstNameField?.value ?? '',
+        lastNameField?.value ?? '',
+      )
       if (email) setPendingEmail(email)
-      posthog.identify(email, { email, name: fullName })
+      posthog.identify(email, { email, name: displayName })
       posthog.capture(variant === 'seller' ? 'seller_registered' : 'user_registered', {
         email,
-        name: fullName,
+        name: displayName,
         variant,
       })
     }
@@ -71,20 +76,35 @@ export function RegisterForm({ variant = 'buyer' }: Props) {
           {error}
         </p>
       ) : null}
-      <div>
-        <label htmlFor="fullName" className="mb-2 block text-sm font-medium text-on-surface">
-          {t('fullName')}
-        </label>
-        <input
-          id="fullName"
-          name="fullName"
-          type="text"
-          autoComplete="name"
-          required
-          minLength={2}
-          maxLength={120}
-          className={inputClass}
-        />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label htmlFor="firstName" className="mb-2 block text-sm font-medium text-on-surface">
+            {t('firstName')}
+          </label>
+          <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            autoComplete="given-name"
+            required
+            minLength={1}
+            maxLength={60}
+            className={inputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="lastName" className="mb-2 block text-sm font-medium text-on-surface">
+            {t('lastName')}
+          </label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            autoComplete="family-name"
+            maxLength={60}
+            className={inputClass}
+          />
+        </div>
       </div>
       <div>
         <label htmlFor="email" className="mb-2 block text-sm font-medium text-on-surface">

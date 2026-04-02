@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { formatEarningsPeriodLabel, netSellerOre } from '@/lib/dashboard/money'
+import { profileDisplayName } from '@/lib/profiles/display-name'
 
 export type DashboardUserContext = {
   userId: string
@@ -40,7 +41,7 @@ export async function loadDashboardUserContext(
 ): Promise<DashboardUserContext | null> {
   const { data: profile, error } = await supabase
     .from('profiles')
-    .select('id, full_name, role, active_mode')
+    .select('id, first_name, last_name, role, active_mode')
     .eq('user_id', userId)
     .maybeSingle()
 
@@ -63,7 +64,7 @@ export async function loadDashboardUserContext(
     userId,
     email,
     profileId: profile.id,
-    fullName: profile.full_name,
+    fullName: profileDisplayName(profile.first_name, profile.last_name),
     role,
     activeMode,
     providerId,
@@ -148,10 +149,13 @@ export async function fetchSellerBookings(
   if (buyerIds.length > 0) {
     const { data: buyers } = await supabase
       .from('profiles')
-      .select('id, full_name')
+      .select('id, first_name, last_name')
       .in('id', buyerIds)
     for (const p of buyers ?? []) {
-      buyerNames.set(p.id as string, p.full_name as string)
+      buyerNames.set(
+        p.id as string,
+        profileDisplayName(p.first_name as string, p.last_name as string),
+      )
     }
   }
 

@@ -44,25 +44,9 @@ export function NavbarClient({ isLoggedIn, userMenu }: Props) {
             >
               {t('becomeHelper')}
             </Link>
-            {!isLoggedIn ? (
-              <Link
-                href="/dashboard"
-                className="font-medium text-on-surface-variant transition-colors hover:text-primary"
-              >
-                {t('dashboard')}
-              </Link>
-            ) : null}
           </div>
         </div>
         <div className="flex items-center gap-4">
-          {!isLoggedIn ? (
-            <Link
-              href="/dashboard"
-              className="font-medium text-on-surface-variant transition-colors hover:text-primary md:hidden"
-            >
-              {t('dashboard')}
-            </Link>
-          ) : null}
           {!isLoggedIn ? (
             <Link
               href="/logg-inn"

@@ -5,14 +5,12 @@ type Props = {
   children: React.ReactNode
   title: string
   subtitle?: string
-  /** Optional: replace the “Tilbake til Hjelpi” link (e.g. seller flow → /bli-hjelper). */
+  /** Optional secondary nav under the logo (e.g. seller flow → /bli-hjelper). */
   backLink?: { href: string; label: string }
 }
 
 export async function AuthShell({ children, title, subtitle, backLink }: Props) {
-  const t = await getTranslations('auth')
   const tNav = await getTranslations('nav')
-  const secondary = backLink ?? { href: '/', label: t('backToHome') }
 
   return (
     <div className="min-h-screen bg-background px-6 py-16 pt-28">
@@ -24,12 +22,14 @@ export async function AuthShell({ children, title, subtitle, backLink }: Props) 
           >
             {tNav('brand')}
           </Link>
-          <Link
-            href={secondary.href}
-            className="mt-4 inline-flex text-sm font-medium text-on-surface-variant transition-colors hover:text-primary"
-          >
-            ← {secondary.label}
-          </Link>
+          {backLink ? (
+            <Link
+              href={backLink.href}
+              className="mt-4 inline-flex text-sm font-medium text-on-surface-variant transition-colors hover:text-primary"
+            >
+              ← {backLink.label}
+            </Link>
+          ) : null}
         </div>
         <div className="rounded-3xl bg-surface-container-lowest p-8 shadow-ambient md:p-10">
           <h1

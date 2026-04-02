@@ -163,7 +163,8 @@
     "register": {
       "title": "Opprett konto",
       "subtitle": "Bli med og finn lokale eksperter på få minutter.",
-      "fullName": "Fullt navn",
+      "firstName": "Fornavn",
+      "lastName": "Etternavn",
       "email": "E-post",
       "password": "Passord",
       "hint": "Minst 8 tegn.",
@@ -175,7 +176,8 @@
     "sellerRegister": {
       "title": "Opprett hjelper-konto",
       "subtitle": "Registrer deg for å tilby tjenester på Hjelpi. Etter bekreftelse kan du bygge profil og legge ut tilbud.",
-      "fullName": "Fullt navn",
+      "firstName": "Fornavn",
+      "lastName": "Etternavn",
       "email": "E-post",
       "password": "Passord",
       "hint": "Minst 8 tegn.",
