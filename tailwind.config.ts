@@ -34,6 +34,9 @@ const config: Config = {
         'on-surface-variant': '#3e494b',
         'outline-variant': '#bdc8cb',
         'primary-fixed': '#9defff',
+        error: '#ba1a1a',
+        'error-container': '#ffdad6',
+        'on-error-container': '#93000a',
       },
       fontFamily: {
         headline: ['var(--font-manrope)', 'system-ui', 'sans-serif'],

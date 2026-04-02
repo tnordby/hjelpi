@@ -113,6 +113,7 @@
     "company": "Selskapet",
     "support": "Support",
     "links": {
+      "allServices": "Alle tjenester",
       "photography": "Fotografering",
       "dogSitting": "Hundepasning",
       "entertainment": "Underholdning",
@@ -125,8 +126,131 @@
       "help": "Hjelpesenter",
       "press": "Presse"
     },
-    "copyright": "© {year} Hjelpi AS. Skandinavisk kvalitet.",
+    "copyright": "{year} Hjelpi AS. Skandinavisk kvalitet.",
     "safePayment": "Trygg betaling",
     "bankId": "BankID verifisert"
+  },
+  "auth": {
+    "backToHome": "Tilbake til Hjelpi",
+    "meta": {
+      "loginTitle": "Logg inn | Hjelpi",
+      "loginDescription": "Logg inn på Hjelpi for å bestille tjenester og administrere kontoen din.",
+      "registerTitle": "Opprett konto | Hjelpi",
+      "registerDescription": "Registrer deg på Hjelpi for å finne og bestille lokale eksperter.",
+      "forgotTitle": "Glemt passord | Hjelpi",
+      "forgotDescription": "Tilbakestill passordet ditt for Hjelpi.",
+      "resetTitle": "Nytt passord | Hjelpi",
+      "resetDescription": "Velg et nytt passord for Hjelpi-kontoen din.",
+      "accountTitle": "Min konto | Hjelpi",
+      "accountDescription": "Din Hjelpi-konto."
+    },
+    "login": {
+      "title": "Velkommen tilbake",
+      "subtitle": "Logg inn for å fortsette.",
+      "email": "E-post",
+      "password": "Passord",
+      "submit": "Logg inn",
+      "noAccount": "Har du ikke konto?",
+      "registerLink": "Registrer deg",
+      "forgotLink": "Glemt passord?"
+    },
+    "register": {
+      "title": "Opprett konto",
+      "subtitle": "Bli med og finn lokale eksperter på få minutter.",
+      "fullName": "Fullt navn",
+      "email": "E-post",
+      "password": "Passord",
+      "hint": "Minst 8 tegn.",
+      "submit": "Registrer deg",
+      "hasAccount": "Har du allerede konto?",
+      "loginLink": "Logg inn",
+      "successEmail": "Sjekk innboksen din — vi har sendt en lenke for å bekrefte e-posten din."
+    },
+    "forgot": {
+      "title": "Glemt passord?",
+      "subtitle": "Skriv inn e-posten din, så sender vi en lenke for å tilbakestille passordet.",
+      "email": "E-post",
+      "submit": "Send lenke",
+      "backToLogin": "Tilbake til innlogging",
+      "success": "Hvis denne e-posten er knyttet til en konto, har vi sendt en lenke for å tilbakestille passordet."
+    },
+    "reset": {
+      "title": "Velg nytt passord",
+      "subtitle": "Skriv inn det nye passordet ditt.",
+      "password": "Nytt passord",
+      "confirmPassword": "Gjenta passord",
+      "submit": "Lagre passord",
+      "loading": "Laster økt …",
+      "invalidSession": "Lenken er ugyldig eller utløpt. Be om en ny tilbakestillingslenke.",
+      "requestNew": "Be om ny lenke",
+      "success": "Passordet er oppdatert. Du kan nå logge inn."
+    },
+    "account": {
+      "title": "Min konto",
+      "subtitle": "Du er innlogget.",
+      "emailLabel": "Innlogget som",
+      "signOut": "Logg ut",
+      "notConfigured": "Innlogging er ikke konfigurert ennå (mangler Supabase-miljøvariabler)."
+    },
+    "errors": {
+      "notConfigured": "Innlogging er ikke tilgjengelig akkurat nå. Kontakt oss hvis problemet vedvarer.",
+      "invalidFields": "Sjekk at alle felt er riktig utfylt.",
+      "invalidCredentials": "Feil e-post eller passord. Prøv igjen.",
+      "rateLimited": "For mange forsøk. Vent litt og prøv på nytt.",
+      "passwordMismatch": "Passordene er ikke like.",
+      "updateFailed": "Kunne ikke oppdatere passordet. Prøv igjen."
+    }
+  },
+  "servicesIndex": {
+    "metaTitle": "Alle tjenester | Hjelpi",
+    "metaDescription": "Utforsk alle tjenestekategorier på Hjelpi — fra fotografi og håndverk til undervisning og renhold.",
+    "breadcrumbHome": "Hjem",
+    "title": "Alle tjenester",
+    "subtitle": "Alle kategorier er sortert alfabetisk. Trykk på en kategori for oversikt, eller på en tjeneste for å gå rett til siden for den underkategorien.",
+    "subCount": "{count} tjenester"
+  },
+  "categoryPage": {
+    "breadcrumbHome": "Hjem",
+    "breadcrumbServices": "Alle tjenester",
+    "eyebrow": "Kategori",
+    "metaTitle": "{category} | Hjelpi",
+    "metaDescription": "Finn hjelp innen {category}: {count} ulike tjenester fra lokale hjelpere på Hjelpi.",
+    "intro": "Her finner du {count} ulike tjenester innen {category}. Velg en tjeneste for å lese mer og finne riktig hjelper der du bor.",
+    "subsHeading": "Tjenester innen {category}",
+    "ctaTitle": "Tilbyr du denne typen tjenester?",
+    "ctaBody": "Registrer deg som hjelper og nå kunder som søker etter akkurat det du kan.",
+    "ctaButton": "Bli hjelper"
+  },
+  "subcategoryPage": {
+    "breadcrumbHome": "Hjem",
+    "breadcrumbServices": "Alle tjenester",
+    "metaTitle": "{sub} – {category} | Hjelpi",
+    "metaDescription": "Finn hjelp med {sub} i kategorien {category}. Koble deg med kvalifiserte lokale hjelpere på Hjelpi.",
+    "intro": "Trenger du hjelp med {sub}? Hjelpi kobler deg med lokale hjelpere som tilbyr denne typen tjenester under {category}. Opprett konto for å søke og sammenligne, eller registrer deg som hjelper hvis du vil ta oppdrag.",
+    "ctaFind": "Finn hjelper",
+    "ctaOffer": "Tilby denne tjenesten",
+    "backToCategory": "Alle {category}",
+    "heroImageAlt": "Stemning for {sub}",
+    "providers": {
+      "sectionTitle": "Hjelpere som tilbyr denne tjenesten",
+      "sectionSubtitle": "{count, plural, one {# hjelper} other {# hjelpere}} tilgjengelig",
+      "sortLabel": "Sorter",
+      "sortRatingHigh": "Høyest vurdering",
+      "sortRatingLow": "Lavest vurdering",
+      "sortReviews": "Flest anmeldelser",
+      "sortBookings": "Flest oppdrag",
+      "sortName": "Navn A–Å",
+      "emptyTitle": "Ingen hjelpere her ennå",
+      "emptyBody": "Det er ingen registrerte hjelpere med denne tjenesten akkurat nå. Kom tilbake senere, eller bli den første som tilbyr den.",
+      "emptyCta": "Bli hjelper",
+      "noReviews": "Ingen vurderinger ennå",
+      "verified": "Verifisert av Hjelpi",
+      "verifiedShort": "Verifisert"
+    }
+  },
+  "notFound": {
+    "title": "Siden finnes ikke",
+    "description": "Vi fant ikke siden du lette etter. Sjekk adressen, eller gå tilbake til forsiden.",
+    "backHome": "Til forsiden"
   }
 }

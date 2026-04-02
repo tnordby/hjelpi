@@ -31,7 +31,7 @@ export const HOME_CATEGORIES: HomeCategory[] = [
   },
   {
     id: 'renhold',
-    href: '/rengjoring',
+    href: '/renhold',
     imageSrc:
       'https://lh3.googleusercontent.com/aida-public/AB6AXuDlE9IRa1ooLa9cr3pkKlqxGoMHc_Brb2VOMmnwOrlo2Dt_yQQFzY6lLBtohG3wwGKDa1FtlQdOZK6MuvSg8iUMHrgV2s4zv72vgHjqEs2LRXsvkZpnMDXU0xxa4P3NDCa_3nEsN_TDA0RSnXSmoNHg3ybywM6zxzswBm4hBJ7dp0mv7Mz5Uv3gh3rrBGvpQbq4nYkOpVGefuQAaK17ZmyhQlZqLyGMKs0OJLhjBVoWC2UkdaGrGvpOEa1Sz7ubYEgyT_89RFiZbyKV',
     icon: 'cleaning_services',

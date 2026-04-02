@@ -1,4 +1,4 @@
-import createNextIntlPlugin from 'next-intl/plugin'
+const createNextIntlPlugin = require('next-intl/plugin')
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
@@ -11,8 +11,13 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
   },
 }
 
-export default withNextIntl(nextConfig)
+module.exports = withNextIntl(nextConfig)

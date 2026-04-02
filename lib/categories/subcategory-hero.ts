@@ -1,0 +1,74 @@
+/** Unsplash hero backgrounds by taxonomy category slug (fits Next image remotePatterns). */
+const HERO_BY_CATEGORY: Record<string, string> = {
+  arrangement:
+    'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80&auto=format&fit=crop',
+  barnevakt:
+    'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1920&q=80&auto=format&fit=crop',
+  behandling:
+    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1920&q=80&auto=format&fit=crop',
+  bryllup:
+    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80&auto=format&fit=crop',
+  design:
+    'https://images.unsplash.com/photo-1626785774573-4b799314346d?w=1920&q=80&auto=format&fit=crop',
+  dyrepass:
+    'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1920&q=80&auto=format&fit=crop',
+  eldreomsorg:
+    'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1920&q=80&auto=format&fit=crop',
+  eventutleie:
+    'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80&auto=format&fit=crop',
+  flislegging:
+    'https://images.unsplash.com/photo-1581858726788-75bc0f1a1ad3?w=1920&q=80&auto=format&fit=crop',
+  flyttehjelp:
+    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80&auto=format&fit=crop',
+  fotografi:
+    'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=1920&q=80&auto=format&fit=crop',
+  frisor:
+    'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&q=80&auto=format&fit=crop',
+  'hage-og-landskap':
+    'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1920&q=80&auto=format&fit=crop',
+  handverker:
+    'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=1920&q=80&auto=format&fit=crop',
+  helse:
+    'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1920&q=80&auto=format&fit=crop',
+  'it-hjelp':
+    'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1920&q=80&auto=format&fit=crop',
+  'juridisk-radgivning':
+    'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&q=80&auto=format&fit=crop',
+  kampsport:
+    'https://images.unsplash.com/photo-1555597677-b8d813303e94?w=1920&q=80&auto=format&fit=crop',
+  kokk:
+    'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1920&q=80&auto=format&fit=crop',
+  'kurs-og-opplaering':
+    'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80&auto=format&fit=crop',
+  mat:
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80&auto=format&fit=crop',
+  musikk:
+    'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1920&q=80&auto=format&fit=crop',
+  musikkundervisning:
+    'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=1920&q=80&auto=format&fit=crop',
+  'personlig-trener':
+    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1920&q=80&auto=format&fit=crop',
+  privatundervisning:
+    'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1920&q=80&auto=format&fit=crop',
+  regnskap:
+    'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80&auto=format&fit=crop',
+  renhold:
+    'https://images.unsplash.com/photo-1558317374-067fb5f3004b?w=1920&q=80&auto=format&fit=crop',
+  smareparasjoner:
+    'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=1920&q=80&auto=format&fit=crop',
+  sprak:
+    'https://images.unsplash.com/photo-1546412414-8035e1776c9a?w=1920&q=80&auto=format&fit=crop',
+  stylist:
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1920&q=80&auto=format&fit=crop',
+  'transport-og-bud':
+    'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80&auto=format&fit=crop',
+  underholdning:
+    'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920&q=80&auto=format&fit=crop',
+}
+
+const DEFAULT_HERO =
+  'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1920&q=80&auto=format&fit=crop'
+
+export function getSubcategoryHeroImage(categorySlug: string): string {
+  return HERO_BY_CATEGORY[categorySlug] ?? DEFAULT_HERO
+}

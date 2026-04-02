@@ -21,7 +21,7 @@ export async function CategoryGrid() {
             </p>
           </div>
           <Link
-            href="/#kategorier"
+            href="/tjenester"
             className="flex items-center gap-2 font-bold text-primary underline-offset-8 hover:underline"
           >
             {t('categories.seeAll')}

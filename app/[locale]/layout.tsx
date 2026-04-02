@@ -48,7 +48,7 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className={`${manrope.variable} ${inter.variable} min-h-screen bg-background font-body text-on-background antialiased`}
+        className={`${manrope.variable} ${inter.variable} min-h-dvh bg-background font-body text-on-background antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           {children}

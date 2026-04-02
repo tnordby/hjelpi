@@ -7,11 +7,11 @@ import { cn } from '@/lib/utils'
 export function Navbar() {
   const t = useTranslations('nav')
   const pathname = usePathname()
-  const isHome = pathname === '/'
+  const isServicesIndex = pathname === '/tjenester'
 
   return (
     <nav className="fixed top-0 z-50 w-full bg-white/70 shadow-ambient backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-8">
           <Link
             href="/"
@@ -21,10 +21,10 @@ export function Navbar() {
           </Link>
           <div className="hidden space-x-6 md:flex">
             <Link
-              href="/"
+              href="/tjenester"
               className={cn(
                 'font-medium tracking-tight transition-colors',
-                isHome
+                isServicesIndex
                   ? 'border-b-2 border-primary font-bold text-primary'
                   : 'text-on-surface-variant hover:text-primary',
               )}
@@ -47,7 +47,7 @@ export function Navbar() {
             {t('logIn')}
           </Link>
           <Link
-            href="/logg-inn"
+            href="/registrer"
             className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-all hover:opacity-90"
           >
             {t('getStarted')}

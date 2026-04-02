@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* No elastic overscroll past the document end (avoids “scrolling past” the footer). */
+html {
+  overscroll-behavior-y: none;
+}
+
+body {
+  overscroll-behavior-y: none;
+}
+
 .material-symbols-outlined {
   font-variation-settings:
     'FILL' 0,
