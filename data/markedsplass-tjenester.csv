@@ -11,8 +11,6 @@ Arrangement,Event-DJ
 Arrangement,DJ for temafester
 Arrangement,DJ for privatfest
 Arrangement,Arrangementsdekoratør
-Arrangement,Bryllupsdekorering
-Arrangement,Bryllupsplanlegging
 Arrangement,Eventplanlegger
 Arrangement,Eventvideo
 Arrangement,Festutleieutstyr
@@ -26,6 +24,8 @@ Arrangement,Videodesign og produksjon
 Arrangement,Videoredigering
 Barnevakt,Barnepass kveld
 Barnevakt,Barnepass helg
+Barnevakt,Barnepass dagtid
+Barnevakt,Barnepass ferie
 Behandling,Massør
 Behandling,Sportsmassasje
 Behandling,Fysioterapeut
@@ -98,18 +98,22 @@ Dyrepass,Hundelufting
 Dyrepass,Husdyrpleier
 Eldreomsorg,Handlehjelp
 Eldreomsorg,Følge til lege
+Eldreomsorg,Selskap og prat
+Eldreomsorg,Følge til avtaler
 Eventutleie,Utleie av partytelt
 Eventutleie,Utleie av stoler og bord
 Flislegging,"Forsegling, fuging og fuging"
 Flislegging,Gulvfliser
 Flislegging,Kjøkkenfliser
 Flislegging,Montering av stein eller fliser på gulv
-Flislegging,Montering av tegltak
 Flislegging,Murstein og blokkbelegningstjenester
 Flislegging,Reparasjon av stein eller fliser
 Flislegging,Uteplasstjenester
 Flyttehjelp,Flytting av møbler
 Flyttehjelp,Bærehjelp
+Flyttehjelp,Full flyttehjelp
+Flyttehjelp,Pakking til flytting
+Flyttehjelp,Piano- og tungløft
 Fotografi,Portrettfotografi
 Fotografi,Bryllupsfotografi
 Fotografi,Naturfotografi
@@ -159,7 +163,6 @@ Hage og landskap,Reparasjon og vedlikehold av markise
 Hage og landskap,Reparasjon og vedlikehold av terrassedeksel
 Hage og landskap,"Installasjon, vedlikehold og rengjøring av boblebad og spa"
 Hage og landskap,Snøbrøyting
-Hage og landskap,Stryketjenester
 Hage og landskap,Støttemurkonstruksjon
 Hage og landskap,Trekirurgi og fjerning
 Håndverker,Gulvsliping
@@ -183,6 +186,8 @@ Håndverker,Monteringavgjerdeogport
 Håndverker,Reparasjonavgjerdeellerlevegg
 Håndverker,Innvendigisolering
 Håndverker,Demonteringavinnredning
+Håndverker,Tømrer og snekker
+Håndverker,Innerdører og listverk
 Helse,Ansattes hjelpeprogrammer
 Helse,Aromaterapi
 Helse,Avhengighetsterapi
@@ -222,7 +227,15 @@ Helse,Ungdomsrådgivning
 IKEA,IKEA Garderobe
 IT-hjelp,PC- og printeroppsett
 IT-hjelp,WiFi- og nettverksproblemer
+IT-hjelp,Mobil og nettbrett
+IT-hjelp,Sikkerhetskopiering og gjenoppretting
+IT-hjelp,Virus og malware-fjerning
+IT-hjelp,Smarthus og IoT-oppsett
 Juridisk rådgivning,Opprettelse av kontrakter
+Juridisk rådgivning,Boligjuridisk bistand
+Juridisk rådgivning,Arbeidsrett
+Juridisk rådgivning,Arv og testament
+Juridisk rådgivning,Familierett og samboerskap
 Juridisk rådgivning,Gratis juridisk vurdering
 Kampsport,Judo
 Kampsport,Bryting
@@ -254,6 +267,9 @@ Kokk,Sushikokk
 Kokk,Streetfoodkokk
 Kurs og opplæring,Excel for nybegynnere
 Kurs og opplæring,Matlagingskurs
+Kurs og opplæring,Presentasjonsteknikk
+Kurs og opplæring,Sosiale medier for bedrifter
+Kurs og opplæring,Gründer og oppstart
 Mat,Kakelaging
 Mat,Catering
 Mat,Matlagingstimer
@@ -277,6 +293,9 @@ Musikk,Country
 Musikk,Klassikere
 Musikk,Lounge
 Musikk,Sanger
+Musikk,Live band
+Musikk,Soloartist og vokalist
+Musikk,Kor og ensemble
 Musikkundervisning,Pianolærer
 Musikkundervisning,Gitarlærer
 Musikkundervisning,Ballroom Dance-klasser
@@ -397,6 +416,8 @@ Privatundervisning,Kjemi
 Privatundervisning,Engelsk
 Privatundervisning,Norsk
 Privatundervisning,Tysk
+Privatundervisning,Spansk
+Privatundervisning,Fransk
 Regnskap,Regnskapsføring
 Regnskap,Fakturering
 Regnskap,Bokføring
@@ -440,6 +461,7 @@ Renhold,Rengjøring av skorstein
 Renhold,Sluttrengjøring av leieforhold
 Renhold,Tepperensing
 Renhold,Vindusvaskere
+Renhold,Stryketjenester
 Småreparasjoner,IKEA-montering
 Småreparasjoner,Opphenging av bilder og hyller
 Språkundervisning,Arabisk
@@ -461,6 +483,34 @@ Stylist,Brudestylist
 Stylist,Extensions-spesialist
 Transport og bud,Levering av pakker
 Transport og bud,Kjøp og hent-tjenester
+Transport og bud,Varetransport
+Transport og bud,Godstransport
+Boligstyling,Boligstyling før salg
+Boligstyling,Interiørkonsulent
+Boligstyling,Homestaging
+Bilverksted og mekaniker,Bilmekaniker
+Bilverksted og mekaniker,Dekkskift
+Bilverksted og mekaniker,EU-kontroll og PKK
+Bilverksted og mekaniker,AC og klima bil
+Elektriker,El-installasjon bolig
+Elektriker,Feilsøking og reparasjon elektro
+Elektriker,Sikringsskap og kurser
+Elektriker,Ladeinfrastruktur elbil
+Låsesmed,Lås og sylinder
+Låsesmed,Nøkkel og lås
+Låsesmed,Elektronisk adgangskontroll
+Maler og tapetsering,Innendørs maling
+Maler og tapetsering,Utvendig maling
+Maler og tapetsering,Tapetsering
+Maler og tapetsering,Maling tak og lister
+Rørlegger og VVS,Rørlegger
+Rørlegger og VVS,Varme og sanitær
+Rørlegger og VVS,Tette avløp og sluk
+Rørlegger og VVS,Montering av bad
+Tak og tekking,Montering av tegltak
+Tak og tekking,Taktekker
+Tak og tekking,Takreparasjon
+Tak og tekking,Flatt tak og takpapp
 Underholdning,Skuespiller
 Underholdning,Standupkomiker
 Underholdning,Ansiktsmaling

@@ -7,8 +7,8 @@ export async function TestimonialsSection() {
   const t = await getTranslations('home.testimonials')
 
   return (
-    <section className="overflow-hidden px-6 py-24">
-      <div className="mx-auto max-w-7xl">
+    <section className="overflow-hidden py-24">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <h2 className="mb-12 text-center font-headline text-3xl font-extrabold tracking-tight text-primary">
           {t('title')}
         </h2>

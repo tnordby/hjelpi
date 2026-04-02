@@ -10,8 +10,6 @@ SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
   ('Arrangementsdekoratør', 'arrangementsdekorator', 'quote'),
-  ('Bryllupsdekorering', 'bryllupsdekorering', 'quote'),
-  ('Bryllupsplanlegging', 'bryllupsplanlegging', 'quote'),
   ('Cocktailbartender', 'cocktailbartender', 'quote'),
   ('DJ for privatfest', 'dj-for-privatfest', 'quote'),
   ('DJ for temafester', 'dj-for-temafester', 'quote'),
@@ -44,6 +42,8 @@ INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
 SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
+  ('Barnepass dagtid', 'barnepass-dagtid', 'hourly'),
+  ('Barnepass ferie', 'barnepass-ferie', 'hourly'),
   ('Barnepass helg', 'barnepass-helg', 'hourly'),
   ('Barnepass kveld', 'barnepass-kveld', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'barnevakt'
@@ -71,7 +71,38 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Bryllup', 'bryllup', 30)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Bilverksted og mekaniker', 'bilverksted-og-mekaniker', 30)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('AC og klima bil', 'ac-og-klima-bil', 'fixed'),
+  ('Bilmekaniker', 'bilmekaniker', 'fixed'),
+  ('Dekkskift', 'dekkskift', 'fixed'),
+  ('EU-kontroll og PKK', 'eu-kontroll-og-pkk', 'fixed')) AS v(name, slug, pricing)
+WHERE c.slug = 'bilverksted-og-mekaniker'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Boligstyling', 'boligstyling', 40)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('Boligstyling før salg', 'boligstyling-for-salg', 'quote'),
+  ('Homestaging', 'homestaging', 'quote'),
+  ('Interiørkonsulent', 'interiorkonsulent', 'quote')) AS v(name, slug, pricing)
+WHERE c.slug = 'boligstyling'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Bryllup', 'bryllup', 50)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -115,7 +146,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Design', 'design', 40)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Design', 'design', 60)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -151,7 +182,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Dyrepass', 'dyrepass', 50)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Dyrepass', 'dyrepass', 70)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -168,21 +199,39 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Eldreomsorg', 'eldreomsorg', 60)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Eldreomsorg', 'eldreomsorg', 80)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
 SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
+  ('Følge til avtaler', 'folge-til-avtaler', 'hourly'),
   ('Følge til lege', 'folge-til-lege', 'hourly'),
-  ('Handlehjelp', 'handlehjelp', 'hourly')) AS v(name, slug, pricing)
+  ('Handlehjelp', 'handlehjelp', 'hourly'),
+  ('Selskap og prat', 'selskap-og-prat', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'eldreomsorg'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Eventutleie', 'eventutleie', 70)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Elektriker', 'elektriker', 90)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('El-installasjon bolig', 'el-installasjon-bolig', 'fixed'),
+  ('Feilsøking og reparasjon elektro', 'feilsoking-og-reparasjon-elektro', 'fixed'),
+  ('Ladeinfrastruktur elbil', 'ladeinfrastruktur-elbil', 'fixed'),
+  ('Sikringsskap og kurser', 'sikringsskap-og-kurser', 'fixed')) AS v(name, slug, pricing)
+WHERE c.slug = 'elektriker'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Eventutleie', 'eventutleie', 100)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -196,18 +245,17 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Flislegging', 'flislegging', 80)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Flislegging', 'flislegging', 110)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
 SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
-  ('Forsegling, fuging og fuging', 'forsegling-fuging-og-fuging', 'fixed'),
+  ('Forsegling og fuging', 'forsegling-og-fuging', 'fixed'),
   ('Gulvfliser', 'gulvfliser', 'fixed'),
   ('Kjøkkenfliser', 'kjokkenfliser', 'fixed'),
   ('Montering av stein eller fliser på gulv', 'montering-av-stein-eller-fliser-pa-gulv', 'fixed'),
-  ('Montering av tegltak', 'montering-av-tegltak', 'fixed'),
   ('Murstein og blokkbelegningstjenester', 'murstein-og-blokkbelegningstjenester', 'fixed'),
   ('Reparasjon av stein eller fliser', 'reparasjon-av-stein-eller-fliser', 'fixed'),
   ('Uteplasstjenester', 'uteplasstjenester', 'fixed')) AS v(name, slug, pricing)
@@ -216,7 +264,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Flyttehjelp', 'flyttehjelp', 90)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Flyttehjelp', 'flyttehjelp', 120)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -224,13 +272,16 @@ SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
   ('Bærehjelp', 'baerehjelp', 'hourly'),
-  ('Flytting av møbler', 'flytting-av-mobler', 'hourly')) AS v(name, slug, pricing)
+  ('Flytting av møbler', 'flytting-av-mobler', 'hourly'),
+  ('Full flyttehjelp', 'full-flyttehjelp', 'hourly'),
+  ('Pakking til flytting', 'pakking-til-flytting', 'hourly'),
+  ('Piano- og tungløft', 'piano-og-tungloft', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'flyttehjelp'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Fotografi', 'fotografi', 100)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Fotografi', 'fotografi', 130)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -258,7 +309,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Frisør', 'frisor', 110)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Frisør', 'frisor', 140)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -272,7 +323,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Hage og landskap', 'hage-og-landskap', 120)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Hage og landskap', 'hage-og-landskap', 150)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -309,7 +360,6 @@ CROSS JOIN (VALUES
   ('Reparasjon og vedlikehold av markise', 'reparasjon-og-vedlikehold-av-markise', 'hourly'),
   ('Reparasjon og vedlikehold av terrassedeksel', 'reparasjon-og-vedlikehold-av-terrassedeksel', 'hourly'),
   ('Snøbrøyting', 'snobroyting', 'hourly'),
-  ('Stryketjenester', 'stryketjenester', 'hourly'),
   ('Støttemurkonstruksjon', 'stottemurkonstruksjon', 'hourly'),
   ('Trekirurgi og fjerning', 'trekirurgi-og-fjerning', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'hage-og-landskap'
@@ -317,7 +367,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Helse', 'helse', 130)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Helse', 'helse', 160)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -365,7 +415,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Håndverker', 'handverker', 140)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Håndverker', 'handverker', 170)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -376,6 +426,7 @@ CROSS JOIN (VALUES
   ('Bygging av terrasse', 'bygging-av-terrasse', 'fixed'),
   ('Demontering av innredning', 'demontering-av-innredning', 'fixed'),
   ('Gulvsliping', 'gulvsliping', 'fixed'),
+  ('Innerdører og listverk', 'innerdorer-og-listverk', 'fixed'),
   ('Innvendig isolering', 'innvendig-isolering', 'fixed'),
   ('Legging av gulv', 'legging-av-gulv', 'fixed'),
   ('Montering av baderomsinnredning', 'montering-av-baderomsinnredning', 'fixed'),
@@ -389,36 +440,45 @@ CROSS JOIN (VALUES
   ('Montering av vindu', 'montering-av-vindu', 'fixed'),
   ('Oppheng av bilder og TV', 'oppheng-av-bilder-og-tv', 'fixed'),
   ('Reparasjon av gjerde eller levegg', 'reparasjon-av-gjerde-eller-levegg', 'fixed'),
-  ('Skifteavhåndtakogbeslag', 'skifteavhandtakogbeslag', 'fixed'),
+  ('Skifte av håndtak og beslag', 'skifte-av-handtak-og-beslag', 'fixed'),
   ('Småreparasjoner', 'smareparasjoner', 'fixed'),
   ('Snekring av hyller', 'snekring-av-hyller', 'fixed'),
-  ('Sparkling og puss', 'sparkling-og-puss', 'fixed')) AS v(name, slug, pricing)
+  ('Sparkling og puss', 'sparkling-og-puss', 'fixed'),
+  ('Tømrer og snekker', 'tomrer-og-snekker', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'handverker'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('IT-hjelp', 'it-hjelp', 150)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('IT-hjelp', 'it-hjelp', 180)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
 SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
+  ('Mobil og nettbrett', 'mobil-og-nettbrett', 'hourly'),
   ('PC- og printeroppsett', 'pc-og-printeroppsett', 'hourly'),
+  ('Sikkerhetskopiering og gjenoppretting', 'sikkerhetskopiering-og-gjenoppretting', 'hourly'),
+  ('Smarthus og IoT-oppsett', 'smarthus-og-iot-oppsett', 'hourly'),
+  ('Virus og malware-fjerning', 'virus-og-malware-fjerning', 'hourly'),
   ('WiFi- og nettverksproblemer', 'wifi-og-nettverksproblemer', 'hourly')) AS v(name, slug, pricing)
 WHERE c.slug = 'it-hjelp'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Juridisk rådgivning', 'juridisk-radgivning', 160)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Juridisk rådgivning', 'juridisk-radgivning', 190)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
 SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
+  ('Arbeidsrett', 'arbeidsrett', 'quote'),
+  ('Arv og testament', 'arv-og-testament', 'quote'),
+  ('Boligjuridisk bistand', 'boligjuridisk-bistand', 'quote'),
+  ('Familierett og samboerskap', 'familierett-og-samboerskap', 'quote'),
   ('Gratis juridisk vurdering', 'gratis-juridisk-vurdering', 'quote'),
   ('Opprettelse av kontrakter', 'opprettelse-av-kontrakter', 'quote')) AS v(name, slug, pricing)
 WHERE c.slug = 'juridisk-radgivning'
@@ -426,7 +486,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Kampsport', 'kampsport', 170)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Kampsport', 'kampsport', 200)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -451,7 +511,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Kokk', 'kokk', 180)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Kokk', 'kokk', 210)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -478,7 +538,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Kurs og opplæring', 'kurs-og-opplaering', 190)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Kurs og opplæring', 'kurs-og-opplaering', 220)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -486,13 +546,47 @@ SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
   ('Excel for nybegynnere', 'excel-for-nybegynnere', 'fixed'),
-  ('Matlagingskurs', 'matlagingskurs', 'fixed')) AS v(name, slug, pricing)
+  ('Gründer og oppstart', 'grunder-og-oppstart', 'fixed'),
+  ('Matlagingskurs', 'matlagingskurs', 'fixed'),
+  ('Presentasjonsteknikk', 'presentasjonsteknikk', 'fixed'),
+  ('Sosiale medier for bedrifter', 'sosiale-medier-for-bedrifter', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'kurs-og-opplaering'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Mat', 'mat', 200)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Låsesmed', 'lasesmed', 230)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('Elektronisk adgangskontroll', 'elektronisk-adgangskontroll', 'fixed'),
+  ('Lås og sylinder', 'las-og-sylinder', 'fixed'),
+  ('Nøkkel og lås', 'nokkel-og-las', 'fixed')) AS v(name, slug, pricing)
+WHERE c.slug = 'lasesmed'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Maler og tapetsering', 'maler-og-tapetsering', 240)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('Innendørs maling', 'innendors-maling', 'fixed'),
+  ('Maling tak og lister', 'maling-tak-og-lister', 'fixed'),
+  ('Tapetsering', 'tapetsering', 'fixed'),
+  ('Utvendig maling', 'utvendig-maling', 'fixed')) AS v(name, slug, pricing)
+WHERE c.slug = 'maler-og-tapetsering'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Mat', 'mat', 250)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -512,7 +606,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Musikk', 'musikk', 210)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Musikk', 'musikk', 260)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -528,10 +622,13 @@ CROSS JOIN (VALUES
   ('Hiphop', 'hiphop', 'quote'),
   ('House', 'house', 'quote'),
   ('Klassikere', 'klassikere', 'quote'),
+  ('Kor og ensemble', 'kor-og-ensemble', 'quote'),
+  ('Live band', 'live-band', 'quote'),
   ('Lounge', 'lounge', 'quote'),
   ('Musikk for barn', 'musikk-for-barn', 'quote'),
   ('Pop', 'pop', 'quote'),
   ('Sanger', 'sanger', 'quote'),
+  ('Soloartist og vokalist', 'soloartist-og-vokalist', 'quote'),
   ('Trance', 'trance', 'quote'),
   ('Trap', 'trap', 'quote')) AS v(name, slug, pricing)
 WHERE c.slug = 'musikk'
@@ -539,7 +636,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Musikkundervisning', 'musikkundervisning', 220)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Musikkundervisning', 'musikkundervisning', 270)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -590,7 +687,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Personlig trener', 'personlig-trener', 230)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Personlig trener', 'personlig-trener', 280)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -638,7 +735,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Privatundervisning', 'privatundervisning', 240)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Privatundervisning', 'privatundervisning', 290)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -646,18 +743,20 @@ SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
   ('Engelsk', 'engelsk', 'fixed'),
+  ('Fransk', 'fransk', 'fixed'),
   ('Fysikk', 'fysikk', 'fixed'),
   ('Kjemi', 'kjemi', 'fixed'),
   ('Matematikk', 'matematikk', 'fixed'),
   ('Naturfag', 'naturfag', 'fixed'),
   ('Norsk', 'norsk', 'fixed'),
+  ('Spansk', 'spansk', 'fixed'),
   ('Tysk', 'tysk', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'privatundervisning'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Regnskap', 'regnskap', 250)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Regnskap', 'regnskap', 300)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -680,7 +779,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Renhold og rengjøring', 'renhold', 260)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Renhold og rengjøring', 'renhold', 310)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -693,13 +792,13 @@ CROSS JOIN (VALUES
   ('Dypvasktjenester', 'dypvasktjenester', 'hourly'),
   ('Flyttevask', 'flyttevask', 'hourly'),
   ('Hagerydning', 'hagerydning', 'hourly'),
-  ('Hopp over leie', 'hopp-over-leie', 'hourly'),
   ('Husrengjøring', 'husrengjoring', 'hourly'),
   ('Husrydding', 'husrydding', 'hourly'),
   ('Høytrykksspyling', 'hoytrykksspyling', 'hourly'),
-  ('Kommersiell og kontor dugg', 'kommersiell-og-kontor-dugg', 'hourly'),
+  ('Kommersiell og kontor — daglig renhold', 'kommersiell-og-kontor-daglig-renhold', 'hourly'),
   ('Kommersiell og kontorrengjøring', 'kommersiell-og-kontorrengjoring', 'hourly'),
   ('Kontorrengjøring', 'kontorrengjoring', 'hourly'),
+  ('Leie av avfallscontainer', 'leie-av-avfallscontainer', 'hourly'),
   ('Luktfjerning', 'luktfjerning', 'hourly'),
   ('Opprydding av eiendom etter bygging', 'opprydding-av-eiendom-etter-bygging', 'hourly'),
   ('Ovnsrengjøring', 'ovnsrengjoring', 'hourly'),
@@ -716,6 +815,7 @@ CROSS JOIN (VALUES
   ('Rensing av avløp og kloakk', 'rensing-av-avlop-og-kloakk', 'hourly'),
   ('Rensing av renne', 'rensing-av-renne', 'hourly'),
   ('Sluttrengjøring av leieforhold', 'sluttrengjoring-av-leieforhold', 'hourly'),
+  ('Stryketjenester', 'stryketjenester', 'hourly'),
   ('Tepperensing', 'tepperensing', 'hourly'),
   ('Vindusvask', 'vindusvask', 'hourly'),
   ('Vindusvaskere', 'vindusvaskere', 'hourly')) AS v(name, slug, pricing)
@@ -724,7 +824,23 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Småreparasjoner', 'smareparasjoner', 270)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Rørlegger og VVS', 'rorlegger-og-vvs', 320)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('Montering av bad', 'montering-av-bad', 'fixed'),
+  ('Rørlegger', 'rorlegger', 'fixed'),
+  ('Tette avløp og sluk', 'tette-avlop-og-sluk', 'fixed'),
+  ('Varme og sanitær', 'varme-og-sanitaer', 'fixed')) AS v(name, slug, pricing)
+WHERE c.slug = 'rorlegger-og-vvs'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Småreparasjoner', 'smareparasjoner', 330)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -739,7 +855,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Språk', 'sprak', 280)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Språk', 'sprak', 340)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -790,7 +906,7 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Stylist', 'stylist', 290)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Stylist', 'stylist', 350)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
@@ -807,21 +923,39 @@ ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Transport og bud', 'transport-og-bud', 300)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Tak og tekking', 'tak-og-tekking', 360)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
 SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
 FROM public.categories c
 CROSS JOIN (VALUES
+  ('Flatt tak og takpapp', 'flatt-tak-og-takpapp', 'fixed'),
+  ('Montering av tegltak', 'montering-av-tegltak', 'fixed'),
+  ('Takreparasjon', 'takreparasjon', 'fixed'),
+  ('Taktekker', 'taktekker', 'fixed')) AS v(name, slug, pricing)
+WHERE c.slug = 'tak-og-tekking'
+ON CONFLICT (category_id, slug) DO UPDATE SET
+  name = EXCLUDED.name,
+  default_pricing_type = EXCLUDED.default_pricing_type;
+
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Transport og bud', 'transport-og-bud', 370)
+ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)
+SELECT c.id, v.name, v.slug, v.pricing::public.pricing_type
+FROM public.categories c
+CROSS JOIN (VALUES
+  ('Godstransport', 'godstransport', 'fixed'),
   ('Kjøp og hent-tjenester', 'kjop-og-hent-tjenester', 'fixed'),
-  ('Levering av pakker', 'levering-av-pakker', 'fixed')) AS v(name, slug, pricing)
+  ('Levering av pakker', 'levering-av-pakker', 'fixed'),
+  ('Varetransport', 'varetransport', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'transport-og-bud'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
   default_pricing_type = EXCLUDED.default_pricing_type;
 
-INSERT INTO public.categories (name, slug, sort_order) VALUES ('Underholdning', 'underholdning', 310)
+INSERT INTO public.categories (name, slug, sort_order) VALUES ('Underholdning', 'underholdning', 380)
 ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, sort_order = EXCLUDED.sort_order;
 
 INSERT INTO public.subcategories (category_id, name, slug, default_pricing_type)

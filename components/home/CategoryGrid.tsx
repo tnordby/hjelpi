@@ -9,8 +9,8 @@ export async function CategoryGrid() {
   const t = await getTranslations('home')
 
   return (
-    <section id="kategorier" className="bg-surface-container-low px-6 py-24">
-      <div className="mx-auto max-w-7xl">
+    <section id="kategorier" className="bg-surface-container-low py-24">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
           <div>
             <h2 className="mb-4 font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">

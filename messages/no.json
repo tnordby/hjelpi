@@ -7,26 +7,28 @@
     "brand": "Hjelpi",
     "findServices": "Finn tjenester",
     "becomeHelper": "Bli en hjelper",
+    "dashboard": "Dashbord",
+    "userMenuAria": "Åpne brukermeny",
+    "userMenuSettings": "Innstillinger",
+    "userMenuAccount": "Min konto",
+    "userMenuSignOut": "Logg ut",
     "logIn": "Logg inn",
     "getStarted": "Kom i gang"
   },
   "home": {
     "hero": {
-      "eyebrow": "SKANDINAVISK KVALITET",
       "titleLine1": "Finn rett hjelp",
       "titleLine2": "til rett tid.",
-      "imageAlt": "Moderne, lys skandinavisk hjemmekontor med en person som jobber på laptop, mykt naturlig morgenlys.",
       "subtitle": "Hjelpi kobler deg med de beste lokale ekspertene i Norge. Fra fotografering til hundepasning – vi har hjelpen du trenger.",
       "searchPlaceholder": "Hva trenger du hjelp til?",
       "search": "Søk",
+      "searchSubmitAria": "Søk",
       "popularLabel": "Populært:",
       "popularTags": {
         "photographer": "Fotograf",
         "dogSitting": "Hundepasning",
         "moveClean": "Flyttevask"
-      },
-      "trustTitle": "Godkjente Hjelpere",
-      "trustSubtitle": "Alle våre eksperter er ID-sjekket."
+      }
     },
     "categories": {
       "title": "Populære kategorier",
@@ -137,12 +139,16 @@
       "loginDescription": "Logg inn på Hjelpi for å bestille tjenester og administrere kontoen din.",
       "registerTitle": "Opprett konto | Hjelpi",
       "registerDescription": "Registrer deg på Hjelpi for å finne og bestille lokale eksperter.",
+      "sellerRegisterTitle": "Bli hjelper – registrering | Hjelpi",
+      "sellerRegisterDescription": "Opprett hjelper-konto på Hjelpi og nå kunder som søker lokale tjenester.",
       "forgotTitle": "Glemt passord | Hjelpi",
       "forgotDescription": "Tilbakestill passordet ditt for Hjelpi.",
       "resetTitle": "Nytt passord | Hjelpi",
       "resetDescription": "Velg et nytt passord for Hjelpi-kontoen din.",
       "accountTitle": "Min konto | Hjelpi",
-      "accountDescription": "Din Hjelpi-konto."
+      "accountDescription": "Din Hjelpi-konto.",
+      "sellerOnboardingTitle": "Fullfør hjelperprofil | Hjelpi",
+      "sellerOnboardingDescription": "Opprett din synlige hjelperprofil på Hjelpi — kort om deg, område og tjenesteradius."
     },
     "login": {
       "title": "Velkommen tilbake",
@@ -166,6 +172,20 @@
       "loginLink": "Logg inn",
       "successEmail": "Sjekk innboksen din — vi har sendt en lenke for å bekrefte e-posten din."
     },
+    "sellerRegister": {
+      "title": "Opprett hjelper-konto",
+      "subtitle": "Registrer deg for å tilby tjenester på Hjelpi. Etter bekreftelse kan du bygge profil og legge ut tilbud.",
+      "fullName": "Fullt navn",
+      "email": "E-post",
+      "password": "Passord",
+      "hint": "Minst 8 tegn.",
+      "submit": "Registrer meg som hjelper",
+      "hasAccount": "Har du allerede konto?",
+      "loginLink": "Logg inn",
+      "buyerInstead": "Vil du bare bestille tjenester?",
+      "buyerRegisterLink": "Registrer deg som kunde",
+      "successEmail": "Sjekk innboksen din — bekreft e-posten for å aktivere hjelper-kontoen din."
+    },
     "forgot": {
       "title": "Glemt passord?",
       "subtitle": "Skriv inn e-posten din, så sender vi en lenke for å tilbakestille passordet.",
@@ -188,9 +208,16 @@
     "account": {
       "title": "Min konto",
       "subtitle": "Du er innlogget.",
+      "nameLabel": "Navn",
       "emailLabel": "Innlogget som",
       "signOut": "Logg ut",
-      "notConfigured": "Innlogging er ikke konfigurert ennå (mangler Supabase-miljøvariabler)."
+      "notConfigured": "Innlogging er ikke konfigurert ennå (mangler Supabase-miljøvariabler).",
+      "unverifiedHint": "Du har ikke bekreftet e-postadressen ennå. Sjekk innboksen (og søppelpost), eller be om en ny lenke.",
+      "resendConfirmEmail": "Send bekreftelses-e-post på nytt",
+      "confirmResentSuccess": "Vi har sendt en ny e-post. Sjekk innboksen din.",
+      "changePassword": "Be om lenke for å bytte passord",
+      "openDashboard": "Åpne dashbord",
+      "openDashboardDesc": "Se bestillinger, meldinger og inntekter."
     },
     "errors": {
       "notConfigured": "Innlogging er ikke tilgjengelig akkurat nå. Kontakt oss hvis problemet vedvarer.",
@@ -201,21 +228,214 @@
       "updateFailed": "Kunne ikke oppdatere passordet. Prøv igjen."
     }
   },
+  "sellerOnboarding": {
+    "page": {
+      "title": "Fullfør hjelperprofilen",
+      "subtitle": "Du er nesten i mål. Dette oppretter din offentlige hjelperprofil slik at kunder kan finne deg.",
+      "configureHint": "Innlogging er ikke konfigurert (mangler Supabase). Legg til miljøvariabler for å fortsette."
+    },
+    "form": {
+      "bioLabel": "Kort presentasjon",
+      "bioPlaceholder": "Hvem er du, og hva tilbyr du?",
+      "bioHint": "Valgfritt nå — du kan utvide profilen senere. Maks 2000 tegn.",
+      "radiusLabel": "Tjenesteradius (km)",
+      "radiusHint": "Hvor langt fra basen din er du villig til å ta oppdrag?",
+      "locationLabel": "Hjemmebase (sted)",
+      "locationPlaceholder": "Velg sted …",
+      "submit": "Opprett hjelperprofil"
+    },
+    "errors": {
+      "notConfigured": "Tjenesten er ikke tilgjengelig akkurat nå.",
+      "notSignedIn": "Du må være innlogget.",
+      "profileMissing": "Fant ikke brukerprofilen din. Prøv å logge inn på nytt.",
+      "notSeller": "Denne siden er kun for registrerte hjelpere.",
+      "invalidFields": "Sjekk at verdiene er gyldige (radius 5–200 km).",
+      "saveFailed": "Kunne ikke opprette profilen. Prøv igjen."
+    }
+  },
+  "bliHjelperPage": {
+    "metaTitle": "Bli hjelper på Hjelpi | Nå lokale kunder",
+    "metaDescription": "Registrer deg som tjenesteyter på Hjelpi. Vis fram kompetansen din og motta forespørsler fra kunder i ditt område.",
+    "backToLanding": "Tilbake til Bli hjelper",
+    "heroEyebrow": "For fagfolk og frilansere",
+    "heroTitle": "Gjør det du er best på — vi kobler deg med kunder",
+    "heroBody": "Hjelpi er markedsplassen der folk finner lokale hjelpere. Opprett konto, bygg profil og ta imot henvendelser trygt.",
+    "ctaRegister": "Opprett hjelper-konto",
+    "ctaLogin": "Logg inn",
+    "benefitsTitle": "Hvorfor Hjelpi?",
+    "benefit1Title": "Synlighet",
+    "benefit1Body": "Bli funnet av kunder som aktivt søker akkurat din kompetanse.",
+    "benefit2Title": "Kontroll",
+    "benefit2Body": "Du bestemmer priser, område og hvilke oppdrag du vil ta.",
+    "benefit3Title": "Trygghet",
+    "benefit3Body": "Verifisering og oppdrag gjennom plattformen gir begge parter bedre trygghet.",
+    "stepsTitle": "Slik kommer du i gang",
+    "step1": "Registrer deg og bekreft e-posten din.",
+    "step2": "Fullfør hjelperprofilen og legg til tjenester (kommer videre i dashbordet).",
+    "step3": "Motta henvendelser og begynn å jobbe.",
+    "footnote": "Vi bygger ut plattformen fortløpende — mer verktøy for hjelpere kommer snart."
+  },
+  "dashboard": {
+    "meta": {
+      "title": "Dashbord | Hjelpi",
+      "description": "Oversikt over bestillinger, meldinger og inntekter på Hjelpi.",
+      "buyerDashboardTitle": "Kunde-dashbord | Hjelpi",
+      "buyerDashboardDescription": "Dine bestillinger og meldinger som kunde på Hjelpi.",
+      "sellerDashboardTitle": "Hjelper-dashbord | Hjelpi",
+      "sellerDashboardDescription": "Forespørsler, inntekter og meldinger som hjelper på Hjelpi.",
+      "buyerBookingsTitle": "Mine bestillinger | Hjelpi",
+      "buyerBookingsDescription": "Oversikt over bestillinger du har gjort som kunde.",
+      "sellerRequestsTitle": "Forespørsler | Hjelpi",
+      "sellerRequestsDescription": "Bestillinger og henvendelser på dine tjenester.",
+      "sellerEconomyTitle": "Inntekter | Hjelpi",
+      "sellerEconomyDescription": "Oppsummering av inntekter som hjelper.",
+      "buyerMessagesTitle": "Meldinger (kunde) | Hjelpi",
+      "sellerMessagesTitle": "Meldinger (hjelper) | Hjelpi",
+      "messagesDescription": "Samtaler knyttet til dine bestillinger.",
+      "settingsTitle": "Innstillinger | Hjelpi",
+      "settingsDescription": "Konto, passord og snarveier i Hjelpi."
+    },
+    "mode": {
+      "label": "Visning",
+      "buyer": "Kunde",
+      "seller": "Hjelper",
+      "sellerCta": "Bli hjelper",
+      "sellerUpsell": "Registrer deg som hjelper for å få eget hjelper-dashbord.",
+      "errors": {
+        "notSignedIn": "Du må være innlogget.",
+        "noProfile": "Fant ikke profilen din.",
+        "notSeller": "Du har ikke hjelperprofil ennå.",
+        "updateFailed": "Kunne ikke bytte visning. Prøv igjen."
+      }
+    },
+    "nav": {
+      "ariaLabel": "Dashbordmeny",
+      "sectionTitle": "Meny",
+      "sectionBuyer": "Kunde",
+      "sectionSeller": "Hjelper",
+      "overview": "Oversikt",
+      "bookings": "Bestillinger",
+      "requests": "Forespørsler",
+      "economy": "Inntekter",
+      "messages": "Meldinger",
+      "settings": "Innstillinger"
+    },
+    "buyerOverview": {
+      "greeting": "Hei, {name}",
+      "subtitle": "Oversikt som kunde — bestillinger du har gjort på Hjelpi.",
+      "cardBookings": "Ventende bestillinger",
+      "cardBookingsHint": "Trenger oppfølging fra hjelper eller deg.",
+      "cardSpend": "Betalt (fullført)",
+      "cardSpendHint": "Totalt for fullførte bestillinger.",
+      "cardMessages": "Samtaler",
+      "cardMessagesUnread": "{count} uleste",
+      "cardMessagesNoneUnread": "Ingen uleste akkurat nå",
+      "cardSettings": "Innstillinger",
+      "cardSettingsCta": "Konto og mer",
+      "cardSettingsHint": "Passord, profil og snarveier.",
+      "recentMessages": "Siste meldinger"
+    },
+    "sellerOverview": {
+      "greeting": "Hei, {name}",
+      "subtitle": "Oversikt som hjelper — oppdrag og inntekter.",
+      "cardRequests": "Ventende forespørsler",
+      "cardRequestsHint": "Nye henvendelser som treffer dine tjenester.",
+      "cardEarnings": "Inntjent (netto)",
+      "cardEarningsHint": "Fullførte oppdrag, etter plattformgebyr.",
+      "cardMessages": "Samtaler",
+      "cardMessagesUnread": "{count} uleste",
+      "cardMessagesNoneUnread": "Ingen uleste akkurat nå",
+      "cardSettings": "Innstillinger",
+      "cardSettingsCta": "Konto og mer",
+      "cardSettingsHint": "Passord, profil og snarveier.",
+      "recentMessages": "Siste meldinger"
+    },
+    "buyerBookingsPage": {
+      "title": "Mine bestillinger",
+      "subtitle": "Alle bestillinger du har gjort som kunde."
+    },
+    "sellerRequestsPage": {
+      "title": "Forespørsler og oppdrag",
+      "subtitle": "Bestillinger knyttet til tjenestene dine."
+    },
+    "sellerEconomy": {
+      "title": "Inntekter",
+      "subtitle": "Enkel oppsummering basert på bestillinger i systemet.",
+      "netTitle": "Netto inntekt",
+      "netSubtitle": "Etter plattformgebyr på fullførte oppdrag.",
+      "completedCount": "{count} fullførte oppdrag",
+      "pendingCount": "{count} pågående eller ventende",
+      "footnote": "Utbetaling via Stripe Connect og detaljert saldo kommer senere.",
+      "viewMonth": "Måned",
+      "viewYear": "År",
+      "breakdownTitle": "Inntekt per periode",
+      "breakdownSubtitle": "Fullførte oppdrag gruppert etter planlagt tidspunkt. Mangler dette, brukes datoen bestillingen ble opprettet.",
+      "colPeriod": "Periode",
+      "colCount": "Antall oppdrag",
+      "colNet": "Netto",
+      "breakdownEmpty": "Ingen fullførte oppdrag å vise ennå."
+    },
+    "requests": {
+      "empty": "Ingen rader å vise ennå.",
+      "colWhen": "Tidspunkt",
+      "colService": "Tjeneste",
+      "colCustomer": "Kunde",
+      "colAmount": "Beløp",
+      "colStatus": "Status",
+      "unknownCustomer": "Kunde",
+      "status": {
+        "pending": "Venter",
+        "confirmed": "Bekreftet",
+        "completed": "Fullført",
+        "cancelled": "Avbestilt",
+        "disputed": "Tvist"
+      }
+    },
+    "messagesPage": {
+      "title": "Meldinger",
+      "subtitle": "Meldinger knyttet til bestillinger du er part i.",
+      "subtitleBuyer": "Samtaler knyttet til bestillinger du har gjort som kunde.",
+      "subtitleSeller": "Samtaler med kunder om dine oppdrag.",
+      "empty": "Du har ingen meldinger ennå.",
+      "threadLabel": "Bestilling",
+      "threadFootnote": "Full tråd og svar i nettleseren kommer i neste versjon — her ser du siste melding per bestilling.",
+      "linkBookings": "Gå til bestillinger / forespørsler"
+    },
+    "settingsPage": {
+      "title": "Innstillinger",
+      "subtitle": "Snarveier til konto og funksjoner vi bygger ut.",
+      "linkAccount": "Min konto",
+      "linkAccountDesc": "Navn, e-post og bekreftelse.",
+      "linkPassword": "Passord",
+      "linkPasswordDesc": "Be om tilbakestillingslenke på e-post.",
+      "linkBecomeSeller": "Bli hjelper",
+      "linkBecomeSellerDesc": "Registrer deg som tjenesteyter på Hjelpi.",
+      "linkPublicProfile": "Offentlig profil",
+      "linkPublicProfileDesc": "Slik kunder ser deg på markedsplassen.",
+      "sessionTitle": "Økt",
+      "sessionHint": "Logg ut på denne enheten.",
+      "comingTitle": "Kommer snart",
+      "comingItem1": "Varsler (e-post / push) og varslingsinnstillinger",
+      "comingItem2": "Tjenester og priser — rediger hva du tilbyr",
+      "comingItem3": "Tilgjengelighet og kalender",
+      "comingItem4": "BankID-verifisering og utbetalingskonto (Stripe)"
+    }
+  },
   "servicesIndex": {
     "metaTitle": "Alle tjenester | Hjelpi",
     "metaDescription": "Utforsk alle tjenestekategorier på Hjelpi — fra fotografi og håndverk til undervisning og renhold.",
     "breadcrumbHome": "Hjem",
     "title": "Alle tjenester",
-    "subtitle": "Alle kategorier er sortert alfabetisk. Trykk på en kategori for oversikt, eller på en tjeneste for å gå rett til siden for den underkategorien.",
-    "subCount": "{count} tjenester"
+    "subtitle": "Alle kategorier er sortert alfabetisk. Trykk på en kategori for oversikt, eller på en tjeneste for å gå rett til siden for den underkategorien."
   },
   "categoryPage": {
     "breadcrumbHome": "Hjem",
     "breadcrumbServices": "Alle tjenester",
     "eyebrow": "Kategori",
     "metaTitle": "{category} | Hjelpi",
-    "metaDescription": "Finn hjelp innen {category}: {count} ulike tjenester fra lokale hjelpere på Hjelpi.",
-    "intro": "Her finner du {count} ulike tjenester innen {category}. Velg en tjeneste for å lese mer og finne riktig hjelper der du bor.",
+    "metaDescription": "Finn hjelp innen {category} fra lokale hjelpere på Hjelpi.",
+    "intro": "Utforsk ulike tjenester innen {category}. Velg en tjeneste for å lese mer og finne riktig hjelper der du bor.",
+    "heroImageAlt": "Stemning for {category}",
     "subsHeading": "Tjenester innen {category}",
     "ctaTitle": "Tilbyr du denne typen tjenester?",
     "ctaBody": "Registrer deg som hjelper og nå kunder som søker etter akkurat det du kan.",
@@ -227,9 +447,6 @@
     "metaTitle": "{sub} – {category} | Hjelpi",
     "metaDescription": "Finn hjelp med {sub} i kategorien {category}. Koble deg med kvalifiserte lokale hjelpere på Hjelpi.",
     "intro": "Trenger du hjelp med {sub}? Hjelpi kobler deg med lokale hjelpere som tilbyr denne typen tjenester under {category}. Opprett konto for å søke og sammenligne, eller registrer deg som hjelper hvis du vil ta oppdrag.",
-    "ctaFind": "Finn hjelper",
-    "ctaOffer": "Tilby denne tjenesten",
-    "backToCategory": "Alle {category}",
     "heroImageAlt": "Stemning for {sub}",
     "providers": {
       "sectionTitle": "Hjelpere som tilbyr denne tjenesten",

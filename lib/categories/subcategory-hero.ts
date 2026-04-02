@@ -6,6 +6,10 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1920&q=80&auto=format&fit=crop',
   behandling:
     'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1920&q=80&auto=format&fit=crop',
+  'bilverksted-og-mekaniker':
+    'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=80&auto=format&fit=crop',
+  boligstyling:
+    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&q=80&auto=format&fit=crop',
   bryllup:
     'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80&auto=format&fit=crop',
   design:
@@ -14,6 +18,8 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1920&q=80&auto=format&fit=crop',
   eldreomsorg:
     'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1920&q=80&auto=format&fit=crop',
+  elektriker:
+    'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1920&q=80&auto=format&fit=crop',
   eventutleie:
     'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80&auto=format&fit=crop',
   flislegging:
@@ -40,6 +46,10 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1920&q=80&auto=format&fit=crop',
   'kurs-og-opplaering':
     'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80&auto=format&fit=crop',
+  lasesmed:
+    'https://images.unsplash.com/photo-1558002038-1055907df827?w=1920&q=80&auto=format&fit=crop',
+  'maler-og-tapetsering':
+    'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1920&q=80&auto=format&fit=crop',
   mat:
     'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80&auto=format&fit=crop',
   musikk:
@@ -52,6 +62,8 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1920&q=80&auto=format&fit=crop',
   regnskap:
     'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80&auto=format&fit=crop',
+  'rorlegger-og-vvs':
+    'https://images.unsplash.com/photo-1585704032915-c3400ca195e7?w=1920&q=80&auto=format&fit=crop',
   renhold:
     'https://images.unsplash.com/photo-1558317374-067fb5f3004b?w=1920&q=80&auto=format&fit=crop',
   smareparasjoner:
@@ -60,6 +72,8 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1546412414-8035e1776c9a?w=1920&q=80&auto=format&fit=crop',
   stylist:
     'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1920&q=80&auto=format&fit=crop',
+  'tak-og-tekking':
+    'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=1920&q=80&auto=format&fit=crop',
   'transport-og-bud':
     'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80&auto=format&fit=crop',
   underholdning:

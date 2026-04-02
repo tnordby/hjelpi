@@ -4,10 +4,11 @@ import { AuthShell } from '@/components/auth/AuthShell'
 import { ForgotPasswordForm } from '@/components/auth/ForgotPasswordForm'
 
 export async function generateMetadata({
-  params: { locale },
+  params,
 }: {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }): Promise<Metadata> {
+  const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'auth.meta' })
   return {
     title: t('forgotTitle'),

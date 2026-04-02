@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { createSupabaseAnonServerClient } from '@/lib/supabase/server'
 
 export type SubcategoryProviderItem = {
   providerId: string
@@ -31,7 +31,7 @@ export async function fetchProvidersForSubcategory(
   subcategorySlug: string,
 ): Promise<SubcategoryProviderItem[]> {
   try {
-    const supabase = createSupabaseServerClient()
+    const supabase = createSupabaseAnonServerClient()
 
     const { data: category, error: catErr } = await supabase
       .from('categories')

@@ -114,8 +114,8 @@ export async function Footer() {
           </ul>
         </div>
       </div>
-      <div className="mt-12 w-full bg-surface-container-low px-6 py-8">
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-12 w-full bg-surface-container-low py-8">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="shrink-0 text-on-surface-variant">{t('copyright', { year })}</p>
           <div className="flex shrink-0 flex-wrap gap-6 sm:justify-end">
             <span className="flex items-center gap-2 text-on-surface-variant/70">

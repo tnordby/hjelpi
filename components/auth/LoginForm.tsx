@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { Link } from '@/i18n/routing'
 import { loginAction } from '@/lib/auth/actions'
+import posthog from 'posthog-js'
 
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
@@ -16,8 +17,15 @@ export function LoginForm() {
     e.preventDefault()
     setError(undefined)
     const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
     const result = await loginAction(undefined, formData)
-    if (result?.error) setError(result.error)
+    if (result?.error) {
+      setError(result.error)
+      posthog.capture('login_failed', { error: result.error })
+    } else {
+      posthog.identify(email, { email })
+      posthog.capture('user_logged_in', { email })
+    }
   }
 
   return (

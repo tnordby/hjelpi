@@ -7,8 +7,8 @@ export async function CitiesSection() {
   const nf = new Intl.NumberFormat('nb-NO')
 
   return (
-    <section className="bg-surface-container-low px-6 py-24">
-      <div className="mx-auto max-w-7xl">
+    <section className="bg-surface-container-low py-24">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <h2 className="mb-12 text-center font-headline text-2xl font-extrabold tracking-tight text-primary">
           {t('cities.title')}
         </h2>

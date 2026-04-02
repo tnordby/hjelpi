@@ -9,10 +9,11 @@ import { ServiceBreadcrumbs } from '@/components/categories/ServiceBreadcrumbs'
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }): Promise<Metadata> {
+  const { locale } = await params
   const t = await getTranslations({
-    locale: params.locale,
+    locale,
     namespace: 'servicesIndex',
   })
   return {

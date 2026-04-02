@@ -4,57 +4,76 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/routing'
 import { FormEvent, useState } from 'react'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { cn } from '@/lib/utils'
+import posthog from 'posthog-js'
 
 const POPULAR_TAGS = ['photographer', 'dogSitting', 'moveClean'] as const
 
-export function HomeSearchBar() {
+type Layout = 'hero' | 'default'
+
+export function HomeSearchBar({ layout = 'default' }: { layout?: Layout }) {
   const t = useTranslations('home.hero')
   const router = useRouter()
   const [query, setQuery] = useState('')
+  const hero = layout === 'hero'
 
   function onSubmit(e: FormEvent) {
     e.preventDefault()
     const q = query.trim()
+    posthog.capture('search_submitted', { query: q, layout })
     if (q) {
       router.push(`/?q=${encodeURIComponent(q)}`)
       return
     }
-    router.push('/')
+    router.push('/tjenester')
   }
 
   return (
-    <div className="group relative max-w-xl">
+    <div className={cn('group relative w-full', hero ? 'max-w-2xl' : 'max-w-xl')}>
       <form
         onSubmit={onSubmit}
-        className="flex items-center rounded-full bg-surface-container-lowest p-2 shadow-ambient-md transition-all focus-within:ring-2 focus-within:ring-primary/20"
+        className={cn(
+          'flex items-center gap-1 rounded-full border bg-white p-1.5 pl-4 shadow-sm transition-shadow focus-within:border-primary/40 focus-within:shadow-md md:pl-5',
+          hero ? 'border-outline-variant/80 pr-1.5' : 'border-outline-variant/60',
+        )}
       >
-        <MaterialIcon name="search" className="ml-4 text-primary" />
+        {!hero ? (
+          <MaterialIcon name="search" className="ml-1 shrink-0 text-primary" />
+        ) : null}
         <input
           name="q"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full border-none bg-transparent px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-0"
+          className="min-w-0 flex-1 border-none bg-transparent py-2.5 text-base text-on-surface placeholder:text-on-surface-variant/55 focus:outline-none focus:ring-0 md:py-3 md:text-[1.05rem]"
           placeholder={t('searchPlaceholder')}
           type="search"
           autoComplete="off"
         />
         <button
           type="submit"
-          className="rounded-full bg-primary px-8 py-3 font-bold text-on-primary transition-transform hover:scale-[0.98]"
+          aria-label={t('searchSubmitAria')}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition-transform hover:scale-[1.02] active:scale-[0.98] md:h-12 md:w-12"
         >
-          {t('search')}
+          <MaterialIcon name="search" className="text-[22px] md:text-2xl" />
         </button>
       </form>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <span className="mr-2 text-sm text-on-surface-variant">
-          {t('popularLabel')}
-        </span>
+      <div
+        className={cn(
+          'mt-5 flex flex-wrap items-center gap-2',
+          hero && 'justify-center',
+        )}
+      >
+        <span className="text-sm text-on-surface-variant">{t('popularLabel')}</span>
         {POPULAR_TAGS.map((key) => (
           <button
             key={key}
             type="button"
-            onClick={() => setQuery(t(`popularTags.${key}`))}
-            className="rounded-full bg-surface-container-low px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-surface-container"
+            onClick={() => {
+              const tag = t(`popularTags.${key}`)
+              setQuery(tag)
+              posthog.capture('popular_tag_clicked', { tag, key })
+            }}
+            className="rounded-full border border-outline-variant/70 bg-white px-3.5 py-1.5 text-xs font-semibold text-on-surface transition-colors hover:border-primary/50 hover:text-primary md:text-sm"
           >
             {t(`popularTags.${key}`)}
           </button>

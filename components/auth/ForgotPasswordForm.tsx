@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { Link } from '@/i18n/routing'
 import { forgotPasswordAction } from '@/lib/auth/actions'
+import posthog from 'posthog-js'
 
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
@@ -18,9 +19,13 @@ export function ForgotPasswordForm() {
     setError(undefined)
     setSuccess(false)
     const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
     const result = await forgotPasswordAction(undefined, formData)
     if (result?.error) setError(result.error)
-    if (result?.success === 'resetSent') setSuccess(true)
+    if (result?.success === 'resetSent') {
+      setSuccess(true)
+      posthog.capture('password_reset_requested', { email })
+    }
   }
 
   return (

@@ -11,8 +11,8 @@ export async function HowItWorksSection() {
   const t = await getTranslations('home')
 
   return (
-    <section className="bg-surface-container-lowest px-6 py-24">
-      <div className="mx-auto max-w-7xl">
+    <section className="bg-surface-container-lowest py-24">
+      <div className="mx-auto w-full max-w-7xl px-6">
         <div className="mb-16 text-center">
           <h2 className="mb-4 font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
             {t('howItWorks.title')}

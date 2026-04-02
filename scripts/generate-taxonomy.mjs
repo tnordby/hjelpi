@@ -23,6 +23,7 @@ const QUOTE_DEFAULT_CATEGORY_SLUGS = new Set([
   'musikk',
   'underholdning',
   'regnskap',
+  'boligstyling',
 ])
 
 const HOURLY_DEFAULT_CATEGORY_SLUGS = new Set([
@@ -126,6 +127,7 @@ function slugify(s) {
     .replace(/æ/g, 'ae')
     .replace(/ø/g, 'o')
     .replace(/å/g, 'a')
+    .replace(/ü/g, 'u')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '') || 'tjeneste'
 }
@@ -146,6 +148,13 @@ const CATEGORY_SLUG_OVERRIDES = {
   Underholdning: 'underholdning',
   'Småreparasjoner': 'smareparasjoner',
   Håndverker: 'handverker',
+  Boligstyling: 'boligstyling',
+  'Bilverksted og mekaniker': 'bilverksted-og-mekaniker',
+  Elektriker: 'elektriker',
+  Låsesmed: 'lasesmed',
+  'Maler og tapetsering': 'maler-og-tapetsering',
+  'Rørlegger og VVS': 'rorlegger-og-vvs',
+  'Tak og tekking': 'tak-og-tekking',
 }
 
 const SKIP_SUBS = new Set([
@@ -180,9 +189,17 @@ const LABEL_FIXES = {
     Reparasjonavgjerdeellerlevegg: 'Reparasjon av gjerde eller levegg',
     Innvendigisolering: 'Innvendig isolering',
     Demonteringavinnredning: 'Demontering av innredning',
+    Skifteavhåndtakogbeslag: 'Skifte av håndtak og beslag',
   },
   'Personlig trener': {
     Badmintont: 'Badminton',
+  },
+  Renhold: {
+    'Hopp over leie': 'Leie av avfallscontainer',
+    'Kommersiell og kontor dugg': 'Kommersiell og kontor — daglig renhold',
+  },
+  Flislegging: {
+    'Forsegling, fuging og fuging': 'Forsegling og fuging',
   },
 }
 
@@ -232,8 +249,7 @@ const categories = [...buckets.entries()]
   })
   .sort((a, b) => a.title.localeCompare(b.title, 'nb'))
 
-const ts = `/* eslint-disable */
-/**
+const ts = `/**
  * Auto-generated from data/markedsplass-tjenester.csv — run: node scripts/generate-taxonomy.mjs
  * Merges: Rengjøring→Renhold, Språkundervisning→Språk, IKEA→Småreparasjoner.
  * Dedupes: dronefotografi, illustratør, arrangement bedriftsfoto/bryllups-DJ.

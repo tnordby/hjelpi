@@ -1,7 +1,9 @@
+import { createClient } from '@supabase/supabase-js'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
-export function createSupabaseServerClient() {
+/** Anonymous reads (no session cookies). Safe for static prerender / ISR where `cookies()` is unavailable. */
+export function createSupabaseAnonServerClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
@@ -9,7 +11,18 @@ export function createSupabaseServerClient() {
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY')
   }
 
-  const cookieStore = cookies()
+  return createClient(url, key)
+}
+
+export async function createSupabaseServerClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!url || !key) {
+    throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY')
+  }
+
+  const cookieStore = await cookies()
 
   return createServerClient(url, key, {
     cookies: {

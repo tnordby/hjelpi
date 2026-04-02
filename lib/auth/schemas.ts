@@ -14,3 +14,7 @@ export const registerSchema = z.object({
 export const forgotPasswordSchema = z.object({
   email: z.string().min(1).email(),
 })
+
+export const resendConfirmationSchema = z.object({
+  email: z.string().min(1).email(),
+})

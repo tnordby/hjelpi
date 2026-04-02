@@ -5,14 +5,15 @@ import { Footer } from '@/components/layout/Footer'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
-type Props = { params: { locale: string; id: string } }
+type Props = { params: Promise<{ locale: string; id: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const supabase = createSupabaseServerClient()
+  const { id } = await params
+  const supabase = await createSupabaseServerClient()
   const { data } = await supabase
     .from('providers')
     .select('profiles(full_name)')
-    .eq('id', params.id)
+    .eq('id', id)
     .maybeSingle()
 
   let name = 'Hjelper'
@@ -30,7 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function HjelperProfilePage({ params }: Props) {
-  const supabase = createSupabaseServerClient()
+  const { id } = await params
+  const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
     .from('providers')
     .select(
@@ -43,7 +45,7 @@ export default async function HjelperProfilePage({ params }: Props) {
       profiles (full_name, avatar_url, deleted_at)
     `,
     )
-    .eq('id', params.id)
+    .eq('id', id)
     .maybeSingle()
 
   if (error || !data) notFound()

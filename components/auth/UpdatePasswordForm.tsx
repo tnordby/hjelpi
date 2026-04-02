@@ -6,6 +6,7 @@ import { useRouter as useNextRouter } from 'next/navigation'
 import { useEffect, useState, type FormEvent } from 'react'
 import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
+import posthog from 'posthog-js'
 
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
@@ -15,15 +16,14 @@ export function UpdatePasswordForm() {
   const tErrors = useTranslations('auth.errors')
   const router = useRouter()
   const nextRouter = useNextRouter()
-  const [ready, setReady] = useState<boolean | null>(null)
+  const [ready, setReady] = useState<boolean | null>(() =>
+    isSupabaseConfigured() ? null : false,
+  )
   const [error, setError] = useState<string | undefined>()
   const [done, setDone] = useState(false)
 
   useEffect(() => {
-    if (!isSupabaseConfigured()) {
-      setReady(false)
-      return
-    }
+    if (!isSupabaseConfigured()) return
 
     let cancelled = false
     const supabase = createSupabaseBrowserClient()
@@ -72,6 +72,7 @@ export function UpdatePasswordForm() {
         setError(tErrors('updateFailed'))
         return
       }
+      posthog.capture('password_updated')
       setDone(true)
       await supabase.auth.signOut()
       setTimeout(() => {

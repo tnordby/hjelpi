@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * Auto-generated from data/markedsplass-tjenester.csv — run: node scripts/generate-taxonomy.mjs
  * Merges: Rengjøring→Renhold, Språkundervisning→Språk, IKEA→Småreparasjoner.
@@ -24,14 +23,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "arrangementsdekorator",
         "title": "Arrangementsdekoratør"
-      },
-      {
-        "slug": "bryllupsdekorering",
-        "title": "Bryllupsdekorering"
-      },
-      {
-        "slug": "bryllupsplanlegging",
-        "title": "Bryllupsplanlegging"
       },
       {
         "slug": "cocktailbartender",
@@ -120,6 +111,14 @@ export const TAXONOMY: TaxonomyCategory[] = [
     "title": "Barnevakt",
     "subs": [
       {
+        "slug": "barnepass-dagtid",
+        "title": "Barnepass dagtid"
+      },
+      {
+        "slug": "barnepass-ferie",
+        "title": "Barnepass ferie"
+      },
+      {
         "slug": "barnepass-helg",
         "title": "Barnepass helg"
       },
@@ -164,6 +163,46 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "sportsmassasje",
         "title": "Sportsmassasje"
+      }
+    ]
+  },
+  {
+    "slug": "bilverksted-og-mekaniker",
+    "title": "Bilverksted og mekaniker",
+    "subs": [
+      {
+        "slug": "ac-og-klima-bil",
+        "title": "AC og klima bil"
+      },
+      {
+        "slug": "bilmekaniker",
+        "title": "Bilmekaniker"
+      },
+      {
+        "slug": "dekkskift",
+        "title": "Dekkskift"
+      },
+      {
+        "slug": "eu-kontroll-og-pkk",
+        "title": "EU-kontroll og PKK"
+      }
+    ]
+  },
+  {
+    "slug": "boligstyling",
+    "title": "Boligstyling",
+    "subs": [
+      {
+        "slug": "boligstyling-for-salg",
+        "title": "Boligstyling før salg"
+      },
+      {
+        "slug": "homestaging",
+        "title": "Homestaging"
+      },
+      {
+        "slug": "interiorkonsulent",
+        "title": "Interiørkonsulent"
       }
     ]
   },
@@ -434,12 +473,42 @@ export const TAXONOMY: TaxonomyCategory[] = [
     "title": "Eldreomsorg",
     "subs": [
       {
+        "slug": "folge-til-avtaler",
+        "title": "Følge til avtaler"
+      },
+      {
         "slug": "folge-til-lege",
         "title": "Følge til lege"
       },
       {
         "slug": "handlehjelp",
         "title": "Handlehjelp"
+      },
+      {
+        "slug": "selskap-og-prat",
+        "title": "Selskap og prat"
+      }
+    ]
+  },
+  {
+    "slug": "elektriker",
+    "title": "Elektriker",
+    "subs": [
+      {
+        "slug": "el-installasjon-bolig",
+        "title": "El-installasjon bolig"
+      },
+      {
+        "slug": "feilsoking-og-reparasjon-elektro",
+        "title": "Feilsøking og reparasjon elektro"
+      },
+      {
+        "slug": "ladeinfrastruktur-elbil",
+        "title": "Ladeinfrastruktur elbil"
+      },
+      {
+        "slug": "sikringsskap-og-kurser",
+        "title": "Sikringsskap og kurser"
       }
     ]
   },
@@ -462,8 +531,8 @@ export const TAXONOMY: TaxonomyCategory[] = [
     "title": "Flislegging",
     "subs": [
       {
-        "slug": "forsegling-fuging-og-fuging",
-        "title": "Forsegling, fuging og fuging"
+        "slug": "forsegling-og-fuging",
+        "title": "Forsegling og fuging"
       },
       {
         "slug": "gulvfliser",
@@ -476,10 +545,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "montering-av-stein-eller-fliser-pa-gulv",
         "title": "Montering av stein eller fliser på gulv"
-      },
-      {
-        "slug": "montering-av-tegltak",
-        "title": "Montering av tegltak"
       },
       {
         "slug": "murstein-og-blokkbelegningstjenester",
@@ -506,6 +571,18 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "flytting-av-mobler",
         "title": "Flytting av møbler"
+      },
+      {
+        "slug": "full-flyttehjelp",
+        "title": "Full flyttehjelp"
+      },
+      {
+        "slug": "pakking-til-flytting",
+        "title": "Pakking til flytting"
+      },
+      {
+        "slug": "piano-og-tungloft",
+        "title": "Piano- og tungløft"
       }
     ]
   },
@@ -718,10 +795,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Snøbrøyting"
       },
       {
-        "slug": "stryketjenester",
-        "title": "Stryketjenester"
-      },
-      {
         "slug": "stottemurkonstruksjon",
         "title": "Støttemurkonstruksjon"
       },
@@ -902,6 +975,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Gulvsliping"
       },
       {
+        "slug": "innerdorer-og-listverk",
+        "title": "Innerdører og listverk"
+      },
+      {
         "slug": "innvendig-isolering",
         "title": "Innvendig isolering"
       },
@@ -954,8 +1031,8 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Reparasjon av gjerde eller levegg"
       },
       {
-        "slug": "skifteavhandtakogbeslag",
-        "title": "Skifteavhåndtakogbeslag"
+        "slug": "skifte-av-handtak-og-beslag",
+        "title": "Skifte av håndtak og beslag"
       },
       {
         "slug": "smareparasjoner",
@@ -968,6 +1045,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "sparkling-og-puss",
         "title": "Sparkling og puss"
+      },
+      {
+        "slug": "tomrer-og-snekker",
+        "title": "Tømrer og snekker"
       }
     ]
   },
@@ -976,8 +1057,24 @@ export const TAXONOMY: TaxonomyCategory[] = [
     "title": "IT-hjelp",
     "subs": [
       {
+        "slug": "mobil-og-nettbrett",
+        "title": "Mobil og nettbrett"
+      },
+      {
         "slug": "pc-og-printeroppsett",
         "title": "PC- og printeroppsett"
+      },
+      {
+        "slug": "sikkerhetskopiering-og-gjenoppretting",
+        "title": "Sikkerhetskopiering og gjenoppretting"
+      },
+      {
+        "slug": "smarthus-og-iot-oppsett",
+        "title": "Smarthus og IoT-oppsett"
+      },
+      {
+        "slug": "virus-og-malware-fjerning",
+        "title": "Virus og malware-fjerning"
       },
       {
         "slug": "wifi-og-nettverksproblemer",
@@ -989,6 +1086,22 @@ export const TAXONOMY: TaxonomyCategory[] = [
     "slug": "juridisk-radgivning",
     "title": "Juridisk rådgivning",
     "subs": [
+      {
+        "slug": "arbeidsrett",
+        "title": "Arbeidsrett"
+      },
+      {
+        "slug": "arv-og-testament",
+        "title": "Arv og testament"
+      },
+      {
+        "slug": "boligjuridisk-bistand",
+        "title": "Boligjuridisk bistand"
+      },
+      {
+        "slug": "familierett-og-samboerskap",
+        "title": "Familierett og samboerskap"
+      },
       {
         "slug": "gratis-juridisk-vurdering",
         "title": "Gratis juridisk vurdering"
@@ -1132,8 +1245,60 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Excel for nybegynnere"
       },
       {
+        "slug": "grunder-og-oppstart",
+        "title": "Gründer og oppstart"
+      },
+      {
         "slug": "matlagingskurs",
         "title": "Matlagingskurs"
+      },
+      {
+        "slug": "presentasjonsteknikk",
+        "title": "Presentasjonsteknikk"
+      },
+      {
+        "slug": "sosiale-medier-for-bedrifter",
+        "title": "Sosiale medier for bedrifter"
+      }
+    ]
+  },
+  {
+    "slug": "lasesmed",
+    "title": "Låsesmed",
+    "subs": [
+      {
+        "slug": "elektronisk-adgangskontroll",
+        "title": "Elektronisk adgangskontroll"
+      },
+      {
+        "slug": "las-og-sylinder",
+        "title": "Lås og sylinder"
+      },
+      {
+        "slug": "nokkel-og-las",
+        "title": "Nøkkel og lås"
+      }
+    ]
+  },
+  {
+    "slug": "maler-og-tapetsering",
+    "title": "Maler og tapetsering",
+    "subs": [
+      {
+        "slug": "innendors-maling",
+        "title": "Innendørs maling"
+      },
+      {
+        "slug": "maling-tak-og-lister",
+        "title": "Maling tak og lister"
+      },
+      {
+        "slug": "tapetsering",
+        "title": "Tapetsering"
+      },
+      {
+        "slug": "utvendig-maling",
+        "title": "Utvendig maling"
       }
     ]
   },
@@ -1216,6 +1381,14 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Klassikere"
       },
       {
+        "slug": "kor-og-ensemble",
+        "title": "Kor og ensemble"
+      },
+      {
+        "slug": "live-band",
+        "title": "Live band"
+      },
+      {
         "slug": "lounge",
         "title": "Lounge"
       },
@@ -1230,6 +1403,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "sanger",
         "title": "Sanger"
+      },
+      {
+        "slug": "soloartist-og-vokalist",
+        "title": "Soloartist og vokalist"
       },
       {
         "slug": "trance",
@@ -1562,6 +1739,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Engelsk"
       },
       {
+        "slug": "fransk",
+        "title": "Fransk"
+      },
+      {
         "slug": "fysikk",
         "title": "Fysikk"
       },
@@ -1580,6 +1761,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "norsk",
         "title": "Norsk"
+      },
+      {
+        "slug": "spansk",
+        "title": "Spansk"
       },
       {
         "slug": "tysk",
@@ -1666,10 +1851,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Hagerydning"
       },
       {
-        "slug": "hopp-over-leie",
-        "title": "Hopp over leie"
-      },
-      {
         "slug": "husrengjoring",
         "title": "Husrengjøring"
       },
@@ -1682,8 +1863,8 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Høytrykksspyling"
       },
       {
-        "slug": "kommersiell-og-kontor-dugg",
-        "title": "Kommersiell og kontor dugg"
+        "slug": "kommersiell-og-kontor-daglig-renhold",
+        "title": "Kommersiell og kontor — daglig renhold"
       },
       {
         "slug": "kommersiell-og-kontorrengjoring",
@@ -1692,6 +1873,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "kontorrengjoring",
         "title": "Kontorrengjøring"
+      },
+      {
+        "slug": "leie-av-avfallscontainer",
+        "title": "Leie av avfallscontainer"
       },
       {
         "slug": "luktfjerning",
@@ -1758,6 +1943,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Sluttrengjøring av leieforhold"
       },
       {
+        "slug": "stryketjenester",
+        "title": "Stryketjenester"
+      },
+      {
         "slug": "tepperensing",
         "title": "Tepperensing"
       },
@@ -1768,6 +1957,28 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "vindusvaskere",
         "title": "Vindusvaskere"
+      }
+    ]
+  },
+  {
+    "slug": "rorlegger-og-vvs",
+    "title": "Rørlegger og VVS",
+    "subs": [
+      {
+        "slug": "montering-av-bad",
+        "title": "Montering av bad"
+      },
+      {
+        "slug": "rorlegger",
+        "title": "Rørlegger"
+      },
+      {
+        "slug": "tette-avlop-og-sluk",
+        "title": "Tette avløp og sluk"
+      },
+      {
+        "slug": "varme-og-sanitaer",
+        "title": "Varme og sanitær"
       }
     ]
   },
@@ -1978,9 +2189,35 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
+    "slug": "tak-og-tekking",
+    "title": "Tak og tekking",
+    "subs": [
+      {
+        "slug": "flatt-tak-og-takpapp",
+        "title": "Flatt tak og takpapp"
+      },
+      {
+        "slug": "montering-av-tegltak",
+        "title": "Montering av tegltak"
+      },
+      {
+        "slug": "takreparasjon",
+        "title": "Takreparasjon"
+      },
+      {
+        "slug": "taktekker",
+        "title": "Taktekker"
+      }
+    ]
+  },
+  {
     "slug": "transport-og-bud",
     "title": "Transport og bud",
     "subs": [
+      {
+        "slug": "godstransport",
+        "title": "Godstransport"
+      },
       {
         "slug": "kjop-og-hent-tjenester",
         "title": "Kjøp og hent-tjenester"
@@ -1988,6 +2225,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "levering-av-pakker",
         "title": "Levering av pakker"
+      },
+      {
+        "slug": "varetransport",
+        "title": "Varetransport"
       }
     ]
   },

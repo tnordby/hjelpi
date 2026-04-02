@@ -1,9 +1,27 @@
+const path = require('path')
 const createNextIntlPlugin = require('next-intl/plugin')
 
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://eu-assets.i.posthog.com/static/:path*',
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://eu.i.posthog.com/:path*',
+      },
+    ]
+  },
+  skipTrailingSlashRedirect: true,
+  // Avoid inferring a parent folder (e.g. ~/package-lock.json) as the workspace root
+  outputFileTracingRoot: path.join(__dirname),
+  // Bundles next-intl + FormatJS into the app graph so dev doesn’t reference missing vendor-chunks/@formatjs.js
+  transpilePackages: ['next-intl'],
   images: {
     remotePatterns: [
       {

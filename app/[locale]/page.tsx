@@ -12,9 +12,10 @@ import { SellerCtaSection } from '@/components/home/SellerCtaSection'
 export async function generateMetadata({
   params,
 }: {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.locale, namespace: 'meta' })
+  const { locale } = await params
+  const t = await getTranslations({ locale, namespace: 'meta' })
   return {
     title: t('title'),
     description: t('description'),
@@ -25,7 +26,7 @@ export default function HomePage() {
   return (
     <>
       <Navbar />
-      <main className="pt-24">
+      <main>
         <HomeHero />
         <CategoryGrid />
         <HowItWorksSection />

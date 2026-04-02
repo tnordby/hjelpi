@@ -3,36 +3,66 @@
 import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { Link } from '@/i18n/routing'
-import { registerAction } from '@/lib/auth/actions'
+import { registerAction, registerSellerAction } from '@/lib/auth/actions'
+import { ResendSignupEmailForm } from '@/components/auth/ResendSignupEmailForm'
+import posthog from 'posthog-js'
 
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
 
-export function RegisterForm() {
-  const t = useTranslations('auth.register')
+type Props = {
+  variant?: 'buyer' | 'seller'
+}
+
+export function RegisterForm({ variant = 'buyer' }: Props) {
+  const t = useTranslations(variant === 'seller' ? 'auth.sellerRegister' : 'auth.register')
   const [error, setError] = useState<string | undefined>()
   const [success, setSuccess] = useState<string | undefined>()
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null)
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(undefined)
     setSuccess(undefined)
-    const formData = new FormData(e.currentTarget)
-    const result = await registerAction(undefined, formData)
-    if (result?.error) setError(result.error)
-    if (result?.success === 'emailConfirm') setSuccess(t('successEmail'))
+    setPendingEmail(null)
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const emailField = form.elements.namedItem('email') as HTMLInputElement | null
+    const fullNameField = form.elements.namedItem('fullName') as HTMLInputElement | null
+    const action = variant === 'seller' ? registerSellerAction : registerAction
+    const result = await action(undefined, formData)
+    if (result?.error) {
+      setError(result.error)
+    }
+    if (result?.success === 'emailConfirm') {
+      setSuccess(t('successEmail'))
+      const email = emailField?.value ?? ''
+      const fullName = fullNameField?.value ?? ''
+      if (email) setPendingEmail(email)
+      posthog.identify(email, { email, name: fullName })
+      posthog.capture(variant === 'seller' ? 'seller_registered' : 'user_registered', {
+        email,
+        name: fullName,
+        variant,
+      })
+    }
+  }
+
+  if (success) {
+    return (
+      <div className="space-y-5">
+        <div className="space-y-3 rounded-xl bg-secondary-container px-4 py-3 text-sm text-on-secondary-container">
+          <p role="status">{success}</p>
+          {pendingEmail ? (
+            <ResendSignupEmailForm email={pendingEmail} className="space-y-2 pt-1" />
+          ) : null}
+        </div>
+      </div>
+    )
   }
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
-      {success ? (
-        <p
-          className="rounded-xl bg-secondary-container px-4 py-3 text-sm text-on-secondary-container"
-          role="status"
-        >
-          {success}
-        </p>
-      ) : null}
       {error ? (
         <p
           className="rounded-xl bg-error-container/80 px-4 py-3 text-sm text-on-error-container"
@@ -96,6 +126,14 @@ export function RegisterForm() {
           {t('loginLink')}
         </Link>
       </p>
+      {variant === 'seller' ? (
+        <p className="text-center text-sm text-on-surface-variant">
+          {t('buyerInstead')}{' '}
+          <Link href="/registrer" className="font-bold text-primary hover:underline">
+            {t('buyerRegisterLink')}
+          </Link>
+        </p>
+      ) : null}
     </form>
   )
 }

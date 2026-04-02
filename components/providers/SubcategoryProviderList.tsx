@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/routing'
 import type { SubcategoryProviderItem } from '@/lib/providers/subcategory-providers'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import posthog from 'posthog-js'
+
 export type SortKey =
   | 'rating_desc'
   | 'rating_asc'
@@ -91,7 +93,11 @@ export function SubcategoryProviderList({
           <span className="text-on-surface-variant">{t('sortLabel')}</span>
           <select
             value={sort}
-            onChange={(e) => setSort(e.target.value as SortKey)}
+            onChange={(e) => {
+              const newSort = e.target.value as SortKey
+              setSort(newSort)
+              posthog.capture('provider_list_sorted', { sort_key: newSort })
+            }}
             className="cursor-pointer rounded-xl border border-outline-variant/60 bg-white px-4 py-2.5 font-body text-on-surface shadow-sm outline-none ring-primary/20 transition-shadow focus:ring-2"
           >
             <option value="rating_desc">{t('sortRatingHigh')}</option>
@@ -109,6 +115,15 @@ export function SubcategoryProviderList({
             <li key={p.providerId}>
               <Link
                 href={`/hjelpere/${p.providerId}`}
+                onClick={() =>
+                  posthog.capture('provider_profile_clicked', {
+                    provider_id: p.providerId,
+                    provider_name: p.fullName,
+                    sort_key: sort,
+                    is_verified: p.isVerified,
+                    avg_rating: p.avgRating,
+                  })
+                }
                 className="group flex h-full gap-4 rounded-2xl border border-outline-variant/35 bg-white p-5 shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
               >
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-surface-container-low">
