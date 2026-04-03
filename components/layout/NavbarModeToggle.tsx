@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/routing'
 import { switchDashboardModeAction } from '@/lib/dashboard/mode-action'
+import { startSellerOnboardingAction } from '@/lib/seller/actions'
 import { cn } from '@/lib/utils'
 
 type Props = {
@@ -57,13 +58,13 @@ export function NavbarModeToggle({ isSeller }: Props) {
 
   const segmentClass = (active: boolean, role: 'buyer' | 'seller') =>
     cn(
-      'flex min-h-[2.5rem] w-full min-w-0 cursor-pointer items-center justify-center gap-2.5 rounded-full border-0 py-2.5 text-sm font-semibold tracking-tight transition-all sm:gap-3 sm:py-2.5',
+      'flex min-h-[2.25rem] w-full min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border-0 py-2 text-sm font-medium tracking-tight transition-colors sm:gap-2.5 sm:py-2',
       role === 'buyer'
         ? 'px-5 pr-6 pl-5 sm:px-6 sm:pl-5 sm:pr-8'
         : 'px-4 sm:px-5',
       active
-        ? 'bg-white text-on-surface shadow-sm ring-1 ring-on-surface/[0.06]'
-        : 'bg-transparent text-on-surface-variant hover:text-on-surface',
+        ? 'bg-surface-container-lowest text-primary shadow-ambient-soft ring-1 ring-outline-variant/40'
+        : 'bg-transparent text-on-surface-variant hover:bg-on-surface/[0.04] hover:text-on-surface',
     )
 
   const iconClass = (active: boolean) =>
@@ -71,7 +72,7 @@ export function NavbarModeToggle({ isSeller }: Props) {
 
   return (
     <div
-      className="hidden w-full max-w-[min(100%,28rem)] rounded-full bg-on-surface/[0.06] p-1.5 ring-1 ring-on-surface/[0.04] md:flex"
+      className="hidden w-full max-w-[min(100%,28rem)] rounded-full bg-on-surface/[0.045] p-1 ring-1 ring-outline-variant/35 md:flex"
       role="group"
       aria-label={t('roleToggleAria')}
     >
@@ -99,14 +100,16 @@ export function NavbarModeToggle({ isSeller }: Props) {
           </button>
         </form>
       ) : (
-        <Link
-          href="/min-side/hjelper"
-          className={cn('min-w-0 flex-[0.86]', segmentClass(onHelperPath, 'seller'))}
-          aria-current={onHelperPath ? 'page' : undefined}
-        >
-          <IconBriefcase className={iconClass(onHelperPath)} />
-          <span className="whitespace-nowrap">{t('beHelperSegment')}</span>
-        </Link>
+        <form action={startSellerOnboardingAction} className="min-w-0 flex-[0.86]">
+          <button
+            type="submit"
+            className={segmentClass(onHelperPath, 'seller')}
+            aria-current={onHelperPath ? 'page' : undefined}
+          >
+            <IconBriefcase className={iconClass(onHelperPath)} />
+            <span className="whitespace-nowrap">{t('beHelperSegment')}</span>
+          </button>
+        </form>
       )}
     </div>
   )

@@ -30,7 +30,6 @@ export async function generateMetadata({
 
 export default async function FullforProfilPage() {
   const t = await getTranslations('sellerOnboarding.page')
-  const tBack = await getTranslations('bliHjelperPage')
 
   if (!isSupabaseConfigured()) {
     return (
@@ -72,11 +71,7 @@ export default async function FullforProfilPage() {
     })) ?? []
 
   return (
-    <AuthShell
-      title={t('title')}
-      subtitle={t('subtitle')}
-      backLink={{ href: '/bli-hjelper', label: tBack('backToLanding') }}
-    >
+    <AuthShell title={t('title')} subtitle={t('subtitle')}>
       <CompleteSellerProfileForm locations={locationOptions} />
     </AuthShell>
   )

@@ -11,19 +11,29 @@ export function stripeConnectExpressAccountReady(account: Stripe.Account): boole
   )
 }
 
+export type SyncStripeConnectOnboardingResult = {
+  ok: boolean
+  /** False if Stripe API retrieve failed */
+  retrieved: boolean
+  ready: boolean
+  /** User finished the onboarding form; Stripe may still be reviewing */
+  detailsSubmitted: boolean
+}
+
 /**
  * Pull latest Connect status from Stripe and persist `providers.stripe_onboarded`.
- * Call when the user returns from Stripe Hosted Onboarding (webhooks can lag).
+ * Call on Utbetalinger (and when returning from Hosted Onboarding); webhooks can lag.
  */
 export async function syncProviderStripeOnboardedFromStripe(
   supabase: SupabaseClient,
   stripe: Stripe,
   providerId: string,
   stripeAccountId: string,
-): Promise<{ ok: boolean; ready: boolean }> {
+): Promise<SyncStripeConnectOnboardingResult> {
   try {
     const account = await stripe.accounts.retrieve(stripeAccountId)
     const ready = stripeConnectExpressAccountReady(account)
+    const detailsSubmitted = account.details_submitted === true
     const { error } = await supabase
       .from('providers')
       .update({ stripe_onboarded: ready })
@@ -32,12 +42,12 @@ export async function syncProviderStripeOnboardedFromStripe(
 
     if (error) {
       console.warn('[stripe] sync connect onboarded:', error.message)
-      return { ok: false, ready }
+      return { ok: false, retrieved: true, ready, detailsSubmitted }
     }
-    return { ok: true, ready }
+    return { ok: true, retrieved: true, ready, detailsSubmitted }
   } catch (e) {
     console.warn('[stripe] sync connect onboarded: retrieve failed', e)
-    return { ok: false, ready: false }
+    return { ok: false, retrieved: false, ready: false, detailsSubmitted: false }
   }
 }
 

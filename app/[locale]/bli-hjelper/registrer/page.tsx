@@ -24,14 +24,9 @@ export async function generateMetadata({
 
 export default async function BliHjelperRegistrerPage() {
   const t = await getTranslations('auth.sellerRegister')
-  const tBack = await getTranslations('bliHjelperPage')
 
   return (
-    <AuthShell
-      title={t('title')}
-      subtitle={t('subtitle')}
-      backLink={{ href: '/bli-hjelper', label: tBack('backToLanding') }}
-    >
+    <AuthShell title={t('title')} subtitle={t('subtitle')}>
       <RegisterForm variant="seller" />
     </AuthShell>
   )

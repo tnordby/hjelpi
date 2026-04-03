@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { Link } from '@/i18n/routing'
 import { loginAction } from '@/lib/auth/actions'
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
 import posthog from 'posthog-js'
 
 const inputClass =
@@ -70,10 +71,7 @@ export function LoginForm({ nextPath }: Props) {
           className={inputClass}
         />
       </div>
-      <button
-        type="submit"
-        className="w-full rounded-full bg-primary py-3.5 font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
-      >
+      <button type="submit" className={hjBtnPrimaryLg}>
         {t('submit')}
       </button>
       <div className="flex flex-col gap-3 text-center text-sm sm:flex-row sm:justify-between sm:text-left">

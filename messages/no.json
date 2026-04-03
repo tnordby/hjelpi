@@ -187,7 +187,7 @@
     },
     "sellerRegister": {
       "title": "Opprett hjelper-konto",
-      "subtitle": "Registrer deg for å tilby tjenester på Hjelpi. Etter bekreftelse kan du bygge profil og legge ut tilbud.",
+      "subtitle": "Registrer deg for å tilby tjenester på Hjelpi. Bekreft e-posten for å fullføre profilen.",
       "firstName": "Fornavn",
       "lastName": "Etternavn",
       "email": "E-post",
@@ -390,13 +390,13 @@
     },
     "payoutsPage": {
       "title": "Utbetalinger",
-      "subtitle": "Kunden betaler din oppgitte pris. Hjelpi trekker 15 % av det beløpet som markedsplassgebyr; resten overføres til Stripe Connect-kontoen din dagen etter avtalte oppdrag, derfra videre til bank etter Stripes plan.",
       "stripeConnectReturnVerified": "Utbetaling er klar. Stripe har godkjent kontoen din — du kan ta imot betaling fra kunder.",
+      "stripeConnectReturnAwaitingStripe": "Takk — opplysningene er sendt til Stripe. Godkjenning kan ta litt tid; statusen oppdateres automatisk når den er klar.",
       "stripeConnectReturnPending": "Du er tilbake fra Stripe. Noe kan fortsatt mangle før utbetaling er helt klar — trykk «Fortsett med Stripe» hvis Stripe ba om mer, eller vent et øyeblikk og oppdater siden.",
       "stripeConnectRefreshNotice": "Lenken til Stripe utløp eller ble avbrutt. Bruk knappen under for å fortsette.",
       "invoices": {
         "sectionTitle": "Betalinger og utbetalinger",
-        "sectionSubtitle": "Hver oppføring er en betalt bestilling. Midlene sendes til Stripe Connect dagen etter avtalte oppdrag (norsk kalenderdag). Bankutbetaling fra Stripe følger deres vanlige rytme.",
+        "sectionSubtitle": "Hver rad er en betalt bestilling. Utbetaling skjer etter at tjenesten er utført.",
         "empty": "Ingen betalte bestillinger ennå. Når en kunde fullfører betaling for et oppdrag, vises det her som en oversikt over beløp og gebyrer.",
         "refLabel": "Referanse",
         "recordedAt": "Registrert",
@@ -551,9 +551,10 @@
     },
     "stripeConnect": {
       "title": "Utbetaling med Stripe",
-      "body": "Hjelpi bruker Stripe Connect (Express). Koble til én gang. Kunden betaler din pris; etter 15 % markedsplassgebyr holdes nettobeløpet hos Hjelpi til dagen etter avtalte oppdrag, og sendes deretter til Stripe-kontoen din.",
+      "body": "Koble til én gang. Kunden betaler på Hjelpi — utbetales til deg når tjenesten er utført.",
       "statusReady": "Tilkoblet — klar til å motta betalinger",
-      "statusPending": "Stripe mangler fortsatt opplysninger — fullfør eller oppdater",
+      "statusPendingReview": "Venter på godkjenning hos Stripe — opplysningene dine er sendt inn",
+      "statusIncomplete": "Stripe mangler fortsatt opplysninger — fullfør eller oppdater",
       "statusNotStarted": "Ikke tilkoblet ennå",
       "ctaStart": "Fortsett med Stripe",
       "ctaManage": "Oppdater Stripe-konto",

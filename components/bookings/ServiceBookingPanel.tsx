@@ -6,11 +6,9 @@ import { Link } from '@/i18n/routing'
 import { createBookingRequestAction, type CreateBookingActionState } from '@/lib/bookings/actions'
 import type { PricingType } from '@/lib/provider-services/types'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
 import { cn } from '@/lib/utils'
 import posthog from 'posthog-js'
-
-const btnPrimary =
-  'inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-base font-bold text-on-primary shadow-sm transition-[opacity,transform] hover:opacity-95 active:scale-[0.99] disabled:opacity-50'
 
 const DURATION_OPTIONS = [30, 60, 90, 120, 150, 180, 210, 240, 300, 360, 480, 600, 720, 960]
 
@@ -95,7 +93,7 @@ export function ServiceBookingPanel({
           embedded ? 'mt-6' : 'mt-10 border-t border-outline-variant/20 pt-8',
         )}
       >
-        <Link href={loginHref} className={btnPrimary}>
+        <Link href={loginHref} className={hjBtnPrimaryLg}>
           <MaterialIcon name="calendar_month" className="text-xl" />
           {t('ctaBook')}
         </Link>
@@ -253,7 +251,7 @@ export function ServiceBookingPanel({
         ) : null}
 
         <div className="space-y-3 pt-1">
-          <button type="submit" disabled={submitting} className={btnPrimary}>
+          <button type="submit" disabled={submitting} className={hjBtnPrimaryLg}>
             {submitting
               ? t('submitting')
               : pricingType === 'quote'

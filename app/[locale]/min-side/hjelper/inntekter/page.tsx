@@ -7,7 +7,9 @@ import {
   fetchSellerEarningsSummary,
   loadDashboardUserContext,
 } from '@/lib/dashboard/data'
+import { hjBtnPrimaryPill } from '@/lib/button-classes'
 import { formatOreToNok } from '@/lib/dashboard/money'
+import { cn } from '@/lib/utils'
 import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export const dynamic = 'force-dynamic'
@@ -96,7 +98,7 @@ export default async function HjelperInntekterPage({ searchParams }: { searchPar
               href={monthHref}
               className={
                 granularity === 'month'
-                  ? 'rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary'
+                  ? cn(hjBtnPrimaryPill, 'px-4 py-2')
                   : 'rounded-full bg-white px-4 py-2 text-sm font-semibold text-on-surface ring-1 ring-outline-variant/30 hover:bg-surface-container-low'
               }
             >
@@ -106,7 +108,7 @@ export default async function HjelperInntekterPage({ searchParams }: { searchPar
               href={yearHref}
               className={
                 granularity === 'year'
-                  ? 'rounded-full bg-primary px-4 py-2 text-sm font-bold text-on-primary'
+                  ? cn(hjBtnPrimaryPill, 'px-4 py-2')
                   : 'rounded-full bg-white px-4 py-2 text-sm font-semibold text-on-surface ring-1 ring-outline-variant/30 hover:bg-surface-container-low'
               }
             >

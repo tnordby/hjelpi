@@ -7,16 +7,11 @@ import type { ProviderServiceSellerRow } from '@/lib/provider-services/data'
 import { formatServicePriceLong } from '@/lib/provider-services/display'
 import type { PricingType, TaxonomySubcategoryOption } from '@/lib/provider-services/types'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { hjBtnGhost, hjBtnMuted, hjBtnPrimary } from '@/lib/button-classes'
 
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
 const labelClass = 'mb-1.5 block text-sm font-medium text-on-surface'
-const btnPrimary =
-  'inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-on-primary hover:opacity-90 disabled:opacity-50'
-const btnGhost =
-  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-primary ring-1 ring-primary/30 hover:bg-primary/5'
-const btnMuted =
-  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-on-surface-variant ring-1 ring-outline-variant/40 hover:bg-on-surface/5'
 
 export type SellerServiceDraft = {
   id?: string
@@ -296,7 +291,7 @@ export function SellerServiceWizard({
         </p>
       ) : null}
       {stepHint ? (
-        <p className="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-950 ring-1 ring-amber-200/80" role="status">
+        <p className="mb-4 rounded-xl border border-tertiary/25 bg-tertiary/10 px-4 py-3 text-sm text-on-surface" role="status">
           {stepHint}
         </p>
       ) : null}
@@ -379,7 +374,7 @@ export function SellerServiceWizard({
                   className={`${inputClass} min-w-[12rem] flex-1`}
                   placeholder={w('fieldTagsPlaceholder')}
                 />
-                <button type="button" onClick={addTag} className={btnGhost}>
+                <button type="button" onClick={addTag} className={hjBtnGhost}>
                   {w('addTag')}
                 </button>
               </div>
@@ -487,7 +482,7 @@ export function SellerServiceWizard({
             <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
               <span className={labelClass}>{w('fieldFaq')}</span>
               {draft.faq.length < 10 ? (
-                <button type="button" onClick={addFaqRow} className={btnGhost}>
+                <button type="button" onClick={addFaqRow} className={hjBtnGhost}>
                   <MaterialIcon name="add" className="text-lg" />
                   {w('addFaq')}
                 </button>
@@ -601,20 +596,20 @@ export function SellerServiceWizard({
 
       <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-outline-variant/20 pt-6">
         {step > 0 ? (
-          <button type="button" onClick={goBack} className={btnMuted} disabled={saving}>
+          <button type="button" onClick={goBack} className={hjBtnMuted} disabled={saving}>
             {w('back')}
           </button>
         ) : null}
         {step < 3 ? (
-          <button type="button" onClick={goNext} className={btnPrimary}>
+          <button type="button" onClick={goNext} className={hjBtnPrimary}>
             {w('next')}
           </button>
         ) : (
-          <button type="button" disabled={saving} onClick={handlePublish} className={btnPrimary}>
+          <button type="button" disabled={saving} onClick={handlePublish} className={hjBtnPrimary}>
             {saving ? t('saving') : w('publish')}
           </button>
         )}
-        <Link href={`/hjelpere/${providerId}`} className={btnGhost}>
+        <Link href={`/hjelpere/${providerId}`} className={hjBtnGhost}>
           {t('viewPublicProfile')}
         </Link>
       </div>

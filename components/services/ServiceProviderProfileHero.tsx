@@ -76,10 +76,10 @@ export async function ServiceProviderProfileHero({
 
           {totalReviews > 0 ? (
             <div className="mt-2 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
-              <span className="text-sm font-semibold text-emerald-700">
+              <span className="text-sm font-semibold text-primary">
                 {t('ratingSummary', { rating: avgRating.toFixed(1) })}
               </span>
-              <span className="inline-flex items-center gap-0.5 text-amber-500" aria-hidden>
+              <span className="inline-flex items-center gap-0.5 text-tertiary" aria-hidden>
                 {Array.from({ length: 5 }, (_, i) => (
                   <MaterialIcon
                     key={i}

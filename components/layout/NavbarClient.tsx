@@ -8,6 +8,7 @@ import { NavbarMessagesLink } from '@/components/layout/NavbarMessagesLink'
 import { NavbarNotificationBell } from '@/components/layout/NavbarNotificationBell'
 import { NavbarUserMenu } from '@/components/layout/NavbarUserMenu'
 import type { NavbarNotificationCounts } from '@/lib/dashboard/data'
+import { hjBtnPrimaryPill } from '@/lib/button-classes'
 import { cn } from '@/lib/utils'
 
 type Props = {
@@ -88,7 +89,7 @@ export function NavbarClient({
               {notificationCounts ? <NavbarNotificationBell counts={notificationCounts} /> : null}
               <Link
                 href={dashboardHomeHref ?? '/min-side/kunde'}
-                className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-all hover:opacity-90"
+                className={hjBtnPrimaryPill}
               >
                 {t('dashboard')}
               </Link>
@@ -104,7 +105,7 @@ export function NavbarClient({
           ) : (
             <Link
               href="/registrer"
-              className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-all hover:opacity-90"
+              className={hjBtnPrimaryPill}
             >
               {t('getStarted')}
             </Link>

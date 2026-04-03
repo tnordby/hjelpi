@@ -6,6 +6,7 @@ import { Link } from '@/i18n/routing'
 import { registerAction, registerSellerAction } from '@/lib/auth/actions'
 import { profileDisplayName } from '@/lib/profiles/display-name'
 import { ResendSignupEmailForm } from '@/components/auth/ResendSignupEmailForm'
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
 import posthog from 'posthog-js'
 
 const inputClass =
@@ -134,10 +135,7 @@ export function RegisterForm({ variant = 'buyer' }: Props) {
         />
         <p className="mt-1.5 text-xs text-on-surface-variant">{t('hint')}</p>
       </div>
-      <button
-        type="submit"
-        className="w-full rounded-full bg-primary py-3.5 font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
-      >
+      <button type="submit" className={hjBtnPrimaryLg}>
         {t('submit')}
       </button>
       <p className="text-center text-sm text-on-surface-variant">

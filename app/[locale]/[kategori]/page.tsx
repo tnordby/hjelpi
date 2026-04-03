@@ -5,6 +5,8 @@ import { CategoryBreadcrumbJsonLd } from '@/components/seo/CategoryBreadcrumbJso
 import { notFound } from 'next/navigation'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { hjBtnPrimaryPill } from '@/lib/button-classes'
+import { cn } from '@/lib/utils'
 import { Link } from '@/i18n/routing'
 import {
   TAXONOMY,
@@ -168,7 +170,7 @@ export default async function CategoryPage({
             </div>
             <Link
               href="/bli-hjelper"
-              className="inline-flex shrink-0 items-center justify-center rounded-full bg-primary px-8 py-3 font-bold text-on-primary transition-opacity hover:opacity-90"
+              className={cn(hjBtnPrimaryPill, 'inline-flex shrink-0 items-center justify-center px-8 py-3')}
             >
               {t('ctaButton')}
             </Link>

@@ -37,12 +37,12 @@ export async function BankIdFlowBanners({ bankid: bankidQuery, bankidReason }: P
         </p>
       ) : null}
       {bankidQuery === 'notSeller' || bankidQuery === 'noProvider' ? (
-        <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
+        <p className={`${bannerClass} border border-tertiary/25 bg-tertiary/10 text-on-surface`} role="status">
           {t('needProvider')}
         </p>
       ) : null}
       {bankidQuery === 'config' ? (
-        <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
+        <p className={`${bannerClass} border border-tertiary/25 bg-tertiary/10 text-on-surface`} role="status">
           {t('config')}
         </p>
       ) : null}
@@ -50,17 +50,17 @@ export async function BankIdFlowBanners({ bankid: bankidQuery, bankidReason }: P
       bankidQuery === 'token' ||
       bankidQuery === 'session' ||
       bankidQuery === 'profile' ? (
-        <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
+        <p className={`${bannerClass} border border-tertiary/25 bg-tertiary/10 text-on-surface`} role="status">
           {t('failed')}
         </p>
       ) : null}
       {bankidQuery === 'db' ? (
-        <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
+        <p className={`${bannerClass} border border-tertiary/25 bg-tertiary/10 text-on-surface`} role="status">
           {t('db')}
         </p>
       ) : null}
       {bankidQuery === 'error' ? (
-        <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
+        <p className={`${bannerClass} border border-tertiary/25 bg-tertiary/10 text-on-surface`} role="status">
           {bankidReason ? t('oidcError', { reason: bankidReason }) : t('failed')}
         </p>
       ) : null}

@@ -6,6 +6,7 @@ import { useRouter as useNextRouter } from 'next/navigation'
 import { useEffect, useState, type FormEvent } from 'react'
 import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
 import posthog from 'posthog-js'
 
 const inputClass =
@@ -161,10 +162,7 @@ export function UpdatePasswordForm() {
           className={inputClass}
         />
       </div>
-      <button
-        type="submit"
-        className="w-full rounded-full bg-primary py-3.5 font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
-      >
+      <button type="submit" className={hjBtnPrimaryLg}>
         {t('submit')}
       </button>
     </form>

@@ -10,6 +10,7 @@ import {
   fetchSellerEarningsSummary,
   loadDashboardUserContext,
 } from '@/lib/dashboard/data'
+import { promoteBuyerToSeller } from '@/lib/seller/promote-buyer'
 import { formatOreToNok } from '@/lib/dashboard/money'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
 import { withPageSeo } from '@/lib/seo/build-metadata'
@@ -49,23 +50,14 @@ export default async function HjelperDashboardPage() {
     if (ctx.role === 'seller') {
       return redirect({ href: '/bli-hjelper/fullfor-profil', locale })
     }
-    const tGate = await getTranslations('dashboard.sellerOverview')
-    return (
-      <div className="mx-auto max-w-lg space-y-6">
-        <div>
-          <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
-            {tGate('notSellerTitle')}
-          </h1>
-          <p className="mt-3 text-on-surface-variant">{tGate('notSellerSubtitle')}</p>
-        </div>
-        <Link
-          href="/bli-hjelper"
-          className="inline-flex rounded-full bg-primary px-8 py-3.5 text-sm font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
-        >
-          {tGate('notSellerCta')}
-        </Link>
-      </div>
-    )
+    if (ctx.role === 'buyer') {
+      const promoted = await promoteBuyerToSeller(supabase, user.id)
+      if (!promoted.ok) {
+        return redirect({ href: '/min-konto', locale })
+      }
+      return redirect({ href: '/bli-hjelper/fullfor-profil', locale })
+    }
+    return redirect({ href: '/min-side/kunde', locale })
   }
 
   const t = await getTranslations('dashboard.sellerOverview')

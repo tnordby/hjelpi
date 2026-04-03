@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Link, redirect } from '@/i18n/routing'
 import { ProviderServicesPanel } from '@/components/seller/ProviderServicesPanel'
+import { hjBtnPrimary } from '@/lib/button-classes'
+import { cn } from '@/lib/utils'
 import { getStripeSecretKey } from '@/lib/stripe/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { loadDashboardUserContext } from '@/lib/dashboard/data'
@@ -78,7 +80,7 @@ export default async function HjelperTjenesterPage() {
           <p className="mt-2 text-sm text-on-surface-variant">{t('stripeBannerBody')}</p>
           <Link
             href="/min-side/hjelper/utbetalinger"
-            className="mt-4 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-on-primary hover:opacity-90"
+            className={cn(hjBtnPrimary, 'mt-4 inline-flex')}
           >
             {t('stripeBannerCta')}
           </Link>

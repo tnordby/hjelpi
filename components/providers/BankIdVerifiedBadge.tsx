@@ -9,9 +9,7 @@ type Props = {
   className?: string
 }
 
-/**
- * Compact “verified” treatment similar to social blue checks: white check on a blue circle.
- */
+/** Compact verified treatment: white check on primary teal (brand), not generic “social blue”. */
 export function BankIdVerifiedBadge({ label, showText = false, className }: Props) {
   return (
     <span
@@ -20,14 +18,14 @@ export function BankIdVerifiedBadge({ label, showText = false, className }: Prop
       role={showText ? undefined : 'img'}
     >
       <span
-        className="inline-flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center rounded-full bg-[#1D9BF0] shadow-sm ring-1 ring-black/5"
+        className="inline-flex h-[1.125rem] w-[1.125rem] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-container shadow-sm ring-1 ring-primary/15"
         title={label}
         aria-hidden
       >
-        <MaterialIcon name="check" filled className="text-[11px] leading-none text-white" />
+        <MaterialIcon name="check" filled className="text-[11px] leading-none text-on-primary" />
       </span>
       {showText ? (
-        <span className="text-sm font-semibold tracking-tight text-[#1D9BF0]">{label}</span>
+        <span className="text-sm font-semibold tracking-tight text-primary">{label}</span>
       ) : null}
     </span>
   )

@@ -6,6 +6,7 @@ import { Link } from '@/i18n/routing'
 import type { SubcategoryProviderItem } from '@/lib/providers/subcategory-providers'
 import { formatServicePriceLabel } from '@/lib/provider-services/display'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { hjBtnPrimary } from '@/lib/button-classes'
 import posthog from 'posthog-js'
 
 export type SortKey =
@@ -149,7 +150,7 @@ export function SubcategoryProviderList({
         <p className="mx-auto mt-2 max-w-md text-on-surface-variant">{t('emptyBody')}</p>
         <Link
           href="/bli-hjelper"
-          className="mt-6 inline-flex rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary hover:opacity-90"
+          className={`${hjBtnPrimary} mt-6`}
         >
           {t('emptyCta')}
         </Link>
@@ -171,7 +172,7 @@ export function SubcategoryProviderList({
           <button
             type="button"
             onClick={() => onLocationChange('')}
-            className="mt-6 inline-flex rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary hover:opacity-90"
+            className={`${hjBtnPrimary} mt-6`}
           >
             {t('filteredEmptyReset')}
           </button>
@@ -240,7 +241,7 @@ export function SubcategoryProviderList({
                   <p className="line-clamp-2 text-xs leading-snug text-on-surface-variant">{p.serviceTitle}</p>
                   <div className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-1 text-xs text-on-surface-variant">
                     <span className="inline-flex items-center gap-0.5 font-medium text-secondary">
-                      <MaterialIcon name="star" className="text-base filled text-amber-500" />
+                      <MaterialIcon name="star" className="text-base filled text-tertiary" />
                       {p.totalReviews > 0
                         ? `${p.avgRating.toFixed(1)} (${p.totalReviews})`
                         : t('noReviews')}

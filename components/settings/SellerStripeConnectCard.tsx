@@ -4,18 +4,22 @@ import { useActionState } from 'react'
 import { useTranslations } from 'next-intl'
 import { startStripeConnectOnboardingAction, type StripeConnectState } from '@/lib/stripe/connect-actions'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { hjBtnPrimary } from '@/lib/button-classes'
 
 const initial: StripeConnectState = {}
 
 type Props = {
   stripeOnboarded: boolean
   hasStripeAccount: boolean
+  /** Onboarding form submitted to Stripe; payouts not enabled yet (under review) */
+  stripeAwaitingApproval: boolean
   stripeConfigured: boolean
 }
 
 export function SellerStripeConnectCard({
   stripeOnboarded,
   hasStripeAccount,
+  stripeAwaitingApproval,
   stripeConfigured,
 }: Props) {
   const t = useTranslations('dashboard.stripeConnect')
@@ -35,10 +39,15 @@ export function SellerStripeConnectCard({
               <MaterialIcon name="check_circle" className="text-xl filled" />
               {t('statusReady')}
             </p>
+          ) : stripeAwaitingApproval ? (
+            <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-sky-900">
+              <MaterialIcon name="hourglass_top" className="text-xl" />
+              {t('statusPendingReview')}
+            </p>
           ) : hasStripeAccount ? (
-            <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-amber-800">
+            <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-tertiary">
               <MaterialIcon name="schedule" className="text-xl" />
-              {t('statusPending')}
+              {t('statusIncomplete')}
             </p>
           ) : (
             <p className="mt-3 inline-flex items-center gap-2 text-sm text-on-surface-variant">
@@ -63,7 +72,7 @@ export function SellerStripeConnectCard({
           <button
             type="submit"
             disabled={pending}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-on-primary hover:opacity-90 disabled:opacity-50"
+            className={hjBtnPrimary}
           >
             <MaterialIcon name="open_in_new" className="text-lg" />
             {stripeOnboarded ? t('ctaManage') : t('ctaStart')}

@@ -17,6 +17,7 @@ import {
   type SettingsLocationOption,
 } from '@/components/settings/SettingsLocationPicker'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
+import { hjBtnPrimaryPill } from '@/lib/button-classes'
 import { cn } from '@/lib/utils'
 
 const sectionClass =
@@ -215,7 +216,7 @@ export function MinSideProfileSettings({
               />
               <label
                 htmlFor="avatar"
-                className="inline-flex w-fit cursor-pointer rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+                className={cn(hjBtnPrimaryPill, 'inline-flex w-fit cursor-pointer')}
               >
                 {tPhoto('uploadButton')}
               </label>
@@ -267,10 +268,7 @@ export function MinSideProfileSettings({
               />
             </div>
           </div>
-          <button
-            type="submit"
-            className="w-fit rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
-          >
+          <button type="submit" className={cn(hjBtnPrimaryPill, 'w-fit')}>
             {t('saveName')}
           </button>
         </form>
@@ -291,7 +289,7 @@ export function MinSideProfileSettings({
           {locations.length > 0 ? (
             <button
               type="submit"
-              className="w-fit rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+              className={cn(hjBtnPrimaryPill, 'w-fit')}
             >
               {t('saveLocation')}
             </button>
@@ -327,7 +325,7 @@ export function MinSideProfileSettings({
           </div>
           <button
             type="submit"
-            className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+            className={hjBtnPrimaryPill}
           >
             {t('saveEmail')}
           </button>
@@ -339,7 +337,7 @@ export function MinSideProfileSettings({
         <p className="mt-1 text-sm text-on-surface-variant">{t('passwordHint')}</p>
         <Link
           href="/glemt-passord"
-          className="mt-4 inline-flex w-fit rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
+          className={cn(hjBtnPrimaryPill, 'mt-4 inline-flex w-fit')}
         >
           {t('passwordCta')}
         </Link>

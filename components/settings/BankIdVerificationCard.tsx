@@ -82,7 +82,7 @@ export async function BankIdVerificationCard({
           <div className="flex w-full shrink-0 flex-col md:max-w-xs md:pt-1">
             <Link
               href="/bankid/start"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-center text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+              className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-container px-6 py-3 text-center text-sm font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
             >
               <MaterialIcon name="fingerprint" className="mr-2 text-lg" />
               {t('cta')}

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
+import { hjBtnPrimaryPill } from '@/lib/button-classes'
+import { cn } from '@/lib/utils'
 import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,10 +31,7 @@ export default async function NotFound() {
         {t('title')}
       </h1>
       <p className="mb-10 max-w-md text-on-surface-variant">{t('description')}</p>
-      <Link
-        href="/"
-        className="rounded-full bg-primary px-8 py-3 font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
-      >
+      <Link href="/" className={cn(hjBtnPrimaryPill, 'px-8 py-3')}>
         {t('backHome')}
       </Link>
     </main>

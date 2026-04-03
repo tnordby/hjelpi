@@ -18,12 +18,8 @@ import {
   SellerServiceWizard,
   type SellerServiceDraft,
 } from '@/components/seller/SellerServiceWizard'
+import { hjBtnGhost, hjBtnPrimary } from '@/lib/button-classes'
 import posthog from 'posthog-js'
-
-const btnPrimary =
-  'inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-on-primary hover:opacity-90 disabled:opacity-50'
-const btnGhost =
-  'inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-primary ring-1 ring-primary/30 hover:bg-primary/5'
 
 type Props = {
   providerId: string
@@ -158,7 +154,7 @@ export function ProviderServicesPanel({
     <div className="space-y-10">
       {taxonomyMissing ? (
         <div
-          className="rounded-2xl border border-dashed border-amber-200/80 bg-amber-50/90 px-5 py-4 text-sm text-amber-950"
+          className="rounded-2xl border border-dashed border-tertiary/30 bg-tertiary/8 px-5 py-4 text-sm text-on-surface"
           role="alert"
         >
           <p className="font-headline font-bold text-on-surface">{t('taxonomyEmptyTitle')}</p>
@@ -182,7 +178,7 @@ export function ProviderServicesPanel({
             onClick={openAdd}
             disabled={addDisabled}
             title={addDisabledTitle}
-            className={`${btnPrimary} disabled:pointer-events-none disabled:opacity-45`}
+            className={`${hjBtnPrimary} disabled:pointer-events-none disabled:opacity-45`}
           >
             <MaterialIcon name="add" className="text-xl" />
             {t('addService')}
@@ -199,7 +195,7 @@ export function ProviderServicesPanel({
             onClick={openAdd}
             disabled={addDisabled}
             title={addDisabledTitle}
-            className={`${btnPrimary} mt-6 disabled:pointer-events-none disabled:opacity-45`}
+            className={`${hjBtnPrimary} mt-6 disabled:pointer-events-none disabled:opacity-45`}
           >
             {t('addFirst')}
           </button>
@@ -241,7 +237,7 @@ export function ProviderServicesPanel({
                     onClick={() => openEdit(s)}
                     disabled={!canManageServices}
                     title={!canManageServices ? t('addServicePaymentsDisabledHint') : undefined}
-                    className={`${btnGhost} disabled:pointer-events-none disabled:opacity-45`}
+                    className={`${hjBtnGhost} disabled:pointer-events-none disabled:opacity-45`}
                   >
                     {t('edit')}
                   </button>

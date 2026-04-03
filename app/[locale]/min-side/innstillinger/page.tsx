@@ -136,7 +136,7 @@ export default async function DashboardInnstillingerPage({
           className="flex flex-wrap gap-x-5 gap-y-2 border-t border-outline-variant/20 pt-6"
           aria-label={t('footerNavAria')}
         >
-          <Link href="/bli-hjelper" className={linkClass}>
+          <Link href="/min-side/hjelper" className={linkClass}>
             {t('linkBecomeSeller')}
           </Link>
         </nav>

@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
+import { hjBtnOutline, hjBtnPrimaryPill } from '@/lib/button-classes'
+import { cn } from '@/lib/utils'
 
 export async function BliHjelperLanding() {
   const t = await getTranslations('bliHjelperPage')
@@ -19,13 +21,19 @@ export async function BliHjelperLanding() {
         <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
           <Link
             href="/bli-hjelper/registrer"
-            className="rounded-full bg-primary px-10 py-4 text-center text-sm font-extrabold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
+            className={cn(
+              hjBtnPrimaryPill,
+              'px-10 py-4 text-center text-sm font-extrabold',
+            )}
           >
             {t('ctaRegister')}
           </Link>
           <Link
             href="/logg-inn"
-            className="rounded-full border-2 border-primary px-10 py-4 text-center text-sm font-extrabold text-primary transition-colors hover:bg-primary/5"
+            className={cn(
+              hjBtnOutline,
+              'rounded-full px-10 py-4 text-center text-sm font-extrabold',
+            )}
           >
             {t('ctaLogin')}
           </Link>
@@ -71,7 +79,7 @@ export async function BliHjelperLanding() {
         <ol className="mx-auto mt-12 max-w-xl space-y-6">
           <li className="flex gap-4">
             <span
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-on-primary"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-container font-bold text-on-primary shadow-sm"
               aria-hidden
             >
               1
@@ -80,7 +88,7 @@ export async function BliHjelperLanding() {
           </li>
           <li className="flex gap-4">
             <span
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-on-primary"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-container font-bold text-on-primary shadow-sm"
               aria-hidden
             >
               2
@@ -89,7 +97,7 @@ export async function BliHjelperLanding() {
           </li>
           <li className="flex gap-4">
             <span
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-on-primary"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-container font-bold text-on-primary shadow-sm"
               aria-hidden
             >
               3
@@ -104,7 +112,7 @@ export async function BliHjelperLanding() {
       <div className="mt-12 flex justify-center">
         <Link
           href="/bli-hjelper/registrer"
-          className="rounded-full bg-primary px-10 py-4 text-sm font-extrabold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
+          className={cn(hjBtnPrimaryPill, 'px-10 py-4 text-sm font-extrabold')}
         >
           {t('ctaRegister')}
         </Link>

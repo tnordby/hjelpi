@@ -179,7 +179,7 @@ export function ServicePublicDetailTabs({
                       </span>
                       <span className="text-xs text-on-surface-variant">{r.dateLabel}</span>
                     </div>
-                    <div className="mt-2 inline-flex items-center gap-0.5 text-amber-500" aria-hidden>
+                    <div className="mt-2 inline-flex items-center gap-0.5 text-tertiary" aria-hidden>
                       {Array.from({ length: 5 }, (_, i) => (
                         <MaterialIcon
                           key={i}

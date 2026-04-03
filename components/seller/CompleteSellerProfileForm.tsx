@@ -1,5 +1,6 @@
 'use client'
 
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
 import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { locationOptionSingleLine } from '@/lib/locations/display'
@@ -103,7 +104,7 @@ export function CompleteSellerProfileForm({ locations }: Props) {
       ) : null}
       <button
         type="submit"
-        className="w-full rounded-full bg-primary py-3.5 font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
+        className={hjBtnPrimaryLg}
       >
         {t('submit')}
       </button>

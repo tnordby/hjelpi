@@ -2,12 +2,67 @@
 
 import { getLocale, getTranslations } from 'next-intl/server'
 import { redirect } from '@/i18n/routing'
+import { loadDashboardUserContext } from '@/lib/dashboard/data'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { promoteBuyerToSeller } from '@/lib/seller/promote-buyer'
 import { completeSellerProfileSchema } from '@/lib/seller/schemas'
 
 export type SellerOnboardingState = {
   error?: string
+}
+
+/**
+ * Logged-in users who are not full sellers yet: promote buyer → seller if needed,
+ * then send them to hjelper onboarding or the hjelper dashboard.
+ * Used by the nav «Selg tjenester» control so buyers skip the marketing landing.
+ */
+export async function startSellerOnboardingAction() {
+  const locale = await getLocale()
+
+  if (!isSupabaseConfigured()) {
+    redirect({ href: '/min-side/kunde', locale })
+    return
+  }
+
+  const supabase = await createSupabaseServerClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect({ href: '/logg-inn', locale })
+    return
+  }
+
+  const ctx = await loadDashboardUserContext(supabase, user.id, user.email ?? '')
+  if (!ctx) {
+    redirect({ href: '/min-konto', locale })
+    return
+  }
+
+  if (ctx.providerId) {
+    await supabase.from('profiles').update({ active_mode: 'seller' }).eq('user_id', user.id)
+    redirect({ href: '/min-side/hjelper', locale })
+    return
+  }
+
+  if (ctx.role === 'seller') {
+    redirect({ href: '/bli-hjelper/fullfor-profil', locale })
+    return
+  }
+
+  if (ctx.role === 'buyer') {
+    const promoted = await promoteBuyerToSeller(supabase, user.id)
+    if (!promoted.ok) {
+      redirect({ href: '/min-konto', locale })
+      return
+    }
+    redirect({ href: '/bli-hjelper/fullfor-profil', locale })
+    return
+  }
+
+  redirect({ href: '/min-side/kunde', locale })
 }
 
 export async function completeSellerProviderAction(

@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
 import { Link } from '@/i18n/routing'
 import { forgotPasswordAction } from '@/lib/auth/actions'
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
 import posthog from 'posthog-js'
 
 const inputClass =
@@ -60,11 +61,7 @@ export function ForgotPasswordForm() {
           disabled={success}
         />
       </div>
-      <button
-        type="submit"
-        disabled={success}
-        className="w-full rounded-full bg-primary py-3.5 font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-      >
+      <button type="submit" disabled={success} className={hjBtnPrimaryLg}>
         {t('submit')}
       </button>
       <p className="text-center text-sm">

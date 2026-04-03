@@ -4,6 +4,8 @@ import { Link, redirect } from '@/i18n/routing'
 import { AuthShell } from '@/components/auth/AuthShell'
 import { ResendSignupEmailForm } from '@/components/auth/ResendSignupEmailForm'
 import { SignOutForm } from '@/components/auth/SignOutForm'
+import { hjBtnPrimaryLg } from '@/lib/button-classes'
+import { cn } from '@/lib/utils'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { profileDisplayName } from '@/lib/profiles/display-name'
@@ -101,7 +103,7 @@ export default async function MinKontoPage() {
         <div className="flex flex-col gap-4">
           <Link
             href="/min-side"
-            className="inline-flex w-full justify-center rounded-full bg-primary py-3.5 text-center text-sm font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90 sm:w-auto sm:px-8"
+            className={cn(hjBtnPrimaryLg, 'inline-flex justify-center text-center text-sm sm:w-auto sm:px-8')}
           >
             {t('openDashboard')}
           </Link>

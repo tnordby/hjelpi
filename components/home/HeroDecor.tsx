@@ -16,7 +16,7 @@ export function HeroDecor() {
       >
         <path d="M200 20c55 15 95 70 90 130-6 75-80 130-165 115-55-10-100-55-110-110-12-70 40-145 110-155 25-4 50-2 75 20z" />
       </svg>
-      <div className="absolute right-[8%] top-[12%] h-16 w-16 rounded-full border-2 border-amber-400/35 md:right-[14%] md:top-[16%]" />
+      <div className="absolute right-[8%] top-[12%] h-16 w-16 rounded-full border-2 border-tertiary/30 md:right-[14%] md:top-[16%]" />
       <svg
         className="absolute -bottom-[10%] -left-[15%] h-[min(50vw,22rem)] w-[min(50vw,22rem)] text-primary-container/[0.2] md:-left-[10%] md:h-96 md:w-96"
         viewBox="0 0 360 360"

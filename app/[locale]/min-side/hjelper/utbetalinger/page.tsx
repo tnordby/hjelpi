@@ -61,64 +61,72 @@ export default async function HjelperUtbetalingerPage({ searchParams }: { search
 
   const stripeConfigured = Boolean(getStripeSecretKey())
   const stripe = getStripe()
-  let stripeOnboarded = Boolean(providerRow?.stripe_onboarded)
   const hasStripeAccount =
     typeof providerRow?.stripe_account_id === 'string' && providerRow.stripe_account_id.length > 0
 
-  if (
-    (stripeConnectQuery === 'return' || stripeConnectQuery === 'refresh') &&
-    stripe &&
-    hasStripeAccount &&
-    providerRow?.stripe_account_id
-  ) {
-    await syncProviderStripeOnboardedFromStripe(
+  let stripeOnboarded = Boolean(providerRow?.stripe_onboarded)
+  let stripeDetailsSubmitted = false
+
+  if (stripe && hasStripeAccount && providerRow?.stripe_account_id) {
+    const sync = await syncProviderStripeOnboardedFromStripe(
       supabase,
       stripe,
       ctx.providerId,
       providerRow.stripe_account_id as string,
     )
-    const { data: again } = await supabase
-      .from('providers')
-      .select('stripe_onboarded')
-      .eq('id', ctx.providerId)
-      .maybeSingle()
-    if (again) stripeOnboarded = Boolean(again.stripe_onboarded)
+    if (sync.retrieved) {
+      stripeOnboarded = sync.ready
+      stripeDetailsSubmitted = sync.detailsSubmitted
+    }
   }
+
+  const stripeAwaitingApproval = hasStripeAccount && stripeDetailsSubmitted && !stripeOnboarded
+
+  const showStripeBanners =
+    stripeConnectQuery === 'return' || stripeConnectQuery === 'refresh'
 
   return (
     <div className="w-full space-y-8">
-      <div>
+      <div className="space-y-4">
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
           {t('title')}
         </h1>
-        <p className="mt-2 max-w-3xl text-on-surface-variant">{t('subtitle')}</p>
-      </div>
 
-      <div className="flex flex-col gap-3">
-        {stripeConnectQuery === 'return' ? (
-          <p
-            className={
-              stripeOnboarded
-                ? `${bannerClass} border border-primary/30 bg-primary/10 text-on-surface`
-                : `${bannerClass} border border-outline-variant/30 bg-surface-container-low text-on-surface`
-            }
-            role="status"
-          >
-            {stripeOnboarded ? t('stripeConnectReturnVerified') : t('stripeConnectReturnPending')}
-          </p>
+        {showStripeBanners ? (
+          <div className="flex flex-col gap-3">
+            {stripeConnectQuery === 'return' ? (
+              <p
+                className={
+                  stripeOnboarded
+                    ? `${bannerClass} border border-primary/30 bg-primary/10 text-on-surface`
+                    : stripeAwaitingApproval
+                      ? `${bannerClass} border border-sky-200/80 bg-sky-50 text-sky-950`
+                      : `${bannerClass} border border-outline-variant/30 bg-surface-container-low text-on-surface`
+                }
+                role="status"
+              >
+                {stripeOnboarded
+                  ? t('stripeConnectReturnVerified')
+                  : stripeAwaitingApproval
+                    ? t('stripeConnectReturnAwaitingStripe')
+                    : t('stripeConnectReturnPending')}
+              </p>
+            ) : null}
+            {stripeConnectQuery === 'refresh' ? (
+              <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
+                {t('stripeConnectRefreshNotice')}
+              </p>
+            ) : null}
+          </div>
         ) : null}
-        {stripeConnectQuery === 'refresh' ? (
-          <p className={`${bannerClass} border border-amber-200 bg-amber-50 text-amber-950`} role="status">
-            {t('stripeConnectRefreshNotice')}
-          </p>
-        ) : null}
-      </div>
 
-      <SellerStripeConnectCard
-        stripeOnboarded={stripeOnboarded}
-        hasStripeAccount={hasStripeAccount}
-        stripeConfigured={stripeConfigured}
-      />
+        <SellerStripeConnectCard
+          stripeOnboarded={stripeOnboarded}
+          hasStripeAccount={hasStripeAccount}
+          stripeAwaitingApproval={stripeAwaitingApproval}
+          stripeConfigured={stripeConfigured}
+        />
+      </div>
 
       <section className="space-y-4">
         <div>
