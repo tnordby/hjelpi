@@ -12,13 +12,15 @@ type Variant = 'default' | 'inverse'
 export function ServiceBreadcrumbs({
   items,
   variant = 'default',
+  className,
 }: {
   items: BreadcrumbItem[]
   variant?: Variant
+  className?: string
 }) {
   const inverse = variant === 'inverse'
   return (
-    <nav aria-label="Brødsmuler" className="mb-8">
+    <nav aria-label="Brødsmuler" className={cn('mb-8', className)}>
       <ol
         className={cn(
           'flex flex-wrap items-center gap-1 text-sm',

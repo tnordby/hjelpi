@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/routing'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { ProviderServiceSellerRow } from '@/lib/provider-services/data'
 import {
   deleteProviderServiceAction,
@@ -29,10 +29,18 @@ type Props = {
   providerId: string
   services: ProviderServiceSellerRow[]
   taxonomy: TaxonomySubcategoryOption[]
+  /** False when Stripe is configured but Connect onboarding is not complete. */
+  canManageServices?: boolean
 }
 
-export function ProviderServicesPanel({ providerId, services, taxonomy }: Props) {
+export function ProviderServicesPanel({
+  providerId,
+  services,
+  taxonomy,
+  canManageServices = true,
+}: Props) {
   const t = useTranslations('dashboard.sellerServices')
+  const tErr = useTranslations('dashboard.sellerServices.errors')
   const router = useRouter()
   const [formError, setFormError] = useState<string | undefined>()
   const [deleteError, setDeleteError] = useState<string | undefined>()
@@ -64,14 +72,23 @@ export function ProviderServicesPanel({ providerId, services, taxonomy }: Props)
     [taxonomyForWizard],
   )
 
+  useEffect(() => {
+    if (!canManageServices && mode != null) {
+      setMode(null)
+      setFormError(undefined)
+      setDraft(emptySellerServiceDraft(taxonomy))
+    }
+  }, [canManageServices, mode, taxonomy])
+
   function openAdd() {
-    if (taxonomy.length === 0) return
+    if (!canManageServices || taxonomy.length === 0) return
     setFormError(undefined)
     setMode('add')
     setDraft(emptySellerServiceDraft(taxonomy))
   }
 
   function openEdit(s: ProviderServiceSellerRow) {
+    if (!canManageServices) return
     setFormError(undefined)
     setMode('edit')
     const fallback = taxonomy[0]?.id ?? ''
@@ -87,39 +104,55 @@ export function ProviderServicesPanel({ providerId, services, taxonomy }: Props)
   async function onSave(fd: FormData) {
     setFormError(undefined)
     setSaving(true)
-    const result: ProviderServiceActionState | void = await upsertProviderServiceAction(undefined, fd)
-    setSaving(false)
-    if (result?.error) {
-      setFormError(result.error)
-      return
+    try {
+      const result: ProviderServiceActionState | void = await upsertProviderServiceAction(undefined, fd)
+      if (result?.error) {
+        setFormError(result.error)
+        return
+      }
+      posthog.capture('seller_service_saved', {
+        provider_id: providerId,
+        is_new: mode === 'add',
+        pricing_type: draft.pricing_type,
+      })
+      cancelForm()
+      router.refresh()
+    } catch {
+      setFormError(tErr('saveFailed'))
+    } finally {
+      setSaving(false)
     }
-    posthog.capture('seller_service_saved', {
-      provider_id: providerId,
-      is_new: mode === 'add',
-      pricing_type: draft.pricing_type,
-    })
-    cancelForm()
-    router.refresh()
   }
 
   async function onDelete(serviceId: string) {
     if (!window.confirm(t('confirmDelete'))) return
     setDeleteError(undefined)
     setDeletingId(serviceId)
-    const fd = new FormData()
-    fd.set('id', serviceId)
-    const result = await deleteProviderServiceAction(undefined, fd)
-    setDeletingId(null)
-    if (result?.error) {
-      setDeleteError(result.error)
-      return
+    try {
+      const fd = new FormData()
+      fd.set('id', serviceId)
+      const result = await deleteProviderServiceAction(undefined, fd)
+      if (result?.error) {
+        setDeleteError(result.error)
+        return
+      }
+      posthog.capture('seller_service_deleted', { provider_id: providerId })
+      if (mode === 'edit' && draft.id === serviceId) cancelForm()
+      router.refresh()
+    } catch {
+      setDeleteError(tErr('saveFailed'))
+    } finally {
+      setDeletingId(null)
     }
-    posthog.capture('seller_service_deleted', { provider_id: providerId })
-    if (mode === 'edit' && draft.id === serviceId) cancelForm()
-    router.refresh()
   }
 
   const taxonomyMissing = taxonomy.length === 0
+  const addDisabled = taxonomyMissing || !canManageServices
+  const addDisabledTitle = !canManageServices
+    ? t('addServicePaymentsDisabledHint')
+    : taxonomyMissing
+      ? t('addServiceDisabledHint')
+      : undefined
 
   return (
     <div className="space-y-10">
@@ -147,8 +180,8 @@ export function ProviderServicesPanel({ providerId, services, taxonomy }: Props)
           <button
             type="button"
             onClick={openAdd}
-            disabled={taxonomyMissing}
-            title={taxonomyMissing ? t('addServiceDisabledHint') : undefined}
+            disabled={addDisabled}
+            title={addDisabledTitle}
             className={`${btnPrimary} disabled:pointer-events-none disabled:opacity-45`}
           >
             <MaterialIcon name="add" className="text-xl" />
@@ -164,8 +197,8 @@ export function ProviderServicesPanel({ providerId, services, taxonomy }: Props)
           <button
             type="button"
             onClick={openAdd}
-            disabled={taxonomyMissing}
-            title={taxonomyMissing ? t('addServiceDisabledHint') : undefined}
+            disabled={addDisabled}
+            title={addDisabledTitle}
             className={`${btnPrimary} mt-6 disabled:pointer-events-none disabled:opacity-45`}
           >
             {t('addFirst')}
@@ -203,7 +236,13 @@ export function ProviderServicesPanel({ providerId, services, taxonomy }: Props)
                   </div>
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-2">
-                  <button type="button" onClick={() => openEdit(s)} className={btnGhost}>
+                  <button
+                    type="button"
+                    onClick={() => openEdit(s)}
+                    disabled={!canManageServices}
+                    title={!canManageServices ? t('addServicePaymentsDisabledHint') : undefined}
+                    className={`${btnGhost} disabled:pointer-events-none disabled:opacity-45`}
+                  >
                     {t('edit')}
                   </button>
                   <button

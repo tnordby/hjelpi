@@ -6,6 +6,8 @@ export type DashboardUserContext = {
   userId: string
   email: string
   profileId: string
+  /** Trimmed `profiles.first_name` (empty if unset). */
+  firstName: string
   fullName: string
   role: 'buyer' | 'seller' | 'admin'
   /** DB `profiles.active_mode` — which dashboard the user last used. */
@@ -25,6 +27,25 @@ export type BookingRow = {
   buyer_id?: string
   serviceTitle: string | null
   buyerName: string | null
+}
+
+/** Paid bookings (Stripe) shown on Utbetalinger as invoice-style lines. */
+export type SellerPayoutLine = {
+  id: string
+  status: string
+  createdAt: string
+  scheduledAt: string
+  serviceTitle: string | null
+  buyerName: string | null
+  totalAmountOre: number
+  baseAmountOre: number
+  buyerFeeOre: number
+  sellerFeeOre: number
+  netOre: number
+  stripePaymentIntentId: string
+  stripeConnectTransferId: string | null
+  sellerPayoutAt: string | null
+  payoutReleased: boolean
 }
 
 export type MessageThreadPreview = {
@@ -95,10 +116,14 @@ export async function loadDashboardUserContext(
   const activeMode: DashboardUserContext['activeMode'] =
     rawMode === 'seller' ? 'seller' : 'buyer'
 
+  const firstName =
+    typeof profile.first_name === 'string' ? profile.first_name.trim() : ''
+
   return {
     userId,
     email,
     profileId: profile.id,
+    firstName,
     fullName: profileDisplayName(profile.first_name, profile.last_name),
     role,
     activeMode,
@@ -214,10 +239,111 @@ export async function fetchSellerBookings(
   })
 }
 
+const PAYOUT_LINES_LIMIT = 100
+
+export async function fetchSellerPayoutLines(
+  supabase: SupabaseClient,
+  providerId: string,
+): Promise<SellerPayoutLine[]> {
+  const { data: services, error: svcErr } = await supabase
+    .from('provider_services')
+    .select('id')
+    .eq('provider_id', providerId)
+
+  if (svcErr || !services?.length) return []
+
+  const serviceIds = services.map((s) => s.id as string)
+
+  const { data, error } = await supabase
+    .from('bookings')
+    .select(
+      `
+      id,
+      status,
+      scheduled_at,
+      created_at,
+      total_amount_ore,
+      base_amount_ore,
+      buyer_fee_ore,
+      seller_fee_ore,
+      stripe_payment_intent_id,
+      stripe_connect_transfer_id,
+      seller_payout_at,
+      buyer_id,
+      provider_services ( title )
+    `,
+    )
+    .in('provider_service_id', serviceIds)
+    .not('stripe_payment_intent_id', 'is', null)
+    .neq('status', 'cancelled')
+    .order('created_at', { ascending: false })
+    .limit(PAYOUT_LINES_LIMIT)
+
+  if (error || !data?.length) return []
+
+  const buyerIds = [...new Set(data.map((r) => r.buyer_id as string).filter(Boolean))]
+  const buyerNames = new Map<string, string>()
+  if (buyerIds.length > 0) {
+    const { data: buyers } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name')
+      .in('id', buyerIds)
+    for (const p of buyers ?? []) {
+      buyerNames.set(
+        p.id as string,
+        profileDisplayName(p.first_name as string, p.last_name as string),
+      )
+    }
+  }
+
+  return data
+    .map((row) => {
+      const pi = row.stripe_payment_intent_id as string | null
+      if (!pi || pi.length === 0) return null
+      const base = (row.base_amount_ore as number) ?? 0
+      const buyerFee = (row.buyer_fee_ore as number) ?? 0
+      const fee = (row.seller_fee_ore as number) ?? 0
+      const ps = row.provider_services as { title: string } | { title: string }[] | null
+      const title =
+        ps == null ? null : Array.isArray(ps) ? ps[0]?.title ?? null : ps.title
+      const bid = row.buyer_id as string
+      const transferId =
+        typeof row.stripe_connect_transfer_id === 'string' && row.stripe_connect_transfer_id.length > 0
+          ? row.stripe_connect_transfer_id
+          : null
+      const payoutAt =
+        typeof row.seller_payout_at === 'string' && row.seller_payout_at.length > 0
+          ? row.seller_payout_at
+          : null
+      return {
+        id: row.id as string,
+        status: row.status as string,
+        createdAt: row.created_at as string,
+        scheduledAt: row.scheduled_at as string,
+        serviceTitle: title,
+        buyerName: buyerNames.get(bid) ?? null,
+        totalAmountOre: row.total_amount_ore as number,
+        baseAmountOre: base,
+        buyerFeeOre: buyerFee,
+        sellerFeeOre: fee,
+        netOre: netSellerOre(base, fee),
+        stripePaymentIntentId: pi,
+        stripeConnectTransferId: transferId,
+        sellerPayoutAt: payoutAt,
+        payoutReleased: Boolean(transferId),
+      }
+    })
+    .filter((r): r is SellerPayoutLine => r !== null)
+}
+
 export type EarningsSummary = {
   completedCount: number
   netOre: number
   pendingIncoming: number
+  /** Net (base − seller fee) already transferred to Stripe Connect */
+  netTransferredToConnectOre: number
+  /** Net still on platform (paid customer, Connect transfer not done yet) */
+  netHeldOnPlatformOre: number
 }
 
 export async function fetchSellerEarningsSummary(
@@ -230,38 +356,73 @@ export async function fetchSellerEarningsSummary(
     .eq('provider_id', providerId)
 
   if (!services?.length) {
-    return { completedCount: 0, netOre: 0, pendingIncoming: 0 }
+    return {
+      completedCount: 0,
+      netOre: 0,
+      pendingIncoming: 0,
+      netTransferredToConnectOre: 0,
+      netHeldOnPlatformOre: 0,
+    }
   }
 
   const serviceIds = services.map((s) => s.id as string)
 
   const { data: bookings } = await supabase
     .from('bookings')
-    .select('status, base_amount_ore, seller_fee_ore')
+    .select('status, base_amount_ore, seller_fee_ore, stripe_payment_intent_id, stripe_connect_transfer_id')
     .in('provider_service_id', serviceIds)
 
   if (!bookings?.length) {
-    return { completedCount: 0, netOre: 0, pendingIncoming: 0 }
+    return {
+      completedCount: 0,
+      netOre: 0,
+      pendingIncoming: 0,
+      netTransferredToConnectOre: 0,
+      netHeldOnPlatformOre: 0,
+    }
   }
 
   let netOre = 0
   let completedCount = 0
   let pendingIncoming = 0
+  let netTransferredToConnectOre = 0
+  let netHeldOnPlatformOre = 0
 
   for (const b of bookings) {
     const status = b.status as string
     const base = (b.base_amount_ore as number) ?? 0
     const fee = (b.seller_fee_ore as number) ?? 0
+    const net = Math.max(0, base - fee)
+    const row = b as {
+      stripe_payment_intent_id?: string | null
+      stripe_connect_transfer_id?: string | null
+    }
+    const paid = Boolean(row.stripe_payment_intent_id)
+    const transferred = Boolean(
+      row.stripe_connect_transfer_id && String(row.stripe_connect_transfer_id).length > 0,
+    )
     if (status === 'completed') {
       completedCount += 1
-      netOre += Math.max(0, base - fee)
+      netOre += net
     }
     if (status === 'pending' || status === 'confirmed') {
       pendingIncoming += 1
     }
+    if (paid && !transferred && status !== 'cancelled') {
+      netHeldOnPlatformOre += net
+    }
+    if (paid && transferred) {
+      netTransferredToConnectOre += net
+    }
   }
 
-  return { completedCount, netOre, pendingIncoming }
+  return {
+    completedCount,
+    netOre,
+    pendingIncoming,
+    netTransferredToConnectOre,
+    netHeldOnPlatformOre,
+  }
 }
 
 export type EarningsPeriodRow = {

@@ -20,11 +20,28 @@ export const profileNamesLocationSchema = z
     { path: ['locationId'] },
   )
 
+export const profileNamesOnlySchema = z.object({
+  firstName: z.string().trim().min(1).max(60),
+  lastName: z.string().trim().max(60),
+})
+
+export const profileLocationOnlySchema = z
+  .object({
+    locationId: z
+      .union([z.string(), z.null(), z.undefined()])
+      .transform((v) => (typeof v === 'string' ? v.trim() : '')),
+  })
+  .refine(
+    (d) => d.locationId === '' || z.string().uuid().safeParse(d.locationId).success,
+    { path: ['locationId'] },
+  )
+
 export const profileEmailSchema = z.object({
   email: z.string().min(1).email().max(320),
 })
 
-const maxAvatarBytes = 5 * 1024 * 1024
+/** Keep in sync with `storage.buckets.file_size_limit` for bucket `avatars`. */
+const maxAvatarBytes = 1 * 1024 * 1024
 const allowedAvatarMime = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
 
 export function validateAvatarFile(file: File): { ok: true } | { ok: false; reason: 'empty' | 'size' | 'type' } {

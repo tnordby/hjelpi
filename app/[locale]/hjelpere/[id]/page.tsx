@@ -1,28 +1,40 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
+import { Link, redirect } from '@/i18n/routing'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
+import { BankIdVerifiedBadge } from '@/components/providers/BankIdVerifiedBadge'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
-import { Link } from '@/i18n/routing'
 import { formatServicePriceLabel } from '@/lib/provider-services/display'
 import { fetchPublicProviderServices } from '@/lib/provider-services/data'
 import { profileDisplayName } from '@/lib/profiles/display-name'
+import { providerLocationName } from '@/lib/providers/provider-location'
+import { resolveRouteProviderId } from '@/lib/providers/resolve-route-provider-id'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { withPageSeo } from '@/lib/seo/build-metadata'
 
 type Props = { params: Promise<{ locale: string; id: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, id } = await params
+  const { locale, id: routeId } = await params
   const supabase = await createSupabaseServerClient()
+  const providerId = await resolveRouteProviderId(supabase, routeId)
+  const t = await getTranslations({ locale, namespace: 'publicHelperProfile' })
+
+  if (!providerId) {
+    return withPageSeo(
+      { title: t('metaTitle', { name: t('displayNameFallback') }), description: t('metaDescription', { name: t('displayNameFallback') }) },
+      { locale, pathSegments: ['hjelpere', routeId], indexable: false, keywords: ['Hjelpi'] },
+    )
+  }
+
   const { data } = await supabase
     .from('providers')
-    .select('profiles(first_name, last_name)')
-    .eq('id', id)
+    .select('profiles!providers_profile_id_fkey(first_name, last_name)')
+    .eq('id', providerId)
     .maybeSingle()
-
-  let name = 'Hjelper'
+  let name = t('displayNameFallback')
   if (data?.profiles) {
     const p = Array.isArray(data.profiles) ? data.profiles[0] : data.profiles
     if (p && typeof p === 'object') {
@@ -34,7 +46,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const t = await getTranslations({ locale, namespace: 'publicHelperProfile' })
   return withPageSeo(
     {
       title: t('metaTitle', { name }),
@@ -42,15 +53,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     {
       locale,
-      pathSegments: ['hjelpere', id],
+      pathSegments: ['hjelpere', providerId],
       keywords: [name, 'hjelper', 'lokale tjenester', 'Hjelpi'],
     },
   )
 }
 
 export default async function HjelperProfilePage({ params }: Props) {
-  const { id } = await params
+  const { locale, id: routeId } = await params
   const supabase = await createSupabaseServerClient()
+  const providerId = await resolveRouteProviderId(supabase, routeId)
+  if (!providerId) notFound()
+  if (providerId !== routeId) {
+    redirect({ href: `/hjelpere/${providerId}`, locale })
+  }
+
   const { data, error } = await supabase
     .from('providers')
     .select(
@@ -60,10 +77,11 @@ export default async function HjelperProfilePage({ params }: Props) {
       avg_rating,
       total_reviews,
       is_verified,
-      profiles (first_name, last_name, avatar_url, deleted_at)
+      locations ( name ),
+      profiles!providers_profile_id_fkey (first_name, last_name, avatar_url, deleted_at)
     `,
     )
-    .eq('id', id)
+    .eq('id', providerId)
     .maybeSingle()
 
   if (error || !data) notFound()
@@ -71,27 +89,24 @@ export default async function HjelperProfilePage({ params }: Props) {
   const rawProfile = data.profiles
   const profile = Array.isArray(rawProfile) ? rawProfile[0] : rawProfile
 
-  const publicName = profileDisplayName(
-    profile && typeof profile === 'object' && 'first_name' in profile
-      ? (profile.first_name as string | null)
-      : null,
-    profile && typeof profile === 'object' && 'last_name' in profile
-      ? (profile.last_name as string | null)
-      : null,
-  )
-
   if (
     !profile ||
     typeof profile !== 'object' ||
-    publicName.length === 0 ||
     ('deleted_at' in profile && profile.deleted_at != null)
   ) {
     notFound()
   }
 
-  const rating = data.avg_rating != null ? Number(data.avg_rating) : 0
-  const services = await fetchPublicProviderServices(supabase, id)
   const t = await getTranslations('publicHelperProfile')
+  const publicName =
+    profileDisplayName(
+      'first_name' in profile ? (profile.first_name as string | null) : null,
+      'last_name' in profile ? (profile.last_name as string | null) : null,
+    ).trim() || t('displayNameFallback')
+
+  const rating = data.avg_rating != null ? Number(data.avg_rating) : 0
+  const locationName = providerLocationName(data.locations)
+  const services = await fetchPublicProviderServices(supabase, providerId)
 
   return (
     <>
@@ -117,11 +132,18 @@ export default async function HjelperProfilePage({ params }: Props) {
                 )}
               </div>
               <div className="min-w-0 flex-1 text-center sm:text-left">
-                <h1 className="font-headline text-3xl font-extrabold text-primary">
-                  {publicName}
-                </h1>
-                {data.is_verified ? (
-                  <p className="mt-2 text-sm font-semibold text-primary">Verifisert hjelper</p>
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                  <h1 className="font-headline text-3xl font-extrabold text-primary">{publicName}</h1>
+                  {data.is_verified ? <BankIdVerifiedBadge label={t('bankIdVerified')} /> : null}
+                </div>
+                {locationName ? (
+                  <p className="mt-2 flex items-center justify-center gap-1.5 text-sm text-on-surface-variant sm:justify-start">
+                    <MaterialIcon
+                      name="location_on"
+                      className="shrink-0 text-lg text-on-surface-variant/80"
+                    />
+                    <span>{locationName}</span>
+                  </p>
                 ) : null}
                 {data.total_reviews > 0 ? (
                   <p className="mt-2 text-on-surface-variant">
@@ -156,7 +178,7 @@ export default async function HjelperProfilePage({ params }: Props) {
                   return (
                     <li key={svc.id}>
                       <Link
-                        href={`/hjelpere/${id}/tjenester/${svc.id}`}
+                        href={`/hjelpere/${providerId}/tjenester/${svc.id}`}
                         className="group flex items-start justify-between gap-4 rounded-2xl border border-outline-variant/30 bg-white p-5 shadow-sm transition-all hover:border-primary/25 hover:shadow-md"
                       >
                         <div className="min-w-0">

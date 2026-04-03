@@ -1,17 +1,26 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useActionState, useEffect, useRef } from 'react'
-import { useRouter } from '@/i18n/routing'
+import { useActionState, useCallback, useEffect, useRef, useState } from 'react'
+import { Link, useRouter } from '@/i18n/routing'
 import {
   clearProfileAvatarAction,
   updateProfileAvatarAction,
   updateProfileEmailAction,
-  updateProfileNamesAndLocationAction,
+  updateProfileLocationOnlyAction,
+  updateProfileNamesOnlyAction,
   type ProfileSettingsState,
 } from '@/lib/profile/actions'
 import { ResendSignupEmailForm } from '@/components/auth/ResendSignupEmailForm'
+import {
+  SettingsLocationPicker,
+  type SettingsLocationOption,
+} from '@/components/settings/SettingsLocationPicker'
+import { MaterialIcon } from '@/components/ui/MaterialIcon'
 import { cn } from '@/lib/utils'
+
+const sectionClass =
+  'rounded-2xl bg-surface-container-lowest p-6 shadow-ambient ring-1 ring-outline-variant/15'
 
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
@@ -24,7 +33,8 @@ export type MinSideProfileSettingsProps = {
   locationId: string
   hasProvider: boolean
   needsEmailConfirm: boolean
-  locations: { id: string; name: string }[]
+  locations: SettingsLocationOption[]
+  locationsLoadError?: boolean
 }
 
 function MessageBanner({ state }: { state: ProfileSettingsState | undefined }) {
@@ -53,87 +63,178 @@ export function MinSideProfileSettings({
   hasProvider,
   needsEmailConfirm,
   locations,
+  locationsLoadError = false,
 }: MinSideProfileSettingsProps) {
   const router = useRouter()
   const t = useTranslations('dashboard.settingsPage.form')
   const tPhoto = useTranslations('dashboard.settingsPage.photo')
-  const [namesState, namesAction] = useActionState(updateProfileNamesAndLocationAction, {} as ProfileSettingsState)
+  const [namesState, namesAction] = useActionState(updateProfileNamesOnlyAction, {} as ProfileSettingsState)
+  const [locationState, locationAction] = useActionState(
+    updateProfileLocationOnlyAction,
+    {} as ProfileSettingsState,
+  )
   const [emailState, emailAction] = useActionState(updateProfileEmailAction, {} as ProfileSettingsState)
   const [avatarState, avatarAction] = useActionState(updateProfileAvatarAction, {} as ProfileSettingsState)
   const [clearState, clearAction] = useActionState(clearProfileAvatarAction, {} as ProfileSettingsState)
 
   const photoFormRef = useRef<HTMLFormElement>(null)
-  useEffect(() => {
-    if (avatarState?.success) photoFormRef.current?.reset()
-  }, [avatarState?.success])
+  const previewObjectUrlRef = useRef<string | null>(null)
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null)
+
+  const revokePreview = useCallback(() => {
+    if (previewObjectUrlRef.current) {
+      URL.revokeObjectURL(previewObjectUrlRef.current)
+      previewObjectUrlRef.current = null
+    }
+    setAvatarPreviewUrl(null)
+  }, [])
 
   useEffect(() => {
-    if (avatarState?.success || clearState?.success || namesState?.success || emailState?.success) {
+    return () => {
+      if (previewObjectUrlRef.current) {
+        URL.revokeObjectURL(previewObjectUrlRef.current)
+      }
+    }
+  }, [])
+
+  function onAvatarFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    revokePreview()
+    if (!file) return
+    const url = URL.createObjectURL(file)
+    previewObjectUrlRef.current = url
+    setAvatarPreviewUrl(url)
+  }
+
+  useEffect(() => {
+    if (avatarState?.success) {
+      photoFormRef.current?.reset()
+      revokePreview()
+    }
+  }, [avatarState?.success, revokePreview])
+
+  useEffect(() => {
+    if (clearState?.success) {
+      photoFormRef.current?.reset()
+      revokePreview()
+    }
+  }, [clearState?.success, revokePreview])
+
+  useEffect(() => {
+    if (
+      avatarState?.success ||
+      clearState?.success ||
+      namesState?.success ||
+      locationState?.success ||
+      emailState?.success
+    ) {
       router.refresh()
     }
-  }, [avatarState?.success, clearState?.success, namesState?.success, emailState?.success, router])
+  }, [
+    avatarState?.success,
+    clearState?.success,
+    namesState?.success,
+    locationState?.success,
+    emailState?.success,
+    router,
+  ])
 
-  const showAvatar = Boolean(avatarUrl?.trim())
+  const displayAvatarSrc = avatarPreviewUrl ?? (avatarUrl?.trim() ? avatarUrl : null)
+  const showAvatar = Boolean(displayAvatarSrc)
 
   return (
-    <div className="space-y-10">
-      <section className="rounded-2xl bg-surface-container-lowest p-6 ring-1 ring-outline-variant/15">
+    <div className="space-y-8">
+      <section className={sectionClass}>
         <h2 className="font-headline text-lg font-bold text-on-surface">{tPhoto('title')}</h2>
-        <p className="mt-1 text-sm text-on-surface-variant">{tPhoto('hint')}</p>
-        <div className="mt-4 flex flex-col gap-6 sm:flex-row sm:items-start">
-          <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary/10 ring-2 ring-outline-variant/25">
-            {showAvatar ? (
-              // eslint-disable-next-line @next/next/no-img-element -- Supabase storage URL
-              <img src={avatarUrl!} alt="" className="h-full w-full object-cover" referrerPolicy="no-referrer" />
-            ) : (
-              <span className="text-2xl font-bold text-primary/50" aria-hidden>
-                ?
-              </span>
+        <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-center">
+          <div
+            className={cn(
+              'group relative h-24 w-24 shrink-0 overflow-hidden rounded-full bg-primary/10 ring-2 ring-outline-variant/20',
+              showAvatar && 'cursor-default',
             )}
+          >
+            {showAvatar ? (
+              // eslint-disable-next-line @next/next/no-img-element -- blob preview or Supabase URL
+              <img
+                src={displayAvatarSrc!}
+                alt=""
+                className="h-full w-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <span className="text-xl font-bold text-primary/40" aria-hidden>
+                  ?
+                </span>
+              </div>
+            )}
+            {showAvatar ? (
+              <div
+                className={cn(
+                  'absolute inset-0 flex items-center justify-center rounded-full bg-black/50 transition-opacity',
+                  'max-md:opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100',
+                )}
+              >
+                {avatarPreviewUrl ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      photoFormRef.current?.reset()
+                      revokePreview()
+                    }}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-on-surface shadow-md transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    aria-label={tPhoto('clearSelectionAria')}
+                  >
+                    <MaterialIcon name="close" className="text-2xl" />
+                  </button>
+                ) : avatarUrl?.trim() ? (
+                  <form action={clearAction}>
+                    <button
+                      type="submit"
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-on-surface shadow-md transition-transform hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      aria-label={tPhoto('removeAria')}
+                    >
+                      <MaterialIcon name="close" className="text-2xl" />
+                    </button>
+                  </form>
+                ) : null}
+              </div>
+            ) : null}
           </div>
-          <div className="min-w-0 flex-1 space-y-4">
+          <div className="min-w-0 flex-1 space-y-3">
             <MessageBanner state={avatarState} />
             <MessageBanner state={clearState} />
-            <form ref={photoFormRef} action={avatarAction} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-              <div className="min-w-0 flex-1">
-                <label htmlFor="avatar" className="sr-only">
-                  {tPhoto('fileLabel')}
-                </label>
-                <input
-                  id="avatar"
-                  name="avatar"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,image/gif"
-                  className="block w-full text-sm text-on-surface file:mr-3 file:rounded-lg file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-on-primary"
-                />
-              </div>
+            <form ref={photoFormRef} action={avatarAction} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <input
+                id="avatar"
+                name="avatar"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={onAvatarFileChange}
+                className="sr-only"
+              />
+              <label
+                htmlFor="avatar"
+                className="inline-flex w-fit cursor-pointer rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+              >
+                {tPhoto('uploadButton')}
+              </label>
               <button
                 type="submit"
-                className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+                className="inline-flex w-fit shrink-0 rounded-full border border-outline-variant/40 bg-white px-6 py-2.5 text-sm font-bold text-on-surface transition-colors hover:bg-surface-container-low"
               >
                 {tPhoto('save')}
               </button>
             </form>
-            {showAvatar ? (
-              <form action={clearAction}>
-                <button
-                  type="submit"
-                  className="text-sm font-semibold text-on-surface-variant underline-offset-2 hover:text-primary hover:underline"
-                >
-                  {tPhoto('remove')}
-                </button>
-              </form>
-            ) : null}
+            <p className="text-xs text-on-surface-variant">{tPhoto('hint')}</p>
           </div>
         </div>
       </section>
 
-      <section className="rounded-2xl bg-surface-container-lowest p-6 ring-1 ring-outline-variant/15">
+      <section className={sectionClass}>
         <h2 className="font-headline text-lg font-bold text-on-surface">{t('nameTitle')}</h2>
-        <p className="mt-1 text-sm text-on-surface-variant">
-          {hasProvider ? t('locationHintSeller') : t('locationHintBuyer')}
-        </p>
-        <form action={namesAction} className="mt-4 space-y-4">
+        <p className="mt-1 text-sm text-on-surface-variant">{t('nameSubtitle')}</p>
+        <form action={namesAction} className="mt-4 flex flex-col gap-4">
           <MessageBanner state={namesState} />
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -166,33 +267,39 @@ export function MinSideProfileSettings({
               />
             </div>
           </div>
-          {locations.length > 0 ? (
-            <div>
-              <label htmlFor="locationId" className="mb-2 block text-sm font-medium text-on-surface">
-                {t('locationLabel')}
-              </label>
-              <select id="locationId" name="locationId" defaultValue={locationId} className={inputClass}>
-                <option value="">{t('locationPlaceholder')}</option>
-                {locations.map((loc) => (
-                  <option key={loc.id} value={loc.id}>
-                    {loc.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            <input type="hidden" name="locationId" value="" />
-          )}
           <button
             type="submit"
-            className="rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+            className="w-fit rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
           >
-            {t('saveProfile')}
+            {t('saveName')}
           </button>
         </form>
       </section>
 
-      <section className="rounded-2xl bg-surface-container-lowest p-6 ring-1 ring-outline-variant/15">
+      <section className={sectionClass}>
+        <h2 className="font-headline text-lg font-bold text-on-surface">{t('locationSectionTitle')}</h2>
+        <p className="mt-1 text-sm text-on-surface-variant">
+          {hasProvider ? t('locationHintSeller') : t('locationHintBuyer')}
+        </p>
+        <form action={locationAction} className="mt-4 flex flex-col gap-4">
+          <MessageBanner state={locationState} />
+          <SettingsLocationPicker
+            locations={locations}
+            initialLocationId={locationId}
+            loadError={locationsLoadError}
+          />
+          {locations.length > 0 ? (
+            <button
+              type="submit"
+              className="w-fit rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary transition-opacity hover:opacity-90"
+            >
+              {t('saveLocation')}
+            </button>
+          ) : null}
+        </form>
+      </section>
+
+      <section className={sectionClass}>
         <h2 className="font-headline text-lg font-bold text-on-surface">{t('emailTitle')}</h2>
         <p className="mt-1 text-sm text-on-surface-variant">{t('emailHint')}</p>
         {needsEmailConfirm ? (
@@ -225,6 +332,17 @@ export function MinSideProfileSettings({
             {t('saveEmail')}
           </button>
         </form>
+      </section>
+
+      <section className={sectionClass}>
+        <h2 className="font-headline text-lg font-bold text-on-surface">{t('passwordTitle')}</h2>
+        <p className="mt-1 text-sm text-on-surface-variant">{t('passwordHint')}</p>
+        <Link
+          href="/glemt-passord"
+          className="mt-4 inline-flex w-fit rounded-full bg-primary px-6 py-2.5 text-sm font-bold text-on-primary shadow-ambient transition-opacity hover:opacity-90"
+        >
+          {t('passwordCta')}
+        </Link>
       </section>
     </div>
   )

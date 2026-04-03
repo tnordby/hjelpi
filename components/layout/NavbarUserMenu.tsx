@@ -1,15 +1,22 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/routing'
+import { Link, usePathname } from '@/i18n/routing'
 import { signOutAction } from '@/lib/auth/actions'
+import {
+  minSideNavLinksForVariant,
+  resolveMinSideNavVariant,
+  type MinSideNavVariant,
+} from '@/lib/dashboard/min-side-nav-links'
 import { cn } from '@/lib/utils'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useMemo, useRef, useState } from 'react'
 
 export type NavbarUserMenuProps = {
   avatarUrl: string | null
   fullName: string
   email: string
+  /** Used on shared routes (e.g. innstillinger) and off Min side — matches «Min side» default segment. */
+  minSideNavFallback: MinSideNavVariant
 }
 
 function initialsFromUser(fullName: string, email: string) {
@@ -35,8 +42,18 @@ function isSafeImageHost(src: string) {
   }
 }
 
-export function NavbarUserMenu({ avatarUrl, fullName, email }: NavbarUserMenuProps) {
+export function NavbarUserMenu({ avatarUrl, fullName, email, minSideNavFallback }: NavbarUserMenuProps) {
   const t = useTranslations('nav')
+  const tDash = useTranslations('dashboard.nav')
+  const pathname = usePathname()
+  const variant = useMemo(
+    () => resolveMinSideNavVariant(pathname, minSideNavFallback),
+    [pathname, minSideNavFallback],
+  )
+  const minSideLinks = useMemo(
+    () => minSideNavLinksForVariant(variant).filter(({ key }) => key !== 'bankId'),
+    [variant],
+  )
   const menuId = useId()
   const [open, setOpen] = useState(false)
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -103,22 +120,17 @@ export function NavbarUserMenu({ avatarUrl, fullName, email }: NavbarUserMenuPro
             ) : null}
           </div>
           <div className="py-1">
-            <Link
-              href="/min-side/innstillinger"
-              role="menuitem"
-              className="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low"
-              onClick={() => setOpen(false)}
-            >
-              {t('userMenuSettings')}
-            </Link>
-            <Link
-              href="/min-konto"
-              role="menuitem"
-              className="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low"
-              onClick={() => setOpen(false)}
-            >
-              {t('userMenuAccount')}
-            </Link>
+            {minSideLinks.map(({ href, key }) => (
+              <Link
+                key={href}
+                href={href}
+                role="menuitem"
+                className="block px-4 py-2.5 text-sm font-medium text-on-surface hover:bg-surface-container-low"
+                onClick={() => setOpen(false)}
+              >
+                {tDash(key)}
+              </Link>
+            ))}
           </div>
           <div className="border-t border-outline-variant/20 px-2 py-2">
             <form action={signOutAction}>

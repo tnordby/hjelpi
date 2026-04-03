@@ -5,20 +5,31 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { redirect } from '@/i18n/routing'
 import { computeBaseAmountOre } from '@/lib/bookings/compute-base'
 import { createBookingRequestSchema } from '@/lib/bookings/schemas'
+import { createBookingCheckoutSession } from '@/lib/stripe/booking-checkout'
 import { platformFeesFromBaseOre } from '@/lib/stripe/fees'
+import { refreshProviderStripeOnboardedIfReady } from '@/lib/stripe/refresh-connect-status'
+import { getStripe } from '@/lib/stripe/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 export type CreateBookingActionState = {
   error?: string
+  checkoutUrl?: string
+}
+
+type ProviderJoin = {
+  profile_id: string
+  stripe_account_id: string | null
+  stripe_onboarded: boolean
 }
 
 type ServiceRow = {
   id: string
+  title: string
   pricing_type: string
   base_price_ore: number | null
   cancellation_policy_id: string | null
   provider_id: string
-  providers: { profile_id: string } | { profile_id: string }[] | null
+  providers: ProviderJoin | ProviderJoin[] | null
 }
 
 export async function createBookingRequestAction(
@@ -74,11 +85,12 @@ export async function createBookingRequestAction(
     .select(
       `
       id,
+      title,
       pricing_type,
       base_price_ore,
       cancellation_policy_id,
       provider_id,
-      providers ( profile_id )
+      providers ( profile_id, stripe_account_id, stripe_onboarded )
     `,
     )
     .eq('id', provider_service_id)
@@ -121,6 +133,32 @@ export async function createBookingRequestAction(
 
   const amounts = platformFeesFromBaseOre(baseOre)
 
+  const payNow = pricing_type === 'fixed' || pricing_type === 'hourly'
+  if (payNow) {
+    let stripeAccountId =
+      prov && typeof prov === 'object' && 'stripe_account_id' in prov
+        ? (prov.stripe_account_id as string | null)
+        : null
+    let onboarded =
+      prov && typeof prov === 'object' && 'stripe_onboarded' in prov
+        ? Boolean(prov.stripe_onboarded)
+        : false
+
+    const stripe = getStripe()
+    if (stripe && stripeAccountId && !onboarded) {
+      try {
+        const nowReady = await refreshProviderStripeOnboardedIfReady(stripe, stripeAccountId)
+        if (nowReady) onboarded = true
+      } catch (e) {
+        console.warn('[booking] stripe connect refresh failed', e)
+      }
+    }
+
+    if (!stripeAccountId || !onboarded) {
+      return { error: t('bookingErrors.sellerPayoutsNotReady') }
+    }
+  }
+
   const scheduledIso = new Date(scheduled_at).toISOString()
 
   const insertPayload: Record<string, unknown> = {
@@ -137,13 +175,51 @@ export async function createBookingRequestAction(
     buyer_message: buyer_message.length > 0 ? buyer_message : null,
   }
 
-  const { error: insErr } = await supabase.from('bookings').insert(insertPayload)
+  const { data: inserted, error: insErr } = await supabase
+    .from('bookings')
+    .insert(insertPayload)
+    .select('id')
+    .maybeSingle()
 
-  if (insErr) {
+  if (insErr || !inserted?.id) {
     return { error: t('bookingErrors.saveFailed') }
   }
 
+  const bookingId = inserted.id as string
   const locale = await getLocale()
+
+  if (payNow) {
+    const stripe = getStripe()
+    if (!stripe) {
+      await supabase.from('bookings').delete().eq('id', bookingId)
+      return { error: t('bookingErrors.stripeNotConfigured') }
+    }
+
+    const stripeAccountId = (prov as ProviderJoin).stripe_account_id as string
+
+    try {
+      const session = await createBookingCheckoutSession(stripe, {
+        bookingId,
+        serviceTitle: row.title,
+        amounts,
+        connectedAccountId: stripeAccountId,
+        customerEmail: user.email ?? null,
+        locale,
+      })
+      const url = session.url
+      if (!url) {
+        await supabase.from('bookings').delete().eq('id', bookingId)
+        return { error: t('bookingErrors.checkoutFailed') }
+      }
+      revalidatePath(`/${locale}/min-side/kunde/bestillinger`)
+      revalidatePath(`/${locale}/min-side/hjelper/foresporsler`)
+      return { checkoutUrl: url }
+    } catch {
+      await supabase.from('bookings').delete().eq('id', bookingId)
+      return { error: t('bookingErrors.checkoutFailed') }
+    }
+  }
+
   revalidatePath(`/${locale}/min-side/kunde/bestillinger`)
   revalidatePath(`/${locale}/min-side/hjelper/foresporsler`)
 

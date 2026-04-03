@@ -102,7 +102,6 @@ export default async function KundeDashboardPage() {
         >
           <p className="text-sm font-medium text-on-surface-variant">{t('cardSettings')}</p>
           <p className="mt-2 font-headline text-lg font-extrabold text-primary">{t('cardSettingsCta')}</p>
-          <p className="mt-1 text-xs text-on-surface-variant">{t('cardSettingsHint')}</p>
         </Link>
       </div>
 

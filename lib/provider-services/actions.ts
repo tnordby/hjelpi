@@ -12,6 +12,7 @@ import {
   serviceBasePriceOreFromInput,
   upsertProviderServiceSchema,
 } from '@/lib/provider-services/schemas'
+import { ensureProviderCanPublishServices } from '@/lib/provider-services/stripe-services-gate'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import type { ZodIssue } from 'zod'
 
@@ -65,14 +66,56 @@ function translateUpsertIssue(
   return t('invalid')
 }
 
+async function revalidateSubcategoryMarketplacePage(
+  locale: string,
+  supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
+  subcategoryId: string,
+) {
+  const { data: subMeta } = await supabase
+    .from('subcategories')
+    .select('slug, categories ( slug )')
+    .eq('id', subcategoryId)
+    .maybeSingle()
+  if (!subMeta) return
+  const sm = subMeta as {
+    slug?: string
+    categories?: { slug?: string } | { slug?: string }[] | null
+  }
+  const subSlug = typeof sm.slug === 'string' ? sm.slug : ''
+  const catRaw = sm.categories
+  const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw
+  const categorySlug = cat && typeof cat === 'object' && typeof cat.slug === 'string' ? cat.slug : ''
+  if (categorySlug && subSlug) {
+    revalidatePath(`/${locale}/${categorySlug}/${subSlug}`, 'page')
+  }
+}
+
 export async function upsertProviderServiceAction(
   _prev: ProviderServiceActionState | undefined,
   formData: FormData,
 ): Promise<ProviderServiceActionState> {
   const t = await getTranslations('dashboard.sellerServices.errors')
+  try {
+    return await runUpsertProviderService(t, formData)
+  } catch (e) {
+    console.error('[upsertProviderServiceAction]', e)
+    return { error: t('saveFailed') }
+  }
+}
+
+async function runUpsertProviderService(
+  t: Awaited<ReturnType<typeof getTranslations>>,
+  formData: FormData,
+): Promise<ProviderServiceActionState> {
   const { supabase, ctx, tKey } = await requireSellerContext()
   if (tKey) return { error: t(tKey) }
   if (!ctx) return { error: t('notSignedIn') }
+  if (!ctx.providerId) return { error: t('noProvider') }
+
+  const paymentsGate = await ensureProviderCanPublishServices(supabase, ctx.providerId)
+  if (!paymentsGate.ok) {
+    return { error: t('paymentsNotReady') }
+  }
 
   const idRaw = formData.get('id')
   const id = typeof idRaw === 'string' && idRaw.length > 0 ? idRaw : undefined
@@ -163,7 +206,7 @@ export async function upsertProviderServiceAction(
   if (id) {
     const { data: existing, error: exErr } = await supabase
       .from('provider_services')
-      .select('id, provider_id, cancellation_policy_id')
+      .select('id, provider_id, cancellation_policy_id, subcategory_id')
       .eq('id', id)
       .maybeSingle()
 
@@ -171,30 +214,47 @@ export async function upsertProviderServiceAction(
       return { error: t('notFound') }
     }
 
+    const previousSubcategoryId = (existing as { subcategory_id: string }).subcategory_id
+
     const { error } = await supabase
       .from('provider_services')
       .update(payload)
       .eq('id', id)
       .eq('provider_id', ctx.providerId)
 
-    if (error) return { error: t('saveFailed') }
-  } else {
-    const { error } = await supabase.from('provider_services').insert({
-      provider_id: ctx.providerId,
-      cancellation_policy_id,
-      ...payload,
-    })
+    if (error) {
+      console.error('[provider_services update]', error.message, error.code, error.details)
+      return { error: t('saveFailed') }
+    }
 
-    if (error) return { error: t('saveFailed') }
+    const locale = await getLocale()
+    await revalidateSubcategoryMarketplacePage(locale, supabase, subcategory_id)
+    if (previousSubcategoryId !== subcategory_id) {
+      await revalidateSubcategoryMarketplacePage(locale, supabase, previousSubcategoryId)
+    }
+    revalidatePath(`/${locale}/min-side/hjelper/tjenester`)
+    revalidatePath(`/${locale}/min-side/hjelper`)
+    revalidatePath(`/${locale}/hjelpere/${ctx.providerId}`)
+    revalidatePath(`/${locale}/hjelpere/${ctx.providerId}/tjenester/${id}`)
+    return { ok: true }
+  }
+
+  const { error } = await supabase.from('provider_services').insert({
+    provider_id: ctx.providerId,
+    cancellation_policy_id,
+    ...payload,
+  })
+
+  if (error) {
+    console.error('[provider_services insert]', error.message, error.code, error.details)
+    return { error: t('saveFailed') }
   }
 
   const locale = await getLocale()
+  await revalidateSubcategoryMarketplacePage(locale, supabase, subcategory_id)
   revalidatePath(`/${locale}/min-side/hjelper/tjenester`)
   revalidatePath(`/${locale}/min-side/hjelper`)
   revalidatePath(`/${locale}/hjelpere/${ctx.providerId}`)
-  if (id) {
-    revalidatePath(`/${locale}/hjelpere/${ctx.providerId}/tjenester/${id}`)
-  }
   return { ok: true }
 }
 
@@ -203,6 +263,18 @@ export async function deleteProviderServiceAction(
   formData: FormData,
 ): Promise<ProviderServiceActionState> {
   const t = await getTranslations('dashboard.sellerServices.errors')
+  try {
+    return await runDeleteProviderService(t, formData)
+  } catch (e) {
+    console.error('[deleteProviderServiceAction]', e)
+    return { error: t('saveFailed') }
+  }
+}
+
+async function runDeleteProviderService(
+  t: Awaited<ReturnType<typeof getTranslations>>,
+  formData: FormData,
+): Promise<ProviderServiceActionState> {
   const { supabase, ctx, tKey } = await requireSellerContext()
   if (tKey) return { error: t(tKey) }
   if (!ctx) return { error: t('notSignedIn') }
@@ -219,15 +291,32 @@ export async function deleteProviderServiceAction(
   if (cErr) return { error: t('saveFailed') }
   if ((count ?? 0) > 0) return { error: t('deleteHasBookings') }
 
+  const { data: toDelete } = await supabase
+    .from('provider_services')
+    .select('subcategory_id')
+    .eq('id', id)
+    .eq('provider_id', ctx.providerId)
+    .maybeSingle()
+
   const { error } = await supabase
     .from('provider_services')
     .delete()
     .eq('id', id)
     .eq('provider_id', ctx.providerId)
 
-  if (error) return { error: t('saveFailed') }
+  if (error) {
+    console.error('[provider_services delete]', error.message, error.code, error.details)
+    return { error: t('saveFailed') }
+  }
 
   const locale = await getLocale()
+  const removedSubId =
+    toDelete && typeof toDelete === 'object' && 'subcategory_id' in toDelete
+      ? (toDelete as { subcategory_id: string }).subcategory_id
+      : null
+  if (removedSubId) {
+    await revalidateSubcategoryMarketplacePage(locale, supabase, removedSubId)
+  }
   revalidatePath(`/${locale}/min-side/hjelper/tjenester`)
   revalidatePath(`/${locale}/min-side/hjelper`)
   revalidatePath(`/${locale}/hjelpere/${ctx.providerId}`)

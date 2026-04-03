@@ -24,14 +24,9 @@ export async function generateMetadata({
 
 export default async function ForgotPasswordPage() {
   const t = await getTranslations('auth.forgot')
-  const tAuth = await getTranslations('auth')
 
   return (
-    <AuthShell
-      title={t('title')}
-      subtitle={t('subtitle')}
-      backLink={{ href: '/', label: tAuth('backToHome') }}
-    >
+    <AuthShell title={t('title')} subtitle={t('subtitle')}>
       <ForgotPasswordForm />
     </AuthShell>
   )

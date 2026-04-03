@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/routing'
 import { NavbarModeToggle } from '@/components/layout/NavbarModeToggle'
 import type { NavbarUserMenuProps } from '@/components/layout/NavbarUserMenu'
+import { NavbarMessagesLink } from '@/components/layout/NavbarMessagesLink'
 import { NavbarNotificationBell } from '@/components/layout/NavbarNotificationBell'
 import { NavbarUserMenu } from '@/components/layout/NavbarUserMenu'
 import type { NavbarNotificationCounts } from '@/lib/dashboard/data'
@@ -13,6 +14,7 @@ type Props = {
   isLoggedIn: boolean
   userMenu: NavbarUserMenuProps | null
   notificationCounts: NavbarNotificationCounts | null
+  messagesInbox: { href: string; unreadCount: number } | null
   modeToggle: { isSeller: boolean } | null
   dashboardHomeHref: '/min-side/kunde' | '/min-side/hjelper' | null
 }
@@ -21,12 +23,14 @@ export function NavbarClient({
   isLoggedIn,
   userMenu,
   notificationCounts,
+  messagesInbox,
   modeToggle,
   dashboardHomeHref,
 }: Props) {
   const t = useTranslations('nav')
   const pathname = usePathname()
   const isServicesIndex = pathname === '/tjenester'
+  const isDashboard = pathname.startsWith('/min-side')
 
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/50 bg-white/95 shadow-sm backdrop-blur-md">
@@ -38,7 +42,7 @@ export function NavbarClient({
           >
             {t('brand')}
           </Link>
-          {isLoggedIn && modeToggle ? (
+          {isLoggedIn && modeToggle && isDashboard ? (
             <NavbarModeToggle isSeller={modeToggle.isSeller} />
           ) : (
             <div className="hidden space-x-6 md:flex">
@@ -53,12 +57,14 @@ export function NavbarClient({
               >
                 {t('findServices')}
               </Link>
-              <Link
-                href="/bli-hjelper"
-                className="font-medium text-on-surface-variant transition-colors hover:text-primary"
-              >
-                {t('becomeHelper')}
-              </Link>
+              {!isLoggedIn ? (
+                <Link
+                  href="/bli-hjelper"
+                  className="font-medium text-on-surface-variant transition-colors hover:text-primary"
+                >
+                  {t('becomeHelper')}
+                </Link>
+              ) : null}
             </div>
           )}
         </div>
@@ -73,6 +79,12 @@ export function NavbarClient({
           ) : null}
           {isLoggedIn ? (
             <div className="flex items-center gap-2 sm:gap-3">
+              {messagesInbox ? (
+                <NavbarMessagesLink
+                  href={messagesInbox.href}
+                  unreadCount={messagesInbox.unreadCount}
+                />
+              ) : null}
               {notificationCounts ? <NavbarNotificationBell counts={notificationCounts} /> : null}
               <Link
                 href={dashboardHomeHref ?? '/min-side/kunde'}
@@ -85,6 +97,7 @@ export function NavbarClient({
                   avatarUrl={userMenu.avatarUrl}
                   fullName={userMenu.fullName}
                   email={userMenu.email}
+                  minSideNavFallback={userMenu.minSideNavFallback}
                 />
               ) : null}
             </div>

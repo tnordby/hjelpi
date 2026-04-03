@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 import { useState, type FormEvent } from 'react'
+import { locationOptionSingleLine } from '@/lib/locations/display'
 import { completeSellerProviderAction } from '@/lib/seller/actions'
 import type { SellerOnboardingState } from '@/lib/seller/actions'
 import posthog from 'posthog-js'
@@ -9,7 +10,7 @@ import posthog from 'posthog-js'
 const inputClass =
   'w-full rounded-xl bg-surface-container-low px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 outline-none ring-1 ring-outline-variant/20 transition-shadow focus:ring-2 focus:ring-primary/25'
 
-type LocationOption = { id: string; name: string }
+type LocationOption = { id: string; name: string; cityName: string }
 
 type Props = {
   locations: LocationOption[]
@@ -94,7 +95,7 @@ export function CompleteSellerProfileForm({ locations }: Props) {
             <option value="">{t('locationPlaceholder')}</option>
             {locations.map((loc) => (
               <option key={loc.id} value={loc.id}>
-                {loc.name}
+                {locationOptionSingleLine(loc)}
               </option>
             ))}
           </select>

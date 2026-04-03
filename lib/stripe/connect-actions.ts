@@ -12,6 +12,16 @@ export type StripeConnectState = {
   error?: string
 }
 
+function stripeConnectOnboardingErrorMessage(
+  raw: string,
+  tErr: Awaited<ReturnType<typeof getTranslations>>,
+): string {
+  if (/signed up for Connect/i.test(raw) || /dashboard\.stripe\.com\/connect/i.test(raw)) {
+    return tErr('connectNotEnabled')
+  }
+  return tErr('stripeApi', { message: raw })
+}
+
 export async function startStripeConnectOnboardingAction(
   _prev: StripeConnectState | void,
   _formData: FormData,
@@ -78,12 +88,12 @@ export async function startStripeConnectOnboardingAction(
     }
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e)
-    return { error: tErr('stripeApi', { message }) }
+    return { error: stripeConnectOnboardingErrorMessage(message, tErr) }
   }
 
   const locale = await getLocale()
-  const returnUrl = absoluteAppUrl(locale, '/min-side/innstillinger?stripe_connect=return')
-  const refreshUrl = absoluteAppUrl(locale, '/min-side/innstillinger?stripe_connect=refresh')
+  const returnUrl = absoluteAppUrl(locale, '/min-side/hjelper/utbetalinger?stripe_connect=return')
+  const refreshUrl = absoluteAppUrl(locale, '/min-side/hjelper/utbetalinger?stripe_connect=refresh')
 
   const onboarded = Boolean(prov.stripe_onboarded)
   let accountLinkUrl: string
@@ -97,9 +107,10 @@ export async function startStripeConnectOnboardingAction(
     accountLinkUrl = accountLink.url
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e)
-    return { error: tErr('stripeApi', { message }) }
+    return { error: stripeConnectOnboardingErrorMessage(message, tErr) }
   }
 
+  revalidatePath(`/${locale}/min-side/hjelper/utbetalinger`)
   revalidatePath(`/${locale}/min-side/innstillinger`)
   redirect(accountLinkUrl)
 }

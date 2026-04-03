@@ -58,11 +58,18 @@ export default async function FullforProfilPage() {
 
   const { data: locations } = await supabase
     .from('locations')
-    .select('id, name')
+    .select('id, name, city_name')
     .order('name', { ascending: true })
 
   const locationOptions =
-    locations?.map((row) => ({ id: row.id as string, name: row.name as string })) ?? []
+    locations?.map((row) => ({
+      id: row.id as string,
+      name: row.name as string,
+      cityName:
+        typeof row.city_name === 'string' && row.city_name.trim().length > 0
+          ? row.city_name.trim()
+          : String(row.name),
+    })) ?? []
 
   return (
     <AuthShell

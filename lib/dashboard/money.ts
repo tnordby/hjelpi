@@ -8,7 +8,11 @@ export function formatOreToNok(ore: number): string {
   }).format(ore / 100)
 }
 
-/** Net to seller after platform fee (schema: base − seller_fee). */
+/**
+ * Net to seller after marketplace fee.
+ * New rows: `base_amount_ore` is gross (customer payment); fee is deducted from that.
+ * Legacy rows: `base_amount_ore` is subtotal; fee is still the stored seller_fee_ore slice.
+ */
 export function netSellerOre(baseAmountOre: number, sellerFeeOre: number): number {
   return Math.max(0, baseAmountOre - sellerFeeOre)
 }

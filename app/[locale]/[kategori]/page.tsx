@@ -100,7 +100,7 @@ export default async function CategoryPage({
             className="absolute inset-0 bg-gradient-to-tr from-primary/35 via-transparent to-primary/25"
             aria-hidden
           />
-          <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-24 md:pb-16">
+          <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-[6.625rem] md:pb-16">
             <div className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.55)]">
               <ServiceBreadcrumbs
                 variant="inverse"

@@ -40,6 +40,7 @@ export default async function AllServicesPage() {
       <main className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)]">
         <div className="mx-auto max-w-7xl px-6">
           <ServiceBreadcrumbs
+            className="py-3 sm:py-5 mb-10"
             items={[
               { label: t('breadcrumbHome'), href: '/' },
               { label: t('title') },

@@ -2,59 +2,21 @@
 
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/routing'
+import {
+  minSideNavLinksForVariant,
+  type MinSideNavVariant,
+} from '@/lib/dashboard/min-side-nav-links'
 import { cn } from '@/lib/utils'
 
-type Variant = 'kunde' | 'hjelper'
+type Variant = MinSideNavVariant
 
 function linksForVariant(v: Variant) {
-  if (v === 'kunde') {
-    return [
-      { href: '/min-side/kunde', key: 'overview' as const, match: (p: string) => p === '/min-side/kunde' },
-      {
-        href: '/min-side/kunde/bestillinger',
-        key: 'bookings' as const,
-        match: (p: string) => p.startsWith('/min-side/kunde/bestillinger'),
-      },
-      {
-        href: '/min-side/kunde/meldinger',
-        key: 'messages' as const,
-        match: (p: string) => p.startsWith('/min-side/kunde/meldinger'),
-      },
-      {
-        href: '/min-side/innstillinger',
-        key: 'settings' as const,
-        match: (p: string) => p.startsWith('/min-side/innstillinger'),
-      },
-    ]
-  }
-  return [
-    { href: '/min-side/hjelper', key: 'overview' as const, match: (p: string) => p === '/min-side/hjelper' },
-    {
-      href: '/min-side/hjelper/tjenester',
-      key: 'services' as const,
-      match: (p: string) => p.startsWith('/min-side/hjelper/tjenester'),
-    },
-    {
-      href: '/min-side/hjelper/foresporsler',
-      key: 'requests' as const,
-      match: (p: string) => p.startsWith('/min-side/hjelper/foresporsler'),
-    },
-    {
-      href: '/min-side/hjelper/inntekter',
-      key: 'economy' as const,
-      match: (p: string) => p.startsWith('/min-side/hjelper/inntekter'),
-    },
-    {
-      href: '/min-side/hjelper/meldinger',
-      key: 'messages' as const,
-      match: (p: string) => p.startsWith('/min-side/hjelper/meldinger'),
-    },
-    {
-      href: '/min-side/innstillinger',
-      key: 'settings' as const,
-      match: (p: string) => p.startsWith('/min-side/innstillinger'),
-    },
-  ]
+  const base = minSideNavLinksForVariant(v)
+  return base.map(({ href, key }) => ({
+    href,
+    key,
+    match: (p: string) => (href === '/min-side/kunde' || href === '/min-side/hjelper' ? p === href : p.startsWith(href)),
+  }))
 }
 
 type Props = {

@@ -69,7 +69,7 @@ export async function fetchProvidersForSubcategory(
           is_verified,
           bio,
           locations (name, slug),
-          profiles!inner (first_name, last_name, avatar_url, deleted_at)
+          profiles!providers_profile_id_fkey!inner (first_name, last_name, avatar_url, deleted_at)
         )
       `,
       )
@@ -93,11 +93,11 @@ export async function fetchProvidersForSubcategory(
 
       const profile = prof as Record<string, unknown>
       if (profile.deleted_at != null) continue
-      const fullName = profileDisplayName(
-        profile.first_name as string | null | undefined,
-        profile.last_name as string | null | undefined,
-      )
-      if (!fullName.trim()) continue
+      const fullName =
+        profileDisplayName(
+          profile.first_name as string | null | undefined,
+          profile.last_name as string | null | undefined,
+        ).trim() || 'Hjelper'
 
       const pricingType = r.pricing_type as SubcategoryProviderItem['pricingType']
       if (pricingType !== 'fixed' && pricingType !== 'hourly' && pricingType !== 'quote') {

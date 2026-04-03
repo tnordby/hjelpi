@@ -68,7 +68,6 @@ export function SellerStripeConnectCard({
             <MaterialIcon name="open_in_new" className="text-lg" />
             {stripeOnboarded ? t('ctaManage') : t('ctaStart')}
           </button>
-          <p className="mt-3 text-xs text-on-surface-variant">{t('footnote')}</p>
         </form>
       )}
     </section>

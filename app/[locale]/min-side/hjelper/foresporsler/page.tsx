@@ -51,7 +51,6 @@ export default async function HjelperForesporslerPage() {
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
           {t('title')}
         </h1>
-        <p className="mt-2 text-on-surface-variant">{t('subtitle')}</p>
       </div>
       <BookingsTable rows={rows} variant="seller" />
     </div>

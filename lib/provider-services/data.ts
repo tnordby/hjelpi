@@ -33,7 +33,8 @@ function mapGigFields(r: Record<string, unknown>): {
 
 type SubcatJoin = {
   name?: string
-  categories?: { name?: string } | { name?: string }[] | null
+  slug?: string
+  categories?: { name?: string; slug?: string } | { name?: string; slug?: string }[] | null
 } | null
 
 function subcategoryLabel(raw: SubcatJoin): string | null {
@@ -44,6 +45,40 @@ function subcategoryLabel(raw: SubcatJoin): string | null {
   const catName = cat && typeof cat === 'object' && typeof cat.name === 'string' ? cat.name : null
   if (catName && subName) return `${catName} · ${subName}`
   return subName ?? catName
+}
+
+function marketplaceTaxonomyFromSubJoin(raw: SubcatJoin): {
+  marketplaceCategorySlug: string | null
+  marketplaceSubcategorySlug: string | null
+  marketplaceCategoryName: string | null
+  marketplaceSubcategoryName: string | null
+} {
+  if (!raw || typeof raw !== 'object') {
+    return {
+      marketplaceCategorySlug: null,
+      marketplaceSubcategorySlug: null,
+      marketplaceCategoryName: null,
+      marketplaceSubcategoryName: null,
+    }
+  }
+  const subName = typeof raw.name === 'string' ? raw.name : null
+  const subSlug = typeof raw.slug === 'string' ? raw.slug : null
+  const catRaw = raw.categories
+  const cat = Array.isArray(catRaw) ? catRaw[0] : catRaw
+  const catName =
+    cat && typeof cat === 'object' && 'name' in cat && typeof (cat as { name?: unknown }).name === 'string'
+      ? (cat as { name: string }).name
+      : null
+  const catSlug =
+    cat && typeof cat === 'object' && 'slug' in cat && typeof (cat as { slug?: unknown }).slug === 'string'
+      ? (cat as { slug: string }).slug
+      : null
+  return {
+    marketplaceCategorySlug: catSlug,
+    marketplaceSubcategorySlug: subSlug,
+    marketplaceCategoryName: catName,
+    marketplaceSubcategoryName: subName,
+  }
 }
 
 function mapPricingType(v: unknown): PricingType {
@@ -144,7 +179,7 @@ export async function fetchProviderServicesForSeller(
       delivery_days,
       revisions_included,
       faq,
-      subcategories ( id, name, categories ( name ) )
+      subcategories ( id, name, slug, categories ( name, slug ) )
     `,
     )
     .eq('provider_id', providerId)
@@ -162,6 +197,7 @@ export async function fetchProviderServicesForSeller(
           ? (rawSub as { id: string }).id
           : null
     const gig = mapGigFields(r)
+    const tax = marketplaceTaxonomyFromSubJoin(rawSub)
     return {
       id: String(r.id),
       title: typeof r.title === 'string' ? r.title : '',
@@ -170,6 +206,7 @@ export async function fetchProviderServicesForSeller(
       basePriceOre: typeof r.base_price_ore === 'number' ? r.base_price_ore : null,
       subcategoryLabel: subcategoryLabel(rawSub),
       subcategoryId: subId,
+      ...tax,
       isActive: Boolean(r.is_active),
       ...gig,
     }
@@ -194,7 +231,7 @@ export async function fetchPublicProviderServices(
       delivery_days,
       revisions_included,
       faq,
-      subcategories ( id, name, categories ( name ) )
+      subcategories ( id, name, slug, categories ( name, slug ) )
     `,
     )
     .eq('provider_id', providerId)
@@ -213,6 +250,7 @@ export async function fetchPublicProviderServices(
           ? (rawSub as { id: string }).id
           : null
     const gig = mapGigFields(r)
+    const tax = marketplaceTaxonomyFromSubJoin(rawSub)
     return {
       id: String(r.id),
       title: typeof r.title === 'string' ? r.title : '',
@@ -221,6 +259,7 @@ export async function fetchPublicProviderServices(
       basePriceOre: typeof r.base_price_ore === 'number' ? r.base_price_ore : null,
       subcategoryLabel: subcategoryLabel(rawSub),
       subcategoryId: subId,
+      ...tax,
       ...gig,
     }
   })
@@ -245,7 +284,7 @@ export async function fetchPublicProviderServiceById(
       delivery_days,
       revisions_included,
       faq,
-      subcategories ( id, name, categories ( name ) )
+      subcategories ( id, name, slug, categories ( name, slug ) )
     `,
     )
     .eq('id', serviceId)
@@ -264,6 +303,7 @@ export async function fetchPublicProviderServiceById(
         ? (rawSub as { id: string }).id
         : null
   const gig = mapGigFields(r)
+  const tax = marketplaceTaxonomyFromSubJoin(rawSub)
   return {
     id: String(r.id),
     title: typeof r.title === 'string' ? r.title : '',
@@ -272,6 +312,7 @@ export async function fetchPublicProviderServiceById(
     basePriceOre: typeof r.base_price_ore === 'number' ? r.base_price_ore : null,
     subcategoryLabel: subcategoryLabel(rawSub),
     subcategoryId: subId,
+    ...tax,
     ...gig,
   }
 }

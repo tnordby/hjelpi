@@ -1,17 +1,15 @@
 import type { Metadata } from 'next'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Link, redirect } from '@/i18n/routing'
-import { SignOutForm } from '@/components/auth/SignOutForm'
 import { MinSideProfileSettings } from '@/components/settings/MinSideProfileSettings'
-import { SellerStripeConnectCard } from '@/components/settings/SellerStripeConnectCard'
+import { SettingsBankIdBuyerHint } from '@/components/settings/SettingsBankIdBuyerHint'
 import { loadDashboardUserContext } from '@/lib/dashboard/data'
-import { getStripeSecretKey } from '@/lib/stripe/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export const dynamic = 'force-dynamic'
 
-type SettingsSearch = Promise<{ stripe_connect?: string }>
+type SettingsSearch = Promise<{ stripe_connect?: string; bankid?: string; bankid_reason?: string }>
 
 export async function generateMetadata({
   params,
@@ -37,7 +35,22 @@ export default async function DashboardInnstillingerPage({
   searchParams: SettingsSearch
 }) {
   const sp = await searchParams
-  const stripeConnectQuery = sp.stripe_connect
+  const localeEarly = await getLocale()
+  if (sp.stripe_connect === 'return' || sp.stripe_connect === 'refresh') {
+    return redirect({
+      href: `/min-side/hjelper/utbetalinger?stripe_connect=${sp.stripe_connect}`,
+      locale: localeEarly,
+    })
+  }
+
+  if (typeof sp.bankid === 'string' && sp.bankid.length > 0) {
+    const q = new URLSearchParams()
+    q.set('bankid', sp.bankid)
+    if (typeof sp.bankid_reason === 'string' && sp.bankid_reason.length > 0) {
+      q.set('bankid_reason', sp.bankid_reason)
+    }
+    return redirect({ href: `/min-side/hjelper/bankid?${q.toString()}`, locale: localeEarly })
+  }
 
   const supabase = await createSupabaseServerClient()
   const {
@@ -57,17 +70,27 @@ export default async function DashboardInnstillingerPage({
 
   const { data: providerRow } = await supabase
     .from('providers')
-    .select('id, location_id, stripe_account_id, stripe_onboarded')
+    .select('id, location_id')
     .eq('profile_id', ctx.profileId)
     .maybeSingle()
 
-  const { data: locations } = await supabase
+  const { data: locations, error: locationsError } = await supabase
     .from('locations')
-    .select('id, name')
+    .select('id, name, fylke, city_name')
     .order('name', { ascending: true })
 
   const locationOptions =
-    locations?.map((row) => ({ id: row.id as string, name: row.name as string })) ?? []
+    locations?.map((row) => ({
+      id: row.id as string,
+      name: row.name as string,
+      fylke: typeof row.fylke === 'string' ? row.fylke : '',
+      cityName:
+        typeof row.city_name === 'string' && row.city_name.trim().length > 0
+          ? row.city_name.trim()
+          : String(row.name),
+    })) ?? []
+
+  const locationsLoadError = Boolean(locationsError)
 
   const hasProvider = Boolean(providerRow)
   const isSellerWithProvider = profileRow?.role === 'seller' && hasProvider
@@ -80,35 +103,21 @@ export default async function DashboardInnstillingerPage({
       : ''
 
   const t = await getTranslations('dashboard.settingsPage')
-  const tNav = await getTranslations('nav')
 
   const email = user.email ?? ''
   const needsEmailConfirm = !user.email_confirmed_at && email.length > 0
 
-  const stripeConfigured = Boolean(getStripeSecretKey())
-  const stripeOnboarded = Boolean(providerRow?.stripe_onboarded)
-  const hasStripeAccount =
-    typeof providerRow?.stripe_account_id === 'string' && providerRow.stripe_account_id.length > 0
+  const linkClass = 'text-sm font-medium text-primary underline-offset-2 hover:underline'
 
   return (
-    <div className="mx-auto max-w-2xl space-y-10">
-      <div>
+    <div className="space-y-10 pb-4">
+      <header>
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
           {t('title')}
         </h1>
-        <p className="mt-2 text-on-surface-variant">{t('subtitle')}</p>
-      </div>
+      </header>
 
-      {stripeConnectQuery === 'return' ? (
-        <p className="rounded-2xl border border-primary/25 bg-primary/8 px-4 py-3 text-sm text-on-surface" role="status">
-          {t('stripeReturnNotice')}
-        </p>
-      ) : null}
-      {stripeConnectQuery === 'refresh' ? (
-        <p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950" role="status">
-          {t('stripeRefreshNotice')}
-        </p>
-      ) : null}
+      {!isSellerWithProvider ? <SettingsBankIdBuyerHint locale={locale} /> : null}
 
       <MinSideProfileSettings
         firstName={typeof profileRow?.first_name === 'string' ? profileRow.first_name : ''}
@@ -119,65 +128,19 @@ export default async function DashboardInnstillingerPage({
         hasProvider={hasProvider}
         needsEmailConfirm={needsEmailConfirm}
         locations={locationOptions}
+        locationsLoadError={locationsLoadError}
       />
 
-      {isSellerWithProvider ? (
-        <SellerStripeConnectCard
-          stripeOnboarded={stripeOnboarded}
-          hasStripeAccount={hasStripeAccount}
-          stripeConfigured={stripeConfigured}
-        />
+      {!ctx.isSeller ? (
+        <nav
+          className="flex flex-wrap gap-x-5 gap-y-2 border-t border-outline-variant/20 pt-6"
+          aria-label={t('footerNavAria')}
+        >
+          <Link href="/bli-hjelper" className={linkClass}>
+            {t('linkBecomeSeller')}
+          </Link>
+        </nav>
       ) : null}
-
-      <ul className="space-y-4">
-        <li>
-          <Link
-            href="/min-konto"
-            className="block rounded-2xl bg-surface-container-lowest p-5 ring-1 ring-outline-variant/15 transition-colors hover:ring-primary/30"
-          >
-            <p className="font-semibold text-on-surface">{t('linkAccount')}</p>
-            <p className="mt-1 text-sm text-on-surface-variant">{t('linkAccountDesc')}</p>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/glemt-passord"
-            className="block rounded-2xl bg-surface-container-lowest p-5 ring-1 ring-outline-variant/15 transition-colors hover:ring-primary/30"
-          >
-            <p className="font-semibold text-on-surface">{t('linkPassword')}</p>
-            <p className="mt-1 text-sm text-on-surface-variant">{t('linkPasswordDesc')}</p>
-          </Link>
-        </li>
-        {!ctx.isSeller ? (
-          <li>
-            <Link
-              href="/bli-hjelper"
-              className="block rounded-2xl bg-surface-container-lowest p-5 ring-1 ring-outline-variant/15 transition-colors hover:ring-primary/30"
-            >
-              <p className="font-semibold text-on-surface">{t('linkBecomeSeller')}</p>
-              <p className="mt-1 text-sm text-on-surface-variant">{t('linkBecomeSellerDesc')}</p>
-            </Link>
-          </li>
-        ) : null}
-      </ul>
-
-      <div className="rounded-2xl border border-outline-variant/25 bg-surface-container-low/50 p-6">
-        <p className="font-semibold text-on-surface">{t('comingTitle')}</p>
-        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-on-surface-variant">
-          <li>{t('comingItem1')}</li>
-          <li>{t('comingItem2')}</li>
-          <li>{t('comingItem3')}</li>
-          <li>{t('comingItem4')}</li>
-        </ul>
-      </div>
-
-      <div className="rounded-2xl bg-surface-container-lowest p-6 ring-1 ring-outline-variant/15">
-        <p className="font-semibold text-on-surface">{t('sessionTitle')}</p>
-        <p className="mt-1 text-sm text-on-surface-variant">{t('sessionHint')}</p>
-        <div className="mt-4">
-          <SignOutForm label={tNav('userMenuSignOut')} />
-        </div>
-      </div>
     </div>
   )
 }

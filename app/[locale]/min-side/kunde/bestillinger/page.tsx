@@ -8,7 +8,7 @@ import { withPageSeo } from '@/lib/seo/build-metadata'
 
 export const dynamic = 'force-dynamic'
 
-type Search = Promise<{ forespurt?: string }>
+type Search = Promise<{ forespurt?: string; betaling?: string }>
 
 export async function generateMetadata({
   params,
@@ -31,6 +31,8 @@ export async function generateMetadata({
 export default async function KundeBestillingerPage({ searchParams }: { searchParams: Search }) {
   const sp = await searchParams
   const showRequestSent = sp.forespurt === '1'
+  const paymentOk = sp.betaling === 'ok'
+  const paymentCancelled = sp.betaling === 'avbrutt'
 
   const supabase = await createSupabaseServerClient()
   const {
@@ -59,6 +61,22 @@ export default async function KundeBestillingerPage({ searchParams }: { searchPa
           role="status"
         >
           {t('requestSent')}
+        </p>
+      ) : null}
+      {paymentOk ? (
+        <p
+          className="rounded-2xl border border-primary/25 bg-primary/8 px-4 py-3 text-sm text-on-surface"
+          role="status"
+        >
+          {t('paymentSucceeded')}
+        </p>
+      ) : null}
+      {paymentCancelled ? (
+        <p
+          className="rounded-2xl border border-outline-variant/30 bg-surface-container-low px-4 py-3 text-sm text-on-surface"
+          role="status"
+        >
+          {t('paymentCancelled')}
         </p>
       ) : null}
       <BookingsTable rows={rows} variant="buyer" />

@@ -19,6 +19,11 @@ export type ProviderServicePublic = {
   basePriceOre: number | null
   subcategoryLabel: string | null
   subcategoryId: string | null
+  /** DB slugs/names for marketplace breadcrumbs (null if join missing). */
+  marketplaceCategorySlug: string | null
+  marketplaceSubcategorySlug: string | null
+  marketplaceCategoryName: string | null
+  marketplaceSubcategoryName: string | null
   searchTags: string[]
   deliveryDays: number | null
   revisionsIncluded: number

@@ -66,7 +66,6 @@ export default async function HjelperInntekterPage({ searchParams }: { searchPar
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
           {t('title')}
         </h1>
-        <p className="mt-2 text-on-surface-variant">{t('subtitle')}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -81,6 +80,12 @@ export default async function HjelperInntekterPage({ searchParams }: { searchPar
           </p>
           <p className="mt-1 text-sm text-on-surface-variant">
             {t('pendingCount', { count: summary.pendingIncoming })}
+          </p>
+          <p className="mt-3 text-sm font-medium text-on-surface">
+            {t('transferredLine', { amount: formatOreToNok(summary.netTransferredToConnectOre) })}
+          </p>
+          <p className="mt-1 text-sm font-medium text-on-surface">
+            {t('heldLine', { amount: formatOreToNok(summary.netHeldOnPlatformOre) })}
           </p>
           <p className="mt-4 text-xs text-on-surface-variant/80">{t('footnote')}</p>
         </div>

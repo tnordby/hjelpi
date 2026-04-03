@@ -12,11 +12,11 @@ export const createBookingRequestSchema = z
       (v) => (v === '' || v === null || v === undefined ? undefined : v),
       z.coerce.number().int().optional(),
     ),
-    buyer_message: z
-      .string()
-      .max(4000)
-      .optional()
-      .transform((s) => (s == null ? '' : s.trim())),
+    // FormData uses null for missing keys; coalesce before z.string().
+    buyer_message: z.preprocess(
+      (v) => (v == null || v === '' ? '' : v),
+      z.string().max(4000),
+    ).transform((s) => (typeof s === 'string' ? s.trim() : '')),
     pricing_type: z.enum(['fixed', 'hourly', 'quote']),
   })
   .superRefine((data, ctx) => {

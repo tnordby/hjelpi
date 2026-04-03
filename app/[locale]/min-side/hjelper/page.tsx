@@ -82,9 +82,8 @@ export default async function HjelperDashboardPage() {
     <div className="space-y-10">
       <div>
         <h1 className="font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl">
-          {t('greeting', { name: ctx.fullName.trim() ? ctx.fullName : 'der' })}
+          {t('greeting', { name: ctx.firstName.trim() ? ctx.firstName : 'der' })}
         </h1>
-        <p className="mt-2 text-on-surface-variant">{t('subtitle')}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -127,7 +126,6 @@ export default async function HjelperDashboardPage() {
         >
           <p className="text-sm font-medium text-on-surface-variant">{t('cardSettings')}</p>
           <p className="mt-2 font-headline text-lg font-extrabold text-primary">{t('cardSettingsCta')}</p>
-          <p className="mt-1 text-xs text-on-surface-variant">{t('cardSettingsHint')}</p>
         </Link>
       </div>
 
