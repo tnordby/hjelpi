@@ -258,7 +258,11 @@ export default async function HjelperServiceDetailPage({ params }: Props) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-surface-container-lowest pb-24 pt-[var(--hj-navbar-height)]">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="min-h-screen bg-surface-container-lowest pb-24 pt-[var(--hj-navbar-height)] outline-none"
+      >
         <div className="border-b border-outline-variant/15 bg-gradient-to-b from-primary/[0.06] via-surface-container-lowest to-surface-container-lowest">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <ServiceBreadcrumbs items={breadcrumbItems} className="py-4" />

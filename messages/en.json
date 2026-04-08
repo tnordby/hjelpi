@@ -1,4 +1,7 @@
 {
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
   "meta": {
     "title": "Local services in Norway | Hjelpi – find and book helpers",
     "description": "Local services in Norway on Hjelpi: a marketplace to find, compare and book helpers near you for cleaning, crafts, photography, tutoring and more."

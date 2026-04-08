@@ -37,7 +37,11 @@ export default async function AllServicesPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)]">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)] outline-none"
+      >
         <div className="mx-auto max-w-7xl px-6">
           <ServiceBreadcrumbs
             className="py-3 sm:py-5 mb-10"

@@ -26,7 +26,13 @@ export function DashboardLayoutShell({ dbActiveMode, children }: Props) {
           <DashboardNav variant={variant} />
         </div>
       </header>
-      <main className="mx-auto max-w-7xl px-6 py-8 md:py-10">{children}</main>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="mx-auto max-w-7xl px-6 py-8 md:py-10 outline-none"
+      >
+        {children}
+      </main>
     </div>
   )
 }

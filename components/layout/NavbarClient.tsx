@@ -33,43 +33,45 @@ export function NavbarClient({
   const isServicesIndex = pathname === '/tjenester'
   const isDashboard = pathname.startsWith('/min-side')
 
+  const dashboardModeToggle = isLoggedIn && modeToggle && isDashboard
+
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/50 bg-white/95 shadow-sm backdrop-blur-md">
-      <div className="mx-auto flex min-h-[var(--hj-navbar-height)] w-full max-w-7xl items-center justify-between px-6 py-3 sm:py-4">
-        <div className="flex items-center gap-8">
-          <Link
-            href="/"
-            className="font-headline text-2xl font-black tracking-tighter text-primary"
-          >
-            {t('brand')}
-          </Link>
-          {isLoggedIn && modeToggle && isDashboard ? (
+      <div className="mx-auto flex min-h-[var(--hj-navbar-height)] w-full max-w-7xl flex-wrap items-center gap-x-4 gap-y-3 px-6 py-3 sm:py-4 md:flex-nowrap md:justify-between">
+        <Link
+          href="/"
+          className="shrink-0 font-headline text-2xl font-black tracking-tighter text-primary"
+        >
+          {t('brand')}
+        </Link>
+        {dashboardModeToggle ? (
+          <div className="order-3 w-full basis-full md:order-none md:w-auto md:max-w-[min(100%,28rem)] md:flex-1 md:basis-auto">
             <NavbarModeToggle isSeller={modeToggle.isSeller} />
-          ) : (
-            <div className="hidden space-x-6 md:flex">
+          </div>
+        ) : (
+          <div className="hidden space-x-6 md:flex">
+            <Link
+              href="/tjenester"
+              className={cn(
+                'font-medium tracking-tight transition-colors',
+                isServicesIndex
+                  ? 'border-b-2 border-primary font-bold text-primary'
+                  : 'text-on-surface-variant hover:text-primary',
+              )}
+            >
+              {t('findServices')}
+            </Link>
+            {!isLoggedIn ? (
               <Link
-                href="/tjenester"
-                className={cn(
-                  'font-medium tracking-tight transition-colors',
-                  isServicesIndex
-                    ? 'border-b-2 border-primary font-bold text-primary'
-                    : 'text-on-surface-variant hover:text-primary',
-                )}
+                href="/bli-hjelper"
+                className="font-medium text-on-surface-variant transition-colors hover:text-primary"
               >
-                {t('findServices')}
+                {t('becomeHelper')}
               </Link>
-              {!isLoggedIn ? (
-                <Link
-                  href="/bli-hjelper"
-                  className="font-medium text-on-surface-variant transition-colors hover:text-primary"
-                >
-                  {t('becomeHelper')}
-                </Link>
-              ) : null}
-            </div>
-          )}
-        </div>
-        <div className="flex items-center gap-4">
+            ) : null}
+          </div>
+        )}
+        <div className="ml-auto flex shrink-0 items-center gap-4 md:ml-0">
           {!isLoggedIn ? (
             <Link
               href="/logg-inn"

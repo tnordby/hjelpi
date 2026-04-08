@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { getSubcategory } from '@/lib/categories/taxonomy'
 import { getSubcategoryHeroImage } from '@/lib/categories/subcategory-hero'
 import { fetchProvidersForSubcategory } from '@/lib/providers/subcategory-providers'
-import { fetchLocationBySlug } from '@/lib/locations/public'
+import { cityPathSegment, fetchLocationBySlug } from '@/lib/locations/public'
 import { seoLowercaseLabel } from '@/lib/seo/display-label'
 import { withPageSeo } from '@/lib/seo/build-metadata'
 import { SubcategoryMarketplaceView } from '@/components/categories/SubcategoryMarketplaceView'
@@ -98,7 +98,7 @@ export default async function SubcategoryInCityPage({
           subTitle={sub.title}
           subSlug={sub.slug}
           cityName={location.name}
-          citySlug={location.slug}
+          citySlug={cityPathSegment(location)}
         />
       }
       heroSrc={heroSrc}

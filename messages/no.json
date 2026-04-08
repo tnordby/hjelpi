@@ -3,6 +3,9 @@
     "title": "Lokale tjenester i Norge | Hjelpi – finn og bestill fagpersoner",
     "description": "Lokale tjenester i Norge på Hjelpi: markedsplass for å finne, sammenligne og bestille fagpersoner nær deg innen blant annet foto, renhold, håndverk og undervisning."
   },
+  "a11y": {
+    "skipToContent": "Hopp til innhold"
+  },
   "nav": {
     "brand": "Hjelpi",
     "findServices": "Finn tjenester",
@@ -10,6 +13,7 @@
     "orderHelp": "Kjøp tjenester",
     "beHelperSegment": "Selg tjenester",
     "roleToggleAria": "Velg kjøp eller salg av tjenester",
+    "breadcrumbAria": "Brødsmuler",
     "dashboard": "Min side",
     "userMenuAria": "Åpne brukermeny",
     "userMenuSettings": "Innstillinger",
@@ -86,6 +90,7 @@
     },
     "cities": {
       "title": "Vi er tilstede i hele landet",
+      "seeAll": "Se alle byer",
       "expertCount": "{count}+ eksperter",
       "bySlug": {
         "oslo": "Oslo",
@@ -121,12 +126,56 @@
       "secondary": "Les mer"
     }
   },
+  "citiesDirectory": {
+    "metaTitle": "Byer og steder | Hjelpi",
+    "metaDescription": "Se alle steder du kan finne lokale tjenester og hjelpiere på Hjelpi.",
+    "title": "Byer og steder",
+    "subtitle": "Velg et sted for å utforske lokale tjenester.",
+    "breadcrumbHome": "Hjem",
+    "empty": "Fant ingen steder å vise akkurat nå."
+  },
+  "cityPage": {
+    "metaTitle": "Lokale tjenester i {city} | Hjelpi",
+    "metaDescription": "Finn og bestill lokale fagpersoner i {city} på Hjelpi.",
+    "breadcrumbHome": "Hjem",
+    "breadcrumbCities": "Byer",
+    "eyebrow": "Lokalt i Norge",
+    "title": "Tjenester i {city}",
+    "intro": "Utforsk lokale tilbud i {city}: blant annet foto, renhold, undervisning og håndverk.",
+    "ctaBrowse": "Alle tjenester",
+    "ctaHelper": "Bli hjelper",
+    "categoriesHeading": "Populære kategorier",
+    "categoriesSub": "Velg en kategori — vi viser tilbud i og rundt {city}."
+  },
+  "legal": {
+    "vilkar": {
+      "metaTitle": "Vilkår | Hjelpi",
+      "metaDescription": "Vilkår for bruk av tjenesten Hjelpi.",
+      "title": "Vilkår for bruk",
+      "lead": "Disse vilkårene beskriver bruk av Hjelpi som markedsplass. De er ment som et utgangspunkt — tilpass og få juridisk gjennomgang før produksjon.",
+      "p1": "Ved å bruke Hjelpi godtar du disse vilkårene. Tjenesten formidler kontakt mellom kunder og fagpersoner; avtalen om utførelse inngås mellom partene.",
+      "p2": "Hjelpi kan endre plattformen og vilkår med rimelig varsel. Ved vesentlige endringer bør aktive brukere varsles.",
+      "p3": "Misbruk, ulovlig innhold eller forsøk på å omgå betalingssystemer kan følges av suspensjon eller utestengelse.",
+      "p4": "For betaling, gebyrer og utbetaling gjelder egne avtaler og informasjon som vises i appen (herunder Stripe Connect der det er aktuelt)."
+    },
+    "personvern": {
+      "metaTitle": "Personvern | Hjelpi",
+      "metaDescription": "Slik behandler Hjelpi personopplysninger.",
+      "title": "Personvern",
+      "lead": "Vi tar personvern på alvor. Dette dokumentet beskriver kort hvilke data vi typisk behandler — tilpass til faktisk behandling og juridisk rådgivning.",
+      "p1": "Vi behandler opplysninger du gir oss (f.eks. navn, e-post, sted) for å levere konto, bestillinger og kundestøtte.",
+      "p2": "Vi bruker databehandlere (f.eks. drift, analyse, betaling) som behandler data på våre vegne i henhold til databehandleravtale.",
+      "p3": "Du kan be om innsyn, retting eller sletting i tråd med gjeldende personvernlovgivning. Kontakt oss via opplysningene på nettstedet.",
+      "p4": "Vi lagrer ikke mer informasjon enn nødvendig og sikrer tilgang på en forsvarlig måte."
+    }
+  },
   "footer": {
     "tagline": "Den ledende plattformen for lokale tjenester i Skandinavia. Kvalitet du kan stole på.",
     "services": "Tjenester",
     "company": "Selskapet",
     "support": "Support",
     "links": {
+      "allCities": "Alle byer",
       "allServices": "Alle tjenester",
       "photography": "Fotografering",
       "dogSitting": "hundepasser",
@@ -534,12 +583,12 @@
     "sellerEconomy": {
       "title": "Inntekter",
       "netTitle": "Netto inntekt",
-      "netSubtitle": "Etter 15 % markedsplassgebyr på fullførte oppdrag.",
+      "netSubtitle": "Etter markedsplassgebyr på fullførte oppdrag.",
       "completedCount": "{count} fullførte oppdrag",
       "pendingCount": "{count} pågående eller ventende",
-      "transferredLine": "Overført til Stripe-konto: {amount}",
-      "heldLine": "Hos Hjelpi (utbetales dagen etter avtalte oppdrag): {amount}",
-      "footnote": "Fullførte oppdrag er markert fullført i systemet. Betalte beløp overføres til Stripe Connect dagen etter avtalte oppdrag, etter at markedsplassgebyret er trukket fra det kunden betalte.",
+      "transferredLine": "Overført til utbetalingskonto: {amount}",
+      "heldLine": "Hos Hjelpi til utbetaling etter utført tjeneste: {amount}",
+      "footnote": "Fullførte oppdrag er markert ferdig i systemet. Utbetaling skjer etter at tjenesten er utført, med trekk for markedsplassgebyr.",
       "viewMonth": "Måned",
       "viewYear": "År",
       "breakdownTitle": "Inntekt per periode",

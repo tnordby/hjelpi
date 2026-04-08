@@ -33,7 +33,11 @@ export function SubcategoryMarketplaceView({
     <>
       {jsonLd}
       <Navbar />
-      <main className="min-h-screen bg-surface-container-lowest">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="min-h-screen bg-surface-container-lowest outline-none"
+      >
         <section className="relative min-h-[280px] overflow-hidden md:min-h-[340px]">
           <Image
             src={heroSrc}

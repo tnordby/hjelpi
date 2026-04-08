@@ -28,6 +28,14 @@ export async function Footer() {
           <ul className="space-y-4">
             <li>
               <Link
+                href="/byer"
+                className="text-on-surface-variant underline-offset-4 transition-colors hover:text-primary hover:underline"
+              >
+                {t('links.allCities')}
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/tjenester"
                 className="text-on-surface-variant underline-offset-4 transition-colors hover:text-primary hover:underline"
               >

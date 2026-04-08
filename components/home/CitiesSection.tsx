@@ -30,6 +30,14 @@ export async function CitiesSection() {
             </Link>
           ))}
         </div>
+        <div className="mt-10 flex justify-center">
+          <Link
+            href="/byer"
+            className="text-sm font-semibold text-primary underline-offset-4 transition-colors hover:underline"
+          >
+            {t('cities.seeAll')}
+          </Link>
+        </div>
       </div>
     </section>
   )

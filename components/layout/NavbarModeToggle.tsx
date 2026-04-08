@@ -72,7 +72,7 @@ export function NavbarModeToggle({ isSeller }: Props) {
 
   return (
     <div
-      className="hidden w-full max-w-[min(100%,28rem)] rounded-full bg-on-surface/[0.045] p-1 ring-1 ring-outline-variant/35 md:flex"
+      className="flex w-full max-w-[min(100%,28rem)] rounded-full bg-on-surface/[0.045] p-1 ring-1 ring-outline-variant/35"
       role="group"
       aria-label={t('roleToggleAria')}
     >

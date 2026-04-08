@@ -111,7 +111,11 @@ export default async function HjelperProfilePage({ params }: Props) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)]">
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="min-h-screen bg-surface-container-lowest pb-20 pt-[var(--hj-navbar-height)] outline-none"
+      >
         <div className="mx-auto max-w-3xl px-6">
           <div className="rounded-3xl border border-outline-variant/30 bg-white p-8 shadow-sm md:p-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-start">

@@ -5,6 +5,7 @@ import { redirect } from '@/i18n/routing'
 import { loadDashboardUserContext } from '@/lib/dashboard/data'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
+import { captureServerEvent } from '@/lib/posthog-server-capture'
 import { promoteBuyerToSeller } from '@/lib/seller/promote-buyer'
 import { completeSellerProfileSchema } from '@/lib/seller/schemas'
 
@@ -43,11 +44,15 @@ export async function startSellerOnboardingAction() {
 
   if (ctx.providerId) {
     await supabase.from('profiles').update({ active_mode: 'seller' }).eq('user_id', user.id)
+    captureServerEvent(user.email ?? user.id, 'seller_mode_activated_existing_provider', {
+      provider_id: ctx.providerId,
+    })
     redirect({ href: '/min-side/hjelper', locale })
     return
   }
 
   if (ctx.role === 'seller') {
+    captureServerEvent(user.email ?? user.id, 'seller_onboarding_resumed')
     redirect({ href: '/bli-hjelper/fullfor-profil', locale })
     return
   }
@@ -55,9 +60,13 @@ export async function startSellerOnboardingAction() {
   if (ctx.role === 'buyer') {
     const promoted = await promoteBuyerToSeller(supabase, user.id)
     if (!promoted.ok) {
+      captureServerEvent(user.email ?? user.id, 'seller_promotion_failed', {
+        code: promoted.code,
+      })
       redirect({ href: '/min-konto', locale })
       return
     }
+    captureServerEvent(user.email ?? user.id, 'buyer_promoted_to_seller')
     redirect({ href: '/bli-hjelper/fullfor-profil', locale })
     return
   }
@@ -133,9 +142,11 @@ export async function completeSellerProviderAction(
   })
 
   if (insertError) {
+    captureServerEvent(user.email ?? user.id, 'seller_profile_completion_failed')
     return { error: t('saveFailed') }
   }
 
+  captureServerEvent(user.email ?? user.id, 'seller_profile_completed_server')
   const locale = await getLocale()
   redirect({ href: '/min-side', locale })
 }

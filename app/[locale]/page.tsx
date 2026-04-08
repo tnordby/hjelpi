@@ -38,7 +38,7 @@ export default async function HomePage({
     <>
       <HomeStructuredData locale={locale} />
       <Navbar />
-      <main>
+      <main id="main-content" tabIndex={-1} className="outline-none">
         <HomeHero />
         <CategoryGrid />
         <HowItWorksSection />

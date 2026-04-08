@@ -3,7 +3,7 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { isSupabaseConfigured } from '@/lib/supabase/env'
 import { routing } from '@/i18n/routing'
 import { resolveAuthCallbackNext } from '@/lib/auth/callback-next'
-import { getPostHogClient } from '@/lib/posthog-server'
+import { captureServerEvent } from '@/lib/posthog-server-capture'
 
 type Params = { params: Promise<{ locale: string }> }
 
@@ -39,12 +39,7 @@ export async function GET(request: Request, { params }: Params) {
   } = await supabase.auth.getUser()
 
   if (user) {
-    const posthog = getPostHogClient()
-    posthog.capture({
-      distinctId: user.email ?? user.id,
-      event: 'email_verified',
-      properties: { next_path: nextPath },
-    })
+    captureServerEvent(user.email ?? user.id, 'email_verified', { next_path: nextPath })
   }
 
   return NextResponse.redirect(new URL(`/${locale}${nextPath}`, origin))

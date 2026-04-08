@@ -23,7 +23,11 @@ export default async function NotFound() {
   const t = await getTranslations('notFound')
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-24 text-center">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-24 text-center outline-none"
+    >
       <p className="mb-2 font-headline text-sm font-bold uppercase tracking-widest text-tertiary">
         404
       </p>

@@ -14,7 +14,7 @@ export async function AuthShell({ children, title, subtitle, backLink }: Props) 
 
   return (
     <div className="min-h-screen bg-background px-6 py-16 pt-28">
-      <div className="mx-auto w-full max-w-md">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-md outline-none">
         <div className="mb-8 text-center">
           <Link
             href="/"
@@ -42,7 +42,7 @@ export async function AuthShell({ children, title, subtitle, backLink }: Props) 
           ) : null}
           {children}
         </div>
-      </div>
+      </main>
     </div>
   )
 }

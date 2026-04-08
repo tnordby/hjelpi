@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { loadDashboardUserContext } from '@/lib/dashboard/data'
+import { captureServerEvent } from '@/lib/posthog-server-capture'
 import { getStripe } from '@/lib/stripe/server'
 import { absoluteAppUrl } from '@/lib/url/app-base'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
@@ -83,8 +84,14 @@ export async function startStripeConnectOnboardingAction(
         .eq('id', ctx.providerId)
 
       if (upErr) {
+        captureServerEvent(user.email ?? user.id, 'stripe_connect_account_save_failed', {
+          provider_id: ctx.providerId,
+        })
         return { error: tErr('saveFailed') }
       }
+      captureServerEvent(user.email ?? user.id, 'stripe_connect_account_created', {
+        provider_id: ctx.providerId,
+      })
     }
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e)
@@ -110,6 +117,10 @@ export async function startStripeConnectOnboardingAction(
     return { error: stripeConnectOnboardingErrorMessage(message, tErr) }
   }
 
+  captureServerEvent(user.email ?? user.id, 'stripe_connect_onboarding_started', {
+    provider_id: ctx.providerId,
+    onboarded,
+  })
   revalidatePath(`/${locale}/min-side/hjelper/utbetalinger`)
   revalidatePath(`/${locale}/min-side/innstillinger`)
   redirect(accountLinkUrl)

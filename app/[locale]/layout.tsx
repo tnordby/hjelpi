@@ -1,6 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
+import { SkipToContentLink } from '@/components/a11y/SkipToContentLink'
 import { routing } from '@/i18n/routing'
 
 export function generateStaticParams() {
@@ -25,6 +26,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <SkipToContentLink />
       {children}
     </NextIntlClientProvider>
   )

@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/routing'
 import { MaterialIcon } from '@/components/ui/MaterialIcon'
 import { cn } from '@/lib/utils'
@@ -9,7 +10,7 @@ export type BreadcrumbItem = {
 
 type Variant = 'default' | 'inverse'
 
-export function ServiceBreadcrumbs({
+export async function ServiceBreadcrumbs({
   items,
   variant = 'default',
   className,
@@ -18,9 +19,10 @@ export function ServiceBreadcrumbs({
   variant?: Variant
   className?: string
 }) {
+  const tNav = await getTranslations('nav')
   const inverse = variant === 'inverse'
   return (
-    <nav aria-label="Brødsmuler" className={cn('mb-8', className)}>
+    <nav aria-label={tNav('breadcrumbAria')} className={cn('mb-8', className)}>
       <ol
         className={cn(
           'flex flex-wrap items-center gap-1 text-sm',
