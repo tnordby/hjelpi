@@ -1,6 +1,8 @@
 /**
  * Auto-generated from data/markedsplass-tjenester.csv — run: node scripts/generate-taxonomy.mjs
- * Merges: Rengjøring→Renhold, Språkundervisning→Språk, IKEA→Småreparasjoner.
+ * Merges: Rengjøring→Renhold, IKEA→Montering og småreparasjoner, Mat+Kokk→Mat og catering,
+ * Behandling+Helse→Helse og velvære, Språk(undervisning)+Privatundervisning+Kurs→Undervisning og kurs,
+ * Flyttehjelp+Transport og bud→Flytting og transport, Flislegging→Håndverker.
  * Dedupes: dronefotografi, illustratør, arrangement bedriftsfoto/bryllups-DJ.
  */
 
@@ -107,6 +109,32 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
+    "slug": "avfall-og-bortkjoring",
+    "title": "Avfall og bortkjøring",
+    "subs": [
+      {
+        "slug": "bortkjoring-av-avfall",
+        "title": "Bortkjøring av avfall"
+      },
+      {
+        "slug": "bortkjoring-av-hageavfall",
+        "title": "Bortkjøring av hageavfall"
+      },
+      {
+        "slug": "leie-av-avfallscontainer",
+        "title": "Leie av avfallscontainer"
+      },
+      {
+        "slug": "ryddehjelp-i-hjemmet",
+        "title": "Ryddehjelp i hjemmet"
+      },
+      {
+        "slug": "rydding-av-dodsbo",
+        "title": "Rydding av dødsbo"
+      }
+    ]
+  },
+  {
     "slug": "barnevakt",
     "title": "Barnevakt",
     "subs": [
@@ -129,44 +157,28 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "behandling",
-    "title": "Behandling",
+    "slug": "bilpleie",
+    "title": "Bilpleie",
     "subs": [
       {
-        "slug": "akupunktor",
-        "title": "Akupunktør"
+        "slug": "dekkskift",
+        "title": "Dekkskift"
       },
       {
-        "slug": "fotpleier",
-        "title": "Fotpleier"
+        "slug": "innvendig-rens",
+        "title": "Innvendig rens"
       },
       {
-        "slug": "fysioterapeut",
-        "title": "Fysioterapeut"
+        "slug": "lakkbeskyttelse",
+        "title": "Lakkbeskyttelse"
       },
       {
-        "slug": "hudpleier",
-        "title": "Hudpleier"
+        "slug": "polering-og-voks",
+        "title": "Polering og voks"
       },
       {
-        "slug": "kiropraktor",
-        "title": "Kiropraktor"
-      },
-      {
-        "slug": "massor",
-        "title": "Massør"
-      },
-      {
-        "slug": "negletekniker",
-        "title": "Negletekniker"
-      },
-      {
-        "slug": "osteopat",
-        "title": "Osteopat"
-      },
-      {
-        "slug": "sportsmassasje",
-        "title": "Sportsmassasje"
+        "slug": "utvendig-bilvask",
+        "title": "Utvendig bilvask"
       }
     ]
   },
@@ -547,42 +559,8 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "flislegging",
-    "title": "Flislegging",
-    "subs": [
-      {
-        "slug": "forsegling-og-fuging",
-        "title": "Forsegling og fuging"
-      },
-      {
-        "slug": "gulvfliser",
-        "title": "Gulvfliser"
-      },
-      {
-        "slug": "kjokkenfliser",
-        "title": "Kjøkkenfliser"
-      },
-      {
-        "slug": "montering-av-stein-eller-fliser-pa-gulv",
-        "title": "Montering av stein eller fliser på gulv"
-      },
-      {
-        "slug": "murstein-og-blokkbelegningstjenester",
-        "title": "Murstein og blokkbelegningstjenester"
-      },
-      {
-        "slug": "reparasjon-av-stein-eller-fliser",
-        "title": "Reparasjon av stein eller fliser"
-      },
-      {
-        "slug": "uteplasstjenester",
-        "title": "Uteplasstjenester"
-      }
-    ]
-  },
-  {
-    "slug": "flyttehjelp",
-    "title": "Flyttehjelp",
+    "slug": "flytting-og-transport",
+    "title": "Flytting og transport",
     "subs": [
       {
         "slug": "baerehjelp",
@@ -601,12 +579,40 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Full flyttehjelp"
       },
       {
+        "slug": "godstransport",
+        "title": "Godstransport"
+      },
+      {
+        "slug": "kjop-og-hent-tjenester",
+        "title": "Kjøp og hent-tjenester"
+      },
+      {
+        "slug": "levering-av-pakker",
+        "title": "Levering av pakker"
+      },
+      {
         "slug": "pakking-til-flytting",
         "title": "Pakking til flytting"
       },
       {
+        "slug": "persontransport",
+        "title": "Persontransport"
+      },
+      {
         "slug": "piano-og-tungloft",
         "title": "Piano- og tungløft"
+      },
+      {
+        "slug": "pianotransport",
+        "title": "Pianotransport"
+      },
+      {
+        "slug": "transport-av-bil-og-bat",
+        "title": "Transport av bil og båt"
+      },
+      {
+        "slug": "varetransport",
+        "title": "Varetransport"
       }
     ]
   },
@@ -827,8 +833,20 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Snøbrøyting"
       },
       {
+        "slug": "snomaking",
+        "title": "Snømåking"
+      },
+      {
+        "slug": "stroing-av-gardsplass",
+        "title": "Strøing av gårdsplass"
+      },
+      {
         "slug": "stottemurkonstruksjon",
         "title": "Støttemurkonstruksjon"
+      },
+      {
+        "slug": "takmaking",
+        "title": "Takmåking"
       },
       {
         "slug": "trekirurgi-og-fjerning",
@@ -837,9 +855,13 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "helse",
-    "title": "Helse",
+    "slug": "helse-og-velvare",
+    "title": "Helse og velvære",
     "subs": [
+      {
+        "slug": "akupunktor",
+        "title": "Akupunktør"
+      },
       {
         "slug": "ansattes-hjelpeprogrammer",
         "title": "Ansattes hjelpeprogrammer"
@@ -873,8 +895,16 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Familierådgivning"
       },
       {
+        "slug": "fotpleier",
+        "title": "Fotpleier"
+      },
+      {
         "slug": "fotterapi-og-fotterapeuter",
         "title": "Fotterapi og fotterapeuter"
+      },
+      {
+        "slug": "fysioterapeut",
+        "title": "Fysioterapeut"
       },
       {
         "slug": "fysioterapi",
@@ -893,6 +923,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Homeopati"
       },
       {
+        "slug": "hudpleier",
+        "title": "Hudpleier"
+      },
+      {
         "slug": "hypnoterapi",
         "title": "Hypnoterapi"
       },
@@ -907,6 +941,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "jungiansk-psykoanalyse",
         "title": "Jungiansk psykoanalyse"
+      },
+      {
+        "slug": "kiropraktor",
+        "title": "Kiropraktor"
       },
       {
         "slug": "kognitiv-atferdsterapi",
@@ -927,6 +965,18 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "massasjetrening",
         "title": "Massasjetrening"
+      },
+      {
+        "slug": "massor",
+        "title": "Massør"
+      },
+      {
+        "slug": "negletekniker",
+        "title": "Negletekniker"
+      },
+      {
+        "slug": "osteopat",
+        "title": "Osteopat"
       },
       {
         "slug": "osteopati",
@@ -973,6 +1023,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Sorgrådgivning"
       },
       {
+        "slug": "sportsmassasje",
+        "title": "Sportsmassasje"
+      },
+      {
         "slug": "stylister",
         "title": "Stylister"
       },
@@ -1003,6 +1057,14 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Demontering av innredning"
       },
       {
+        "slug": "forsegling-og-fuging",
+        "title": "Forsegling og fuging"
+      },
+      {
+        "slug": "gulvfliser",
+        "title": "Gulvfliser"
+      },
+      {
         "slug": "gulvsliping",
         "title": "Gulvsliping"
       },
@@ -1013,6 +1075,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "innvendig-isolering",
         "title": "Innvendig isolering"
+      },
+      {
+        "slug": "kjokkenfliser",
+        "title": "Kjøkkenfliser"
       },
       {
         "slug": "legging-av-gulv",
@@ -1047,6 +1113,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Montering av møbler"
       },
       {
+        "slug": "montering-av-stein-eller-fliser-pa-gulv",
+        "title": "Montering av stein eller fliser på gulv"
+      },
+      {
         "slug": "montering-av-utebod",
         "title": "Montering av utebod"
       },
@@ -1055,12 +1125,20 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Montering av vindu"
       },
       {
+        "slug": "murstein-og-blokkbelegningstjenester",
+        "title": "Murstein og blokkbelegningstjenester"
+      },
+      {
         "slug": "oppheng-av-bilder-og-tv",
         "title": "Oppheng av bilder og TV"
       },
       {
         "slug": "reparasjon-av-gjerde-eller-levegg",
         "title": "Reparasjon av gjerde eller levegg"
+      },
+      {
+        "slug": "reparasjon-av-stein-eller-fliser",
+        "title": "Reparasjon av stein eller fliser"
       },
       {
         "slug": "skifte-av-handtak-og-beslag",
@@ -1081,6 +1159,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "tomrer-og-snekker",
         "title": "Tømrer og snekker"
+      },
+      {
+        "slug": "uteplasstjenester",
+        "title": "Uteplasstjenester"
       }
     ]
   },
@@ -1203,98 +1285,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "kokk",
-    "title": "Kokk",
-    "subs": [
-      {
-        "slug": "cateringkokk",
-        "title": "Cateringkokk"
-      },
-      {
-        "slug": "dessertkokk",
-        "title": "Dessertkokk"
-      },
-      {
-        "slug": "frokostkokk",
-        "title": "Frokostkokk"
-      },
-      {
-        "slug": "gourmetkokk",
-        "title": "Gourmetkokk"
-      },
-      {
-        "slug": "grillkokk",
-        "title": "Grillkokk"
-      },
-      {
-        "slug": "kokkforhjemmemiddag",
-        "title": "Kokkforhjemmemiddag"
-      },
-      {
-        "slug": "kokktilfirmaarrangement",
-        "title": "Kokktilfirmaarrangement"
-      },
-      {
-        "slug": "kokktilselskap",
-        "title": "Kokktilselskap"
-      },
-      {
-        "slug": "konditor",
-        "title": "Konditor"
-      },
-      {
-        "slug": "privatkokk",
-        "title": "Privatkokk"
-      },
-      {
-        "slug": "streetfoodkokk",
-        "title": "Streetfoodkokk"
-      },
-      {
-        "slug": "sushikokk",
-        "title": "Sushikokk"
-      },
-      {
-        "slug": "tapaskokk",
-        "title": "Tapaskokk"
-      },
-      {
-        "slug": "veganskokk",
-        "title": "Veganskokk"
-      },
-      {
-        "slug": "vegetariskkokk",
-        "title": "Vegetariskkokk"
-      }
-    ]
-  },
-  {
-    "slug": "kurs-og-opplaering",
-    "title": "Kurs og opplæring",
-    "subs": [
-      {
-        "slug": "excel-for-nybegynnere",
-        "title": "Excel for nybegynnere"
-      },
-      {
-        "slug": "grunder-og-oppstart",
-        "title": "Gründer og oppstart"
-      },
-      {
-        "slug": "matlagingskurs",
-        "title": "Matlagingskurs"
-      },
-      {
-        "slug": "presentasjonsteknikk",
-        "title": "Presentasjonsteknikk"
-      },
-      {
-        "slug": "sosiale-medier-for-bedrifter",
-        "title": "Sosiale medier for bedrifter"
-      }
-    ]
-  },
-  {
     "slug": "lasesmed",
     "title": "Låsesmed",
     "subs": [
@@ -1335,8 +1325,8 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "mat",
-    "title": "Mat",
+    "slug": "mat-og-catering",
+    "title": "Mat og catering",
     "subs": [
       {
         "slug": "bryllupskaker",
@@ -1347,12 +1337,48 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Catering"
       },
       {
+        "slug": "cateringkokk",
+        "title": "Cateringkokk"
+      },
+      {
+        "slug": "dessertkokk",
+        "title": "Dessertkokk"
+      },
+      {
         "slug": "food-truck",
         "title": "Food Truck"
       },
       {
+        "slug": "frokostkokk",
+        "title": "Frokostkokk"
+      },
+      {
+        "slug": "gourmetkokk",
+        "title": "Gourmetkokk"
+      },
+      {
+        "slug": "grillkokk",
+        "title": "Grillkokk"
+      },
+      {
         "slug": "kakelaging",
         "title": "Kakelaging"
+      },
+      {
+        "slug": "kokkforhjemmemiddag",
+        "title": "Kokkforhjemmemiddag"
+      },
+      {
+        "slug": "kokktilfirmaarrangement",
+        "title": "Kokktilfirmaarrangement"
+      },
+      {
+        "slug": "kokktilselskap",
+        "title": "Kokktilselskap"
+      },
+      {
+        "slug": "konditor",
+        "title": "Konditor"
       },
       {
         "slug": "konditori",
@@ -1367,14 +1393,56 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Personlige kokk"
       },
       {
+        "slug": "privatkokk",
+        "title": "Privatkokk"
+      },
+      {
         "slug": "sommelier",
         "title": "Sommelier"
+      },
+      {
+        "slug": "streetfoodkokk",
+        "title": "Streetfoodkokk"
+      },
+      {
+        "slug": "sushikokk",
+        "title": "Sushikokk"
+      },
+      {
+        "slug": "tapaskokk",
+        "title": "Tapaskokk"
+      },
+      {
+        "slug": "veganskokk",
+        "title": "Veganskokk"
+      },
+      {
+        "slug": "vegetariskkokk",
+        "title": "Vegetariskkokk"
+      }
+    ]
+  },
+  {
+    "slug": "smareparasjoner",
+    "title": "Montering og småreparasjoner",
+    "subs": [
+      {
+        "slug": "ikea-garderobe",
+        "title": "IKEA Garderobe"
+      },
+      {
+        "slug": "ikea-montering",
+        "title": "IKEA-montering"
+      },
+      {
+        "slug": "opphenging-av-bilder-og-hyller",
+        "title": "Opphenging av bilder og hyller"
       }
     ]
   },
   {
     "slug": "musikk",
-    "title": "Musikk",
+    "title": "Musikere og DJ",
     "subs": [
       {
         "slug": "country",
@@ -1775,56 +1843,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "privatundervisning",
-    "title": "Privatundervisning",
-    "subs": [
-      {
-        "slug": "engelsk",
-        "title": "Engelsk"
-      },
-      {
-        "slug": "fransk",
-        "title": "Fransk"
-      },
-      {
-        "slug": "fysikk",
-        "title": "Fysikk"
-      },
-      {
-        "slug": "kjemi",
-        "title": "Kjemi"
-      },
-      {
-        "slug": "matematikk",
-        "title": "Matematikk"
-      },
-      {
-        "slug": "mattehjelp",
-        "title": "Mattehjelp"
-      },
-      {
-        "slug": "naturfag",
-        "title": "Naturfag"
-      },
-      {
-        "slug": "norsk",
-        "title": "Norsk"
-      },
-      {
-        "slug": "privatlaerer",
-        "title": "Privatlærer"
-      },
-      {
-        "slug": "spansk",
-        "title": "Spansk"
-      },
-      {
-        "slug": "tysk",
-        "title": "Tysk"
-      }
-    ]
-  },
-  {
     "slug": "regnskap",
     "title": "Regnskap",
     "subs": [
@@ -1929,10 +1947,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "kontorrengjoring",
         "title": "Kontorrengjøring"
-      },
-      {
-        "slug": "leie-av-avfallscontainer",
-        "title": "Leie av avfallscontainer"
       },
       {
         "slug": "luktfjerning",
@@ -2051,192 +2065,68 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
-    "slug": "smareparasjoner",
-    "title": "Småreparasjoner",
+    "slug": "skadedyrkontroll",
+    "title": "Skadedyrkontroll",
     "subs": [
       {
-        "slug": "ikea-garderobe",
-        "title": "IKEA Garderobe"
+        "slug": "fjerning-av-vepsebol",
+        "title": "Fjerning av vepsebol"
       },
       {
-        "slug": "ikea-montering",
-        "title": "IKEA-montering"
+        "slug": "maur",
+        "title": "Maur"
       },
       {
-        "slug": "opphenging-av-bilder-og-hyller",
-        "title": "Opphenging av bilder og hyller"
+        "slug": "mus-og-rotter",
+        "title": "Mus og rotter"
+      },
+      {
+        "slug": "skjeggkre",
+        "title": "Skjeggkre"
+      },
+      {
+        "slug": "veggedyr",
+        "title": "Veggedyr"
       }
     ]
   },
   {
-    "slug": "sprak",
-    "title": "Språk",
+    "slug": "snekker",
+    "title": "Snekker",
     "subs": [
       {
-        "slug": "arabisk",
-        "title": "Arabisk"
+        "slug": "garderobeinnredning",
+        "title": "Garderobeinnredning"
       },
       {
-        "slug": "dansk",
-        "title": "Dansk"
+        "slug": "innredningssnekring",
+        "title": "Innredningssnekring"
       },
       {
-        "slug": "engelsk",
-        "title": "Engelsk"
+        "slug": "listverk-og-dorer",
+        "title": "Listverk og dører"
       },
       {
-        "slug": "farsi",
-        "title": "Farsi"
+        "slug": "skreddersydde-mobler",
+        "title": "Skreddersydde møbler"
       },
       {
-        "slug": "fransk",
-        "title": "Fransk"
-      },
-      {
-        "slug": "gresk",
-        "title": "Gresk"
-      },
-      {
-        "slug": "hebraisk",
-        "title": "Hebraisk"
-      },
-      {
-        "slug": "hindi",
-        "title": "Hindi"
-      },
-      {
-        "slug": "indonesisk",
-        "title": "Indonesisk"
-      },
-      {
-        "slug": "italiensk",
-        "title": "Italiensk"
-      },
-      {
-        "slug": "japansk",
-        "title": "Japansk"
-      },
-      {
-        "slug": "kantonesisk",
-        "title": "Kantonesisk"
-      },
-      {
-        "slug": "kinesisk",
-        "title": "Kinesisk"
-      },
-      {
-        "slug": "koreansk",
-        "title": "Koreansk"
-      },
-      {
-        "slug": "latinsk",
-        "title": "Latinsk"
-      },
-      {
-        "slug": "mandarin",
-        "title": "Mandarin"
-      },
-      {
-        "slug": "medisinsk-transkripsjon",
-        "title": "Medisinsk transkripsjon"
-      },
-      {
-        "slug": "nederlandsk",
-        "title": "Nederlandsk"
-      },
-      {
-        "slug": "norsk",
-        "title": "Norsk"
-      },
-      {
-        "slug": "polsk",
-        "title": "Polsk"
-      },
-      {
-        "slug": "portugisisk",
-        "title": "Portugisisk"
-      },
-      {
-        "slug": "redigering",
-        "title": "Redigering"
-      },
-      {
-        "slug": "rumensk",
-        "title": "Rumensk"
-      },
-      {
-        "slug": "russisk",
-        "title": "Russisk"
-      },
-      {
-        "slug": "sanskrit",
-        "title": "Sanskrit"
-      },
-      {
-        "slug": "skandinavisk",
-        "title": "Skandinavisk"
-      },
-      {
-        "slug": "skrivetjenester",
-        "title": "Skrivetjenester"
-      },
-      {
-        "slug": "somalisk",
-        "title": "Somalisk"
-      },
-      {
-        "slug": "spansk",
-        "title": "Spansk"
-      },
-      {
-        "slug": "svensk",
-        "title": "Svensk"
-      },
-      {
-        "slug": "swahili",
-        "title": "Swahili"
-      },
-      {
-        "slug": "tagalog",
-        "title": "Tagalog"
-      },
-      {
-        "slug": "thai",
-        "title": "Thai"
-      },
-      {
-        "slug": "transkripsjonstjenester",
-        "title": "Transkripsjonstjenester"
-      },
-      {
-        "slug": "tsjekkisk",
-        "title": "Tsjekkisk"
-      },
-      {
-        "slug": "tyrkisk",
-        "title": "Tyrkisk"
-      },
-      {
-        "slug": "tysk",
-        "title": "Tysk"
-      },
-      {
-        "slug": "vietnamesisk",
-        "title": "Vietnamesisk"
-      },
-      {
-        "slug": "walisisk",
-        "title": "Walisisk"
+        "slug": "utvendig-kledning",
+        "title": "Utvendig kledning"
       }
     ]
   },
   {
     "slug": "stylist",
-    "title": "Stylist",
+    "title": "Stylist og makeup",
     "subs": [
       {
         "slug": "brudestylist",
         "title": "Brudestylist"
+      },
+      {
+        "slug": "bryllupsmakeup",
+        "title": "Bryllupsmakeup"
       },
       {
         "slug": "extensions-spesialist",
@@ -2247,12 +2137,68 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Fargespesialist"
       },
       {
+        "slug": "festmakeup",
+        "title": "Festmakeup"
+      },
+      {
         "slug": "makeup-artist",
         "title": "Makeup-artist"
       },
       {
+        "slug": "makeupkurs",
+        "title": "Makeupkurs"
+      },
+      {
         "slug": "neglestylist",
         "title": "Neglestylist"
+      }
+    ]
+  },
+  {
+    "slug": "sykkelreparasjon",
+    "title": "Sykkelreparasjon",
+    "subs": [
+      {
+        "slug": "elsykkelservice",
+        "title": "Elsykkelservice"
+      },
+      {
+        "slug": "girjustering",
+        "title": "Girjustering"
+      },
+      {
+        "slug": "skifte-av-dekk-og-slange",
+        "title": "Skifte av dekk og slange"
+      },
+      {
+        "slug": "sykkelservice",
+        "title": "Sykkelservice"
+      }
+    ]
+  },
+  {
+    "slug": "som-og-skredder",
+    "title": "Søm og skredder",
+    "subs": [
+      {
+        "slug": "gardinsom",
+        "title": "Gardinsøm"
+      },
+      {
+        "slug": "klesreparasjon",
+        "title": "Klesreparasjon"
+      },
+      {
+        "slug": "omsom-av-kjole",
+        "title": "Omsøm av kjole"
+      },
+      {
+        "slug": "opplegging-av-bukser",
+        "title": "Opplegging av bukser"
+      },
+      {
+        "slug": "skreddersom",
+        "title": "Skreddersøm"
       }
     ]
   },
@@ -2275,40 +2221,6 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "taktekker",
         "title": "Taktekker"
-      }
-    ]
-  },
-  {
-    "slug": "transport-og-bud",
-    "title": "Transport og bud",
-    "subs": [
-      {
-        "slug": "godstransport",
-        "title": "Godstransport"
-      },
-      {
-        "slug": "kjop-og-hent-tjenester",
-        "title": "Kjøp og hent-tjenester"
-      },
-      {
-        "slug": "levering-av-pakker",
-        "title": "Levering av pakker"
-      },
-      {
-        "slug": "persontransport",
-        "title": "Persontransport"
-      },
-      {
-        "slug": "pianotransport",
-        "title": "Pianotransport"
-      },
-      {
-        "slug": "transport-av-bil-og-bat",
-        "title": "Transport av bil og båt"
-      },
-      {
-        "slug": "varetransport",
-        "title": "Varetransport"
       }
     ]
   },
@@ -2413,8 +2325,236 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Tryllekunstner"
       },
       {
-        "slug": "utleie-av-lokale",
-        "title": "Utleie av lokale"
+        "slug": "utleie-av-lokalesnekker",
+        "title": "Utleie av lokaleSnekker"
+      }
+    ]
+  },
+  {
+    "slug": "undervisning-og-kurs",
+    "title": "Undervisning og kurs",
+    "subs": [
+      {
+        "slug": "arabisk",
+        "title": "Arabisk"
+      },
+      {
+        "slug": "dansk",
+        "title": "Dansk"
+      },
+      {
+        "slug": "engelsk",
+        "title": "Engelsk"
+      },
+      {
+        "slug": "excel-for-nybegynnere",
+        "title": "Excel for nybegynnere"
+      },
+      {
+        "slug": "farsi",
+        "title": "Farsi"
+      },
+      {
+        "slug": "fransk",
+        "title": "Fransk"
+      },
+      {
+        "slug": "fysikk",
+        "title": "Fysikk"
+      },
+      {
+        "slug": "gresk",
+        "title": "Gresk"
+      },
+      {
+        "slug": "grunder-og-oppstart",
+        "title": "Gründer og oppstart"
+      },
+      {
+        "slug": "hebraisk",
+        "title": "Hebraisk"
+      },
+      {
+        "slug": "hindi",
+        "title": "Hindi"
+      },
+      {
+        "slug": "indonesisk",
+        "title": "Indonesisk"
+      },
+      {
+        "slug": "italiensk",
+        "title": "Italiensk"
+      },
+      {
+        "slug": "japansk",
+        "title": "Japansk"
+      },
+      {
+        "slug": "kantonesisk",
+        "title": "Kantonesisk"
+      },
+      {
+        "slug": "kinesisk",
+        "title": "Kinesisk"
+      },
+      {
+        "slug": "kjemi",
+        "title": "Kjemi"
+      },
+      {
+        "slug": "koreansk",
+        "title": "Koreansk"
+      },
+      {
+        "slug": "latinsk",
+        "title": "Latinsk"
+      },
+      {
+        "slug": "mandarin",
+        "title": "Mandarin"
+      },
+      {
+        "slug": "matematikk",
+        "title": "Matematikk"
+      },
+      {
+        "slug": "matlagingskurs",
+        "title": "Matlagingskurs"
+      },
+      {
+        "slug": "mattehjelp",
+        "title": "Mattehjelp"
+      },
+      {
+        "slug": "medisinsk-transkripsjon",
+        "title": "Medisinsk transkripsjon"
+      },
+      {
+        "slug": "naturfag",
+        "title": "Naturfag"
+      },
+      {
+        "slug": "nederlandsk",
+        "title": "Nederlandsk"
+      },
+      {
+        "slug": "norsk",
+        "title": "Norsk"
+      },
+      {
+        "slug": "polsk",
+        "title": "Polsk"
+      },
+      {
+        "slug": "portugisisk",
+        "title": "Portugisisk"
+      },
+      {
+        "slug": "presentasjonsteknikk",
+        "title": "Presentasjonsteknikk"
+      },
+      {
+        "slug": "privatlaerer",
+        "title": "Privatlærer"
+      },
+      {
+        "slug": "redigering",
+        "title": "Redigering"
+      },
+      {
+        "slug": "rumensk",
+        "title": "Rumensk"
+      },
+      {
+        "slug": "russisk",
+        "title": "Russisk"
+      },
+      {
+        "slug": "sanskrit",
+        "title": "Sanskrit"
+      },
+      {
+        "slug": "skandinavisk",
+        "title": "Skandinavisk"
+      },
+      {
+        "slug": "skrivetjenester",
+        "title": "Skrivetjenester"
+      },
+      {
+        "slug": "somalisk",
+        "title": "Somalisk"
+      },
+      {
+        "slug": "sosiale-medier-for-bedrifter",
+        "title": "Sosiale medier for bedrifter"
+      },
+      {
+        "slug": "spansk",
+        "title": "Spansk"
+      },
+      {
+        "slug": "svensk",
+        "title": "Svensk"
+      },
+      {
+        "slug": "swahili",
+        "title": "Swahili"
+      },
+      {
+        "slug": "tagalog",
+        "title": "Tagalog"
+      },
+      {
+        "slug": "thai",
+        "title": "Thai"
+      },
+      {
+        "slug": "transkripsjonstjenester",
+        "title": "Transkripsjonstjenester"
+      },
+      {
+        "slug": "tsjekkisk",
+        "title": "Tsjekkisk"
+      },
+      {
+        "slug": "tyrkisk",
+        "title": "Tyrkisk"
+      },
+      {
+        "slug": "tysk",
+        "title": "Tysk"
+      },
+      {
+        "slug": "vietnamesisk",
+        "title": "Vietnamesisk"
+      },
+      {
+        "slug": "walisisk",
+        "title": "Walisisk"
+      }
+    ]
+  },
+  {
+    "slug": "vaktmestertjenester",
+    "title": "Vaktmestertjenester",
+    "subs": [
+      {
+        "slug": "klargjoring-av-utleiebolig",
+        "title": "Klargjøring av utleiebolig"
+      },
+      {
+        "slug": "lopende-vedlikehold",
+        "title": "Løpende vedlikehold"
+      },
+      {
+        "slug": "sameie-og-borettslagstjenester",
+        "title": "Sameie- og borettslagstjenester"
+      },
+      {
+        "slug": "tilsyn-av-eiendom",
+        "title": "Tilsyn av eiendom"
       }
     ]
   }

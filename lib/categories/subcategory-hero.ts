@@ -4,8 +4,6 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&q=80&auto=format&fit=crop',
   barnevakt:
     'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1920&q=80&auto=format&fit=crop',
-  behandling:
-    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1920&q=80&auto=format&fit=crop',
   'bilverksted-og-mekaniker':
     'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=80&auto=format&fit=crop',
   boligstyling:
@@ -22,10 +20,6 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1920&q=80&auto=format&fit=crop',
   eventutleie:
     'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1920&q=80&auto=format&fit=crop',
-  flislegging:
-    'https://images.unsplash.com/photo-1581858726788-75bc0f1a1ad3?w=1920&q=80&auto=format&fit=crop',
-  flyttehjelp:
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80&auto=format&fit=crop',
   fotografi:
     'https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=1920&q=80&auto=format&fit=crop',
   frisor:
@@ -34,7 +28,7 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1558904541-efa843a96f01?w=1920&q=80&auto=format&fit=crop',
   handverker:
     'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=1920&q=80&auto=format&fit=crop',
-  helse:
+  'helse-og-velvare':
     'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1920&q=80&auto=format&fit=crop',
   'it-hjelp':
     'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1920&q=80&auto=format&fit=crop',
@@ -42,15 +36,13 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&q=80&auto=format&fit=crop',
   kampsport:
     'https://images.unsplash.com/photo-1555597677-b8d813303e94?w=1920&q=80&auto=format&fit=crop',
-  kokk:
-    'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1920&q=80&auto=format&fit=crop',
-  'kurs-og-opplaering':
+  'undervisning-og-kurs':
     'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80&auto=format&fit=crop',
   lasesmed:
     'https://images.unsplash.com/photo-1558002038-1055907df827?w=1920&q=80&auto=format&fit=crop',
   'maler-og-tapetsering':
     'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1920&q=80&auto=format&fit=crop',
-  mat:
+  'mat-og-catering':
     'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80&auto=format&fit=crop',
   musikk:
     'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1920&q=80&auto=format&fit=crop',
@@ -58,8 +50,6 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=1920&q=80&auto=format&fit=crop',
   'personlig-trener':
     'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=1920&q=80&auto=format&fit=crop',
-  privatundervisning:
-    'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1920&q=80&auto=format&fit=crop',
   regnskap:
     'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1920&q=80&auto=format&fit=crop',
   'rorlegger-og-vvs':
@@ -68,14 +58,20 @@ const HERO_BY_CATEGORY: Record<string, string> = {
     'https://images.unsplash.com/photo-1558317374-067fb5f3004b?w=1920&q=80&auto=format&fit=crop',
   smareparasjoner:
     'https://images.unsplash.com/photo-1581244277943-fe4a9c777189?w=1920&q=80&auto=format&fit=crop',
-  sprak:
-    'https://images.unsplash.com/photo-1546412414-8035e1776c9a?w=1920&q=80&auto=format&fit=crop',
   stylist:
     'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1920&q=80&auto=format&fit=crop',
   'tak-og-tekking':
     'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=1920&q=80&auto=format&fit=crop',
-  'transport-og-bud':
+  'flytting-og-transport':
     'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1920&q=80&auto=format&fit=crop',
+  snekker:
+    'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1920&q=80&auto=format&fit=crop',
+  sykkelreparasjon:
+    'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1920&q=80&auto=format&fit=crop',
+  bilpleie:
+    'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=1920&q=80&auto=format&fit=crop',
+  'som-og-skredder':
+    'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=1920&q=80&auto=format&fit=crop',
   underholdning:
     'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1920&q=80&auto=format&fit=crop',
 }

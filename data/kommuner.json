@@ -1,0 +1,1787 @@
+[
+ {
+  "nummer": "1820",
+  "navn": "Alstahaug",
+  "publicSlug": "alstahaug"
+ },
+ {
+  "nummer": "5601",
+  "navn": "Alta",
+  "publicSlug": "alta"
+ },
+ {
+  "nummer": "3428",
+  "navn": "Alvdal",
+  "publicSlug": "alvdal"
+ },
+ {
+  "nummer": "4631",
+  "navn": "Alver",
+  "publicSlug": "alver"
+ },
+ {
+  "nummer": "1871",
+  "navn": "Andøy",
+  "publicSlug": "andoy"
+ },
+ {
+  "nummer": "3124",
+  "navn": "Aremark",
+  "publicSlug": "aremark"
+ },
+ {
+  "nummer": "4203",
+  "navn": "Arendal",
+  "publicSlug": "arendal"
+ },
+ {
+  "nummer": "3203",
+  "navn": "Asker",
+  "publicSlug": "asker"
+ },
+ {
+  "nummer": "4645",
+  "navn": "Askvoll",
+  "publicSlug": "askvoll"
+ },
+ {
+  "nummer": "4627",
+  "navn": "Askøy",
+  "publicSlug": "askoy"
+ },
+ {
+  "nummer": "1547",
+  "navn": "Aukra",
+  "publicSlug": "aukra"
+ },
+ {
+  "nummer": "1576",
+  "navn": "Aure",
+  "publicSlug": "aure"
+ },
+ {
+  "nummer": "4641",
+  "navn": "Aurland",
+  "publicSlug": "aurland"
+ },
+ {
+  "nummer": "3226",
+  "navn": "Aurskog-Høland",
+  "publicSlug": "aurskog-holand"
+ },
+ {
+  "nummer": "4625",
+  "navn": "Austevoll",
+  "publicSlug": "austevoll"
+ },
+ {
+  "nummer": "4632",
+  "navn": "Austrheim",
+  "publicSlug": "austrheim"
+ },
+ {
+  "nummer": "1554",
+  "navn": "Averøy",
+  "publicSlug": "averoy"
+ },
+ {
+  "nummer": "5532",
+  "navn": "Balsfjord",
+  "publicSlug": "balsfjord"
+ },
+ {
+  "nummer": "4012",
+  "navn": "Bamble",
+  "publicSlug": "bamble"
+ },
+ {
+  "nummer": "5520",
+  "navn": "Bardu",
+  "publicSlug": "bardu"
+ },
+ {
+  "nummer": "1839",
+  "navn": "Beiarn",
+  "publicSlug": "beiarn"
+ },
+ {
+  "nummer": "4601",
+  "navn": "Bergen",
+  "publicSlug": "bergen"
+ },
+ {
+  "nummer": "5630",
+  "navn": "Berlevåg",
+  "publicSlug": "berlevag"
+ },
+ {
+  "nummer": "1811",
+  "navn": "Bindal",
+  "publicSlug": "bindal"
+ },
+ {
+  "nummer": "4216",
+  "navn": "Birkenes",
+  "publicSlug": "birkenes"
+ },
+ {
+  "nummer": "1114",
+  "navn": "Bjerkreim",
+  "publicSlug": "bjerkreim"
+ },
+ {
+  "nummer": "4624",
+  "navn": "Bjørnafjorden",
+  "publicSlug": "bjornafjorden"
+ },
+ {
+  "nummer": "1804",
+  "navn": "Bodø",
+  "publicSlug": "bodo"
+ },
+ {
+  "nummer": "1145",
+  "navn": "Bokn",
+  "publicSlug": "bokn"
+ },
+ {
+  "nummer": "4648",
+  "navn": "Bremanger",
+  "publicSlug": "bremanger"
+ },
+ {
+  "nummer": "1813",
+  "navn": "Brønnøy",
+  "publicSlug": "bronnoy"
+ },
+ {
+  "nummer": "4220",
+  "navn": "Bygland",
+  "publicSlug": "bygland"
+ },
+ {
+  "nummer": "4222",
+  "navn": "Bykle",
+  "publicSlug": "bykle"
+ },
+ {
+  "nummer": "5632",
+  "navn": "Båtsfjord",
+  "publicSlug": "batsfjord"
+ },
+ {
+  "nummer": "3201",
+  "navn": "Bærum",
+  "publicSlug": "baerum"
+ },
+ {
+  "nummer": "1867",
+  "navn": "Bø",
+  "publicSlug": "bo"
+ },
+ {
+  "nummer": "4613",
+  "navn": "Bømlo",
+  "publicSlug": "bomlo"
+ },
+ {
+  "nummer": "3431",
+  "navn": "Dovre",
+  "publicSlug": "dovre"
+ },
+ {
+  "nummer": "3301",
+  "navn": "Drammen",
+  "publicSlug": "drammen"
+ },
+ {
+  "nummer": "4016",
+  "navn": "Drangedal",
+  "publicSlug": "drangedal"
+ },
+ {
+  "nummer": "5528",
+  "navn": "Dyrøy",
+  "publicSlug": "dyroy"
+ },
+ {
+  "nummer": "1827",
+  "navn": "Dønna",
+  "publicSlug": "donna"
+ },
+ {
+  "nummer": "4619",
+  "navn": "Eidfjord",
+  "publicSlug": "eidfjord"
+ },
+ {
+  "nummer": "3416",
+  "navn": "Eidskog",
+  "publicSlug": "eidskog"
+ },
+ {
+  "nummer": "3240",
+  "navn": "Eidsvoll",
+  "publicSlug": "eidsvoll"
+ },
+ {
+  "nummer": "1101",
+  "navn": "Eigersund",
+  "publicSlug": "eigersund"
+ },
+ {
+  "nummer": "3420",
+  "navn": "Elverum",
+  "publicSlug": "elverum"
+ },
+ {
+  "nummer": "3220",
+  "navn": "Enebakk",
+  "publicSlug": "enebakk"
+ },
+ {
+  "nummer": "3425",
+  "navn": "Engerdal",
+  "publicSlug": "engerdal"
+ },
+ {
+  "nummer": "4611",
+  "navn": "Etne",
+  "publicSlug": "etne"
+ },
+ {
+  "nummer": "3450",
+  "navn": "Etnedal",
+  "publicSlug": "etnedal"
+ },
+ {
+  "nummer": "1853",
+  "navn": "Evenes",
+  "publicSlug": "evenes"
+ },
+ {
+  "nummer": "4219",
+  "navn": "Evje og Hornnes",
+  "publicSlug": "evje-og-hornnes"
+ },
+ {
+  "nummer": "4206",
+  "navn": "Farsund",
+  "publicSlug": "farsund"
+ },
+ {
+  "nummer": "1841",
+  "navn": "Fauske",
+  "publicSlug": "fauske"
+ },
+ {
+  "nummer": "4633",
+  "navn": "Fedje",
+  "publicSlug": "fedje"
+ },
+ {
+  "nummer": "4615",
+  "navn": "Fitjar",
+  "publicSlug": "fitjar"
+ },
+ {
+  "nummer": "4646",
+  "navn": "Fjaler",
+  "publicSlug": "fjaler"
+ },
+ {
+  "nummer": "1578",
+  "navn": "Fjord",
+  "publicSlug": "fjord"
+ },
+ {
+  "nummer": "1859",
+  "navn": "Flakstad",
+  "publicSlug": "flakstad"
+ },
+ {
+  "nummer": "5049",
+  "navn": "Flatanger",
+  "publicSlug": "flatanger"
+ },
+ {
+  "nummer": "4207",
+  "navn": "Flekkefjord",
+  "publicSlug": "flekkefjord"
+ },
+ {
+  "nummer": "3334",
+  "navn": "Flesberg",
+  "publicSlug": "flesberg"
+ },
+ {
+  "nummer": "3320",
+  "navn": "Flå",
+  "publicSlug": "fla"
+ },
+ {
+  "nummer": "3429",
+  "navn": "Folldal",
+  "publicSlug": "folldal"
+ },
+ {
+  "nummer": "3107",
+  "navn": "Fredrikstad",
+  "publicSlug": "fredrikstad"
+ },
+ {
+  "nummer": "3214",
+  "navn": "Frogn",
+  "publicSlug": "frogn"
+ },
+ {
+  "nummer": "4214",
+  "navn": "Froland",
+  "publicSlug": "froland"
+ },
+ {
+  "nummer": "5036",
+  "navn": "Frosta",
+  "publicSlug": "frosta"
+ },
+ {
+  "nummer": "5014",
+  "navn": "Frøya",
+  "publicSlug": "froya"
+ },
+ {
+  "nummer": "4032",
+  "navn": "Fyresdal",
+  "publicSlug": "fyresdal"
+ },
+ {
+  "nummer": "3911",
+  "navn": "Færder",
+  "publicSlug": "faerder"
+ },
+ {
+  "nummer": "5626",
+  "navn": "Gamvik",
+  "publicSlug": "gamvik"
+ },
+ {
+  "nummer": "3441",
+  "navn": "Gausdal",
+  "publicSlug": "gausdal"
+ },
+ {
+  "nummer": "1838",
+  "navn": "Gildeskål",
+  "publicSlug": "gildeskal"
+ },
+ {
+  "nummer": "1532",
+  "navn": "Giske",
+  "publicSlug": "giske"
+ },
+ {
+  "nummer": "1557",
+  "navn": "Gjemnes",
+  "publicSlug": "gjemnes"
+ },
+ {
+  "nummer": "3230",
+  "navn": "Gjerdrum",
+  "publicSlug": "gjerdrum"
+ },
+ {
+  "nummer": "4211",
+  "navn": "Gjerstad",
+  "publicSlug": "gjerstad"
+ },
+ {
+  "nummer": "1122",
+  "navn": "Gjesdal",
+  "publicSlug": "gjesdal"
+ },
+ {
+  "nummer": "3407",
+  "navn": "Gjøvik",
+  "publicSlug": "gjovik"
+ },
+ {
+  "nummer": "4650",
+  "navn": "Gloppen",
+  "publicSlug": "gloppen"
+ },
+ {
+  "nummer": "3324",
+  "navn": "Gol",
+  "publicSlug": "gol"
+ },
+ {
+  "nummer": "3446",
+  "navn": "Gran",
+  "publicSlug": "gran"
+ },
+ {
+  "nummer": "1825",
+  "navn": "Grane",
+  "publicSlug": "grane"
+ },
+ {
+  "nummer": "5516",
+  "navn": "Gratangen",
+  "publicSlug": "gratangen"
+ },
+ {
+  "nummer": "4202",
+  "navn": "Grimstad",
+  "publicSlug": "grimstad"
+ },
+ {
+  "nummer": "5045",
+  "navn": "Grong",
+  "publicSlug": "grong"
+ },
+ {
+  "nummer": "3417",
+  "navn": "Grue",
+  "publicSlug": "grue"
+ },
+ {
+  "nummer": "4635",
+  "navn": "Gulen",
+  "publicSlug": "gulen"
+ },
+ {
+  "nummer": "1866",
+  "navn": "Hadsel",
+  "publicSlug": "hadsel"
+ },
+ {
+  "nummer": "3101",
+  "navn": "Halden",
+  "publicSlug": "halden"
+ },
+ {
+  "nummer": "3403",
+  "navn": "Hamar",
+  "publicSlug": "hamar"
+ },
+ {
+  "nummer": "1875",
+  "navn": "Hamarøy",
+  "publicSlug": "hamaroy"
+ },
+ {
+  "nummer": "5603",
+  "navn": "Hammerfest",
+  "publicSlug": "hammerfest"
+ },
+ {
+  "nummer": "1580",
+  "navn": "Haram",
+  "publicSlug": "haram"
+ },
+ {
+  "nummer": "1517",
+  "navn": "Hareid",
+  "publicSlug": "hareid"
+ },
+ {
+  "nummer": "5503",
+  "navn": "Harstad",
+  "publicSlug": "harstad"
+ },
+ {
+  "nummer": "5616",
+  "navn": "Hasvik",
+  "publicSlug": "hasvik"
+ },
+ {
+  "nummer": "1826",
+  "navn": "Hattfjelldal",
+  "publicSlug": "hattfjelldal"
+ },
+ {
+  "nummer": "1106",
+  "navn": "Haugesund",
+  "publicSlug": "haugesund"
+ },
+ {
+  "nummer": "5055",
+  "navn": "Heim",
+  "publicSlug": "heim"
+ },
+ {
+  "nummer": "1832",
+  "navn": "Hemnes",
+  "publicSlug": "hemnes"
+ },
+ {
+  "nummer": "3326",
+  "navn": "Hemsedal",
+  "publicSlug": "hemsedal"
+ },
+ {
+  "nummer": "1818",
+  "navn": "Herøy",
+  "publicSlug": "heroy-1818"
+ },
+ {
+  "nummer": "1515",
+  "navn": "Herøy",
+  "publicSlug": "heroy-1515"
+ },
+ {
+  "nummer": "5056",
+  "navn": "Hitra",
+  "publicSlug": "hitra"
+ },
+ {
+  "nummer": "4024",
+  "navn": "Hjartdal",
+  "publicSlug": "hjartdal"
+ },
+ {
+  "nummer": "1133",
+  "navn": "Hjelmeland",
+  "publicSlug": "hjelmeland"
+ },
+ {
+  "nummer": "3330",
+  "navn": "Hol",
+  "publicSlug": "hol"
+ },
+ {
+  "nummer": "3310",
+  "navn": "Hole",
+  "publicSlug": "hole"
+ },
+ {
+  "nummer": "3903",
+  "navn": "Holmestrand",
+  "publicSlug": "holmestrand"
+ },
+ {
+  "nummer": "5026",
+  "navn": "Holtålen",
+  "publicSlug": "holtalen"
+ },
+ {
+  "nummer": "3901",
+  "navn": "Horten",
+  "publicSlug": "horten"
+ },
+ {
+  "nummer": "3242",
+  "navn": "Hurdal",
+  "publicSlug": "hurdal"
+ },
+ {
+  "nummer": "1579",
+  "navn": "Hustadvika",
+  "publicSlug": "hustadvika"
+ },
+ {
+  "nummer": "3110",
+  "navn": "Hvaler",
+  "publicSlug": "hvaler"
+ },
+ {
+  "nummer": "4637",
+  "navn": "Hyllestad",
+  "publicSlug": "hyllestad"
+ },
+ {
+  "nummer": "1119",
+  "navn": "Hå",
+  "publicSlug": "ha"
+ },
+ {
+  "nummer": "4226",
+  "navn": "Hægebostad",
+  "publicSlug": "haegebostad"
+ },
+ {
+  "nummer": "4638",
+  "navn": "Høyanger",
+  "publicSlug": "hoyanger"
+ },
+ {
+  "nummer": "5046",
+  "navn": "Høylandet",
+  "publicSlug": "hoylandet"
+ },
+ {
+  "nummer": "5514",
+  "navn": "Ibestad",
+  "publicSlug": "ibestad"
+ },
+ {
+  "nummer": "5053",
+  "navn": "Inderøy",
+  "publicSlug": "inderoy"
+ },
+ {
+  "nummer": "5054",
+  "navn": "Indre Fosen",
+  "publicSlug": "indre-fosen"
+ },
+ {
+  "nummer": "3118",
+  "navn": "Indre Østfold",
+  "publicSlug": "indre-ostfold"
+ },
+ {
+  "nummer": "4218",
+  "navn": "Iveland",
+  "publicSlug": "iveland"
+ },
+ {
+  "nummer": "3236",
+  "navn": "Jevnaker",
+  "publicSlug": "jevnaker"
+ },
+ {
+  "nummer": "5610",
+  "navn": "Karasjok",
+  "publicSlug": "karasjok"
+ },
+ {
+  "nummer": "5534",
+  "navn": "Karlsøy",
+  "publicSlug": "karlsoy"
+ },
+ {
+  "nummer": "1149",
+  "navn": "Karmøy",
+  "publicSlug": "karmoy"
+ },
+ {
+  "nummer": "5612",
+  "navn": "Kautokeino",
+  "publicSlug": "kautokeino"
+ },
+ {
+  "nummer": "4602",
+  "navn": "Kinn",
+  "publicSlug": "kinn"
+ },
+ {
+  "nummer": "1120",
+  "navn": "Klepp",
+  "publicSlug": "klepp"
+ },
+ {
+  "nummer": "3303",
+  "navn": "Kongsberg",
+  "publicSlug": "kongsberg"
+ },
+ {
+  "nummer": "3401",
+  "navn": "Kongsvinger",
+  "publicSlug": "kongsvinger"
+ },
+ {
+  "nummer": "4014",
+  "navn": "Kragerø",
+  "publicSlug": "kragero"
+ },
+ {
+  "nummer": "4204",
+  "navn": "Kristiansand",
+  "publicSlug": "kristiansand"
+ },
+ {
+  "nummer": "1505",
+  "navn": "Kristiansund",
+  "publicSlug": "kristiansund"
+ },
+ {
+  "nummer": "3318",
+  "navn": "Krødsherad",
+  "publicSlug": "krodsherad"
+ },
+ {
+  "nummer": "4622",
+  "navn": "Kvam",
+  "publicSlug": "kvam"
+ },
+ {
+  "nummer": "4227",
+  "navn": "Kvinesdal",
+  "publicSlug": "kvinesdal"
+ },
+ {
+  "nummer": "4617",
+  "navn": "Kvinnherad",
+  "publicSlug": "kvinnherad"
+ },
+ {
+  "nummer": "4028",
+  "navn": "Kviteseid",
+  "publicSlug": "kviteseid"
+ },
+ {
+  "nummer": "1144",
+  "navn": "Kvitsøy",
+  "publicSlug": "kvitsoy"
+ },
+ {
+  "nummer": "5510",
+  "navn": "Kvæfjord",
+  "publicSlug": "kvaefjord"
+ },
+ {
+  "nummer": "5546",
+  "navn": "Kvænangen",
+  "publicSlug": "kvaenangen"
+ },
+ {
+  "nummer": "5540",
+  "navn": "Kåfjord",
+  "publicSlug": "kafjord"
+ },
+ {
+  "nummer": "3909",
+  "navn": "Larvik",
+  "publicSlug": "larvik"
+ },
+ {
+  "nummer": "5518",
+  "navn": "Lavangen",
+  "publicSlug": "lavangen"
+ },
+ {
+  "nummer": "5624",
+  "navn": "Lebesby",
+  "publicSlug": "lebesby"
+ },
+ {
+  "nummer": "1822",
+  "navn": "Leirfjord",
+  "publicSlug": "leirfjord"
+ },
+ {
+  "nummer": "5052",
+  "navn": "Leka",
+  "publicSlug": "leka"
+ },
+ {
+  "nummer": "3432",
+  "navn": "Lesja",
+  "publicSlug": "lesja"
+ },
+ {
+  "nummer": "5037",
+  "navn": "Levanger",
+  "publicSlug": "levanger"
+ },
+ {
+  "nummer": "3312",
+  "navn": "Lier",
+  "publicSlug": "lier"
+ },
+ {
+  "nummer": "5042",
+  "navn": "Lierne",
+  "publicSlug": "lierne"
+ },
+ {
+  "nummer": "3405",
+  "navn": "Lillehammer",
+  "publicSlug": "lillehammer"
+ },
+ {
+  "nummer": "4215",
+  "navn": "Lillesand",
+  "publicSlug": "lillesand"
+ },
+ {
+  "nummer": "3205",
+  "navn": "Lillestrøm",
+  "publicSlug": "lillestrom"
+ },
+ {
+  "nummer": "4205",
+  "navn": "Lindesnes",
+  "publicSlug": "lindesnes"
+ },
+ {
+  "nummer": "3434",
+  "navn": "Lom",
+  "publicSlug": "lom"
+ },
+ {
+  "nummer": "5614",
+  "navn": "Loppa",
+  "publicSlug": "loppa"
+ },
+ {
+  "nummer": "1112",
+  "navn": "Lund",
+  "publicSlug": "lund"
+ },
+ {
+  "nummer": "3234",
+  "navn": "Lunner",
+  "publicSlug": "lunner"
+ },
+ {
+  "nummer": "1834",
+  "navn": "Lurøy",
+  "publicSlug": "luroy"
+ },
+ {
+  "nummer": "4644",
+  "navn": "Luster",
+  "publicSlug": "luster"
+ },
+ {
+  "nummer": "4225",
+  "navn": "Lyngdal",
+  "publicSlug": "lyngdal"
+ },
+ {
+  "nummer": "5536",
+  "navn": "Lyngen",
+  "publicSlug": "lyngen"
+ },
+ {
+  "nummer": "4642",
+  "navn": "Lærdal",
+  "publicSlug": "laerdal"
+ },
+ {
+  "nummer": "1851",
+  "navn": "Lødingen",
+  "publicSlug": "lodingen"
+ },
+ {
+  "nummer": "3222",
+  "navn": "Lørenskog",
+  "publicSlug": "lorenskog"
+ },
+ {
+  "nummer": "3412",
+  "navn": "Løten",
+  "publicSlug": "loten"
+ },
+ {
+  "nummer": "5031",
+  "navn": "Malvik",
+  "publicSlug": "malvik"
+ },
+ {
+  "nummer": "3122",
+  "navn": "Marker",
+  "publicSlug": "marker"
+ },
+ {
+  "nummer": "4634",
+  "navn": "Masfjorden",
+  "publicSlug": "masfjorden"
+ },
+ {
+  "nummer": "5028",
+  "navn": "Melhus",
+  "publicSlug": "melhus"
+ },
+ {
+  "nummer": "1837",
+  "navn": "Meløy",
+  "publicSlug": "meloy"
+ },
+ {
+  "nummer": "5034",
+  "navn": "Meråker",
+  "publicSlug": "meraker"
+ },
+ {
+  "nummer": "4020",
+  "navn": "Midt-Telemark",
+  "publicSlug": "midt-telemark"
+ },
+ {
+  "nummer": "5027",
+  "navn": "Midtre Gauldal",
+  "publicSlug": "midtre-gauldal"
+ },
+ {
+  "nummer": "4629",
+  "navn": "Modalen",
+  "publicSlug": "modalen"
+ },
+ {
+  "nummer": "3316",
+  "navn": "Modum",
+  "publicSlug": "modum"
+ },
+ {
+  "nummer": "1506",
+  "navn": "Molde",
+  "publicSlug": "molde"
+ },
+ {
+  "nummer": "1874",
+  "navn": "Moskenes",
+  "publicSlug": "moskenes"
+ },
+ {
+  "nummer": "3103",
+  "navn": "Moss",
+  "publicSlug": "moss"
+ },
+ {
+  "nummer": "5524",
+  "navn": "Målselv",
+  "publicSlug": "malselv"
+ },
+ {
+  "nummer": "5618",
+  "navn": "Måsøy",
+  "publicSlug": "masoy"
+ },
+ {
+  "nummer": "5007",
+  "navn": "Namsos",
+  "publicSlug": "namsos"
+ },
+ {
+  "nummer": "5044",
+  "navn": "Namsskogan",
+  "publicSlug": "namsskogan"
+ },
+ {
+  "nummer": "3238",
+  "navn": "Nannestad",
+  "publicSlug": "nannestad"
+ },
+ {
+  "nummer": "1806",
+  "navn": "Narvik",
+  "publicSlug": "narvik"
+ },
+ {
+  "nummer": "3228",
+  "navn": "Nes",
+  "publicSlug": "nes"
+ },
+ {
+  "nummer": "3322",
+  "navn": "Nesbyen",
+  "publicSlug": "nesbyen"
+ },
+ {
+  "nummer": "1828",
+  "navn": "Nesna",
+  "publicSlug": "nesna"
+ },
+ {
+  "nummer": "3212",
+  "navn": "Nesodden",
+  "publicSlug": "nesodden"
+ },
+ {
+  "nummer": "5636",
+  "navn": "Nesseby",
+  "publicSlug": "nesseby"
+ },
+ {
+  "nummer": "4030",
+  "navn": "Nissedal",
+  "publicSlug": "nissedal"
+ },
+ {
+  "nummer": "3232",
+  "navn": "Nittedal",
+  "publicSlug": "nittedal"
+ },
+ {
+  "nummer": "4018",
+  "navn": "Nome",
+  "publicSlug": "nome"
+ },
+ {
+  "nummer": "3451",
+  "navn": "Nord-Aurdal",
+  "publicSlug": "nord-aurdal"
+ },
+ {
+  "nummer": "3436",
+  "navn": "Nord-Fron",
+  "publicSlug": "nord-fron"
+ },
+ {
+  "nummer": "3414",
+  "navn": "Nord-Odal",
+  "publicSlug": "nord-odal"
+ },
+ {
+  "nummer": "5620",
+  "navn": "Nordkapp",
+  "publicSlug": "nordkapp"
+ },
+ {
+  "nummer": "3207",
+  "navn": "Nordre Follo",
+  "publicSlug": "nordre-follo"
+ },
+ {
+  "nummer": "3448",
+  "navn": "Nordre Land",
+  "publicSlug": "nordre-land"
+ },
+ {
+  "nummer": "5544",
+  "navn": "Nordreisa",
+  "publicSlug": "nordreisa"
+ },
+ {
+  "nummer": "3338",
+  "navn": "Nore og Uvdal",
+  "publicSlug": "nore-og-uvdal"
+ },
+ {
+  "nummer": "4005",
+  "navn": "Notodden",
+  "publicSlug": "notodden"
+ },
+ {
+  "nummer": "5060",
+  "navn": "Nærøysund",
+  "publicSlug": "naeroysund"
+ },
+ {
+  "nummer": "5021",
+  "navn": "Oppdal",
+  "publicSlug": "oppdal"
+ },
+ {
+  "nummer": "5059",
+  "navn": "Orkland",
+  "publicSlug": "orkland"
+ },
+ {
+  "nummer": "3430",
+  "navn": "Os",
+  "publicSlug": "os"
+ },
+ {
+  "nummer": "5020",
+  "navn": "Osen",
+  "publicSlug": "osen"
+ },
+ {
+  "nummer": "0301",
+  "navn": "Oslo",
+  "publicSlug": "oslo"
+ },
+ {
+  "nummer": "4630",
+  "navn": "Osterøy",
+  "publicSlug": "osteroy"
+ },
+ {
+  "nummer": "5047",
+  "navn": "Overhalla",
+  "publicSlug": "overhalla"
+ },
+ {
+  "nummer": "5622",
+  "navn": "Porsanger",
+  "publicSlug": "porsanger"
+ },
+ {
+  "nummer": "4001",
+  "navn": "Porsgrunn",
+  "publicSlug": "porsgrunn"
+ },
+ {
+  "nummer": "3120",
+  "navn": "Rakkestad",
+  "publicSlug": "rakkestad"
+ },
+ {
+  "nummer": "1833",
+  "navn": "Rana",
+  "publicSlug": "rana"
+ },
+ {
+  "nummer": "1127",
+  "navn": "Randaberg",
+  "publicSlug": "randaberg"
+ },
+ {
+  "nummer": "1539",
+  "navn": "Rauma",
+  "publicSlug": "rauma"
+ },
+ {
+  "nummer": "3424",
+  "navn": "Rendalen",
+  "publicSlug": "rendalen"
+ },
+ {
+  "nummer": "5022",
+  "navn": "Rennebu",
+  "publicSlug": "rennebu"
+ },
+ {
+  "nummer": "5061",
+  "navn": "Rindal",
+  "publicSlug": "rindal"
+ },
+ {
+  "nummer": "3439",
+  "navn": "Ringebu",
+  "publicSlug": "ringebu"
+ },
+ {
+  "nummer": "3305",
+  "navn": "Ringerike",
+  "publicSlug": "ringerike"
+ },
+ {
+  "nummer": "3411",
+  "navn": "Ringsaker",
+  "publicSlug": "ringsaker"
+ },
+ {
+  "nummer": "4201",
+  "navn": "Risør",
+  "publicSlug": "risor"
+ },
+ {
+  "nummer": "3336",
+  "navn": "Rollag",
+  "publicSlug": "rollag"
+ },
+ {
+  "nummer": "3112",
+  "navn": "Råde",
+  "publicSlug": "rade"
+ },
+ {
+  "nummer": "3224",
+  "navn": "Rælingen",
+  "publicSlug": "raelingen"
+ },
+ {
+  "nummer": "1836",
+  "navn": "Rødøy",
+  "publicSlug": "rodoy"
+ },
+ {
+  "nummer": "5025",
+  "navn": "Røros",
+  "publicSlug": "roros"
+ },
+ {
+  "nummer": "1856",
+  "navn": "Røst",
+  "publicSlug": "rost"
+ },
+ {
+  "nummer": "5043",
+  "navn": "Røyrvik",
+  "publicSlug": "royrvik"
+ },
+ {
+  "nummer": "5522",
+  "navn": "Salangen",
+  "publicSlug": "salangen"
+ },
+ {
+  "nummer": "1840",
+  "navn": "Saltdal",
+  "publicSlug": "saltdal"
+ },
+ {
+  "nummer": "4623",
+  "navn": "Samnanger",
+  "publicSlug": "samnanger"
+ },
+ {
+  "nummer": "1514",
+  "navn": "Sande",
+  "publicSlug": "sande"
+ },
+ {
+  "nummer": "3907",
+  "navn": "Sandefjord",
+  "publicSlug": "sandefjord"
+ },
+ {
+  "nummer": "1108",
+  "navn": "Sandnes",
+  "publicSlug": "sandnes"
+ },
+ {
+  "nummer": "3105",
+  "navn": "Sarpsborg",
+  "publicSlug": "sarpsborg"
+ },
+ {
+  "nummer": "1135",
+  "navn": "Sauda",
+  "publicSlug": "sauda"
+ },
+ {
+  "nummer": "3437",
+  "navn": "Sel",
+  "publicSlug": "sel"
+ },
+ {
+  "nummer": "5032",
+  "navn": "Selbu",
+  "publicSlug": "selbu"
+ },
+ {
+  "nummer": "4022",
+  "navn": "Seljord",
+  "publicSlug": "seljord"
+ },
+ {
+  "nummer": "5530",
+  "navn": "Senja",
+  "publicSlug": "senja"
+ },
+ {
+  "nummer": "3332",
+  "navn": "Sigdal",
+  "publicSlug": "sigdal"
+ },
+ {
+  "nummer": "4010",
+  "navn": "Siljan",
+  "publicSlug": "siljan"
+ },
+ {
+  "nummer": "4228",
+  "navn": "Sirdal",
+  "publicSlug": "sirdal"
+ },
+ {
+  "nummer": "5029",
+  "navn": "Skaun",
+  "publicSlug": "skaun"
+ },
+ {
+  "nummer": "4003",
+  "navn": "Skien",
+  "publicSlug": "skien"
+ },
+ {
+  "nummer": "3116",
+  "navn": "Skiptvet",
+  "publicSlug": "skiptvet"
+ },
+ {
+  "nummer": "5542",
+  "navn": "Skjervøy",
+  "publicSlug": "skjervoy"
+ },
+ {
+  "nummer": "3433",
+  "navn": "Skjåk",
+  "publicSlug": "skjak"
+ },
+ {
+  "nummer": "1573",
+  "navn": "Smøla",
+  "publicSlug": "smola"
+ },
+ {
+  "nummer": "5041",
+  "navn": "Snåsa",
+  "publicSlug": "snasa"
+ },
+ {
+  "nummer": "4640",
+  "navn": "Sogndal",
+  "publicSlug": "sogndal"
+ },
+ {
+  "nummer": "1111",
+  "navn": "Sokndal",
+  "publicSlug": "sokndal"
+ },
+ {
+  "nummer": "1124",
+  "navn": "Sola",
+  "publicSlug": "sola"
+ },
+ {
+  "nummer": "4636",
+  "navn": "Solund",
+  "publicSlug": "solund"
+ },
+ {
+  "nummer": "1870",
+  "navn": "Sortland",
+  "publicSlug": "sortland"
+ },
+ {
+  "nummer": "4649",
+  "navn": "Stad",
+  "publicSlug": "stad"
+ },
+ {
+  "nummer": "3413",
+  "navn": "Stange",
+  "publicSlug": "stange"
+ },
+ {
+  "nummer": "1103",
+  "navn": "Stavanger",
+  "publicSlug": "stavanger"
+ },
+ {
+  "nummer": "1848",
+  "navn": "Steigen",
+  "publicSlug": "steigen"
+ },
+ {
+  "nummer": "5006",
+  "navn": "Steinkjer",
+  "publicSlug": "steinkjer"
+ },
+ {
+  "nummer": "5035",
+  "navn": "Stjørdal",
+  "publicSlug": "stjordal"
+ },
+ {
+  "nummer": "3423",
+  "navn": "Stor-Elvdal",
+  "publicSlug": "stor-elvdal"
+ },
+ {
+  "nummer": "4614",
+  "navn": "Stord",
+  "publicSlug": "stord"
+ },
+ {
+  "nummer": "5538",
+  "navn": "Storfjord",
+  "publicSlug": "storfjord"
+ },
+ {
+  "nummer": "1130",
+  "navn": "Strand",
+  "publicSlug": "strand"
+ },
+ {
+  "nummer": "1525",
+  "navn": "Stranda",
+  "publicSlug": "stranda"
+ },
+ {
+  "nummer": "4651",
+  "navn": "Stryn",
+  "publicSlug": "stryn"
+ },
+ {
+  "nummer": "1531",
+  "navn": "Sula",
+  "publicSlug": "sula"
+ },
+ {
+  "nummer": "1134",
+  "navn": "Suldal",
+  "publicSlug": "suldal"
+ },
+ {
+  "nummer": "1563",
+  "navn": "Sunndal",
+  "publicSlug": "sunndal"
+ },
+ {
+  "nummer": "4647",
+  "navn": "Sunnfjord",
+  "publicSlug": "sunnfjord"
+ },
+ {
+  "nummer": "1566",
+  "navn": "Surnadal",
+  "publicSlug": "surnadal"
+ },
+ {
+  "nummer": "4612",
+  "navn": "Sveio",
+  "publicSlug": "sveio"
+ },
+ {
+  "nummer": "1528",
+  "navn": "Sykkylven",
+  "publicSlug": "sykkylven"
+ },
+ {
+  "nummer": "1812",
+  "navn": "Sømna",
+  "publicSlug": "somna"
+ },
+ {
+  "nummer": "3447",
+  "navn": "Søndre Land",
+  "publicSlug": "sondre-land"
+ },
+ {
+  "nummer": "3449",
+  "navn": "Sør-Aurdal",
+  "publicSlug": "sor-aurdal"
+ },
+ {
+  "nummer": "3438",
+  "navn": "Sør-Fron",
+  "publicSlug": "sor-fron"
+ },
+ {
+  "nummer": "3415",
+  "navn": "Sør-Odal",
+  "publicSlug": "sor-odal"
+ },
+ {
+  "nummer": "5605",
+  "navn": "Sør-Varanger",
+  "publicSlug": "sor-varanger"
+ },
+ {
+  "nummer": "1845",
+  "navn": "Sørfold",
+  "publicSlug": "sorfold"
+ },
+ {
+  "nummer": "5526",
+  "navn": "Sørreisa",
+  "publicSlug": "sorreisa"
+ },
+ {
+  "nummer": "5628",
+  "navn": "Tana",
+  "publicSlug": "tana"
+ },
+ {
+  "nummer": "1121",
+  "navn": "Time",
+  "publicSlug": "time"
+ },
+ {
+  "nummer": "1560",
+  "navn": "Tingvoll",
+  "publicSlug": "tingvoll"
+ },
+ {
+  "nummer": "4026",
+  "navn": "Tinn",
+  "publicSlug": "tinn"
+ },
+ {
+  "nummer": "5512",
+  "navn": "Tjeldsund",
+  "publicSlug": "tjeldsund"
+ },
+ {
+  "nummer": "4034",
+  "navn": "Tokke",
+  "publicSlug": "tokke"
+ },
+ {
+  "nummer": "3426",
+  "navn": "Tolga",
+  "publicSlug": "tolga"
+ },
+ {
+  "nummer": "5501",
+  "navn": "Tromsø",
+  "publicSlug": "tromso"
+ },
+ {
+  "nummer": "5001",
+  "navn": "Trondheim",
+  "publicSlug": "trondheim"
+ },
+ {
+  "nummer": "3421",
+  "navn": "Trysil",
+  "publicSlug": "trysil"
+ },
+ {
+  "nummer": "1835",
+  "navn": "Træna",
+  "publicSlug": "traena"
+ },
+ {
+  "nummer": "4213",
+  "navn": "Tvedestrand",
+  "publicSlug": "tvedestrand"
+ },
+ {
+  "nummer": "5033",
+  "navn": "Tydal",
+  "publicSlug": "tydal"
+ },
+ {
+  "nummer": "3427",
+  "navn": "Tynset",
+  "publicSlug": "tynset"
+ },
+ {
+  "nummer": "4616",
+  "navn": "Tysnes",
+  "publicSlug": "tysnes"
+ },
+ {
+  "nummer": "1146",
+  "navn": "Tysvær",
+  "publicSlug": "tysvaer"
+ },
+ {
+  "nummer": "3905",
+  "navn": "Tønsberg",
+  "publicSlug": "tonsberg"
+ },
+ {
+  "nummer": "3209",
+  "navn": "Ullensaker",
+  "publicSlug": "ullensaker"
+ },
+ {
+  "nummer": "4618",
+  "navn": "Ullensvang",
+  "publicSlug": "ullensvang"
+ },
+ {
+  "nummer": "1516",
+  "navn": "Ulstein",
+  "publicSlug": "ulstein"
+ },
+ {
+  "nummer": "4620",
+  "navn": "Ulvik",
+  "publicSlug": "ulvik"
+ },
+ {
+  "nummer": "1151",
+  "navn": "Utsira",
+  "publicSlug": "utsira"
+ },
+ {
+  "nummer": "5607",
+  "navn": "Vadsø",
+  "publicSlug": "vadso"
+ },
+ {
+  "nummer": "4628",
+  "navn": "Vaksdal",
+  "publicSlug": "vaksdal"
+ },
+ {
+  "nummer": "4221",
+  "navn": "Valle",
+  "publicSlug": "valle"
+ },
+ {
+  "nummer": "3454",
+  "navn": "Vang",
+  "publicSlug": "vang"
+ },
+ {
+  "nummer": "1511",
+  "navn": "Vanylven",
+  "publicSlug": "vanylven"
+ },
+ {
+  "nummer": "5634",
+  "navn": "Vardø",
+  "publicSlug": "vardo"
+ },
+ {
+  "nummer": "1824",
+  "navn": "Vefsn",
+  "publicSlug": "vefsn"
+ },
+ {
+  "nummer": "1815",
+  "navn": "Vega",
+  "publicSlug": "vega"
+ },
+ {
+  "nummer": "4212",
+  "navn": "Vegårshei",
+  "publicSlug": "vegarshei"
+ },
+ {
+  "nummer": "4223",
+  "navn": "Vennesla",
+  "publicSlug": "vennesla"
+ },
+ {
+  "nummer": "5038",
+  "navn": "Verdal",
+  "publicSlug": "verdal"
+ },
+ {
+  "nummer": "3216",
+  "navn": "Vestby",
+  "publicSlug": "vestby"
+ },
+ {
+  "nummer": "1535",
+  "navn": "Vestnes",
+  "publicSlug": "vestnes"
+ },
+ {
+  "nummer": "3452",
+  "navn": "Vestre Slidre",
+  "publicSlug": "vestre-slidre"
+ },
+ {
+  "nummer": "3443",
+  "navn": "Vestre Toten",
+  "publicSlug": "vestre-toten"
+ },
+ {
+  "nummer": "1860",
+  "navn": "Vestvågøy",
+  "publicSlug": "vestvagoy"
+ },
+ {
+  "nummer": "1816",
+  "navn": "Vevelstad",
+  "publicSlug": "vevelstad"
+ },
+ {
+  "nummer": "4639",
+  "navn": "Vik",
+  "publicSlug": "vik"
+ },
+ {
+  "nummer": "1160",
+  "navn": "Vindafjord",
+  "publicSlug": "vindafjord"
+ },
+ {
+  "nummer": "4036",
+  "navn": "Vinje",
+  "publicSlug": "vinje"
+ },
+ {
+  "nummer": "1577",
+  "navn": "Volda",
+  "publicSlug": "volda"
+ },
+ {
+  "nummer": "4621",
+  "navn": "Voss",
+  "publicSlug": "voss"
+ },
+ {
+  "nummer": "1865",
+  "navn": "Vågan",
+  "publicSlug": "vagan"
+ },
+ {
+  "nummer": "3435",
+  "navn": "Vågå",
+  "publicSlug": "vaga"
+ },
+ {
+  "nummer": "3419",
+  "navn": "Våler",
+  "publicSlug": "valer-3419"
+ },
+ {
+  "nummer": "3114",
+  "navn": "Våler",
+  "publicSlug": "valer-3114"
+ },
+ {
+  "nummer": "1857",
+  "navn": "Værøy",
+  "publicSlug": "vaeroy"
+ },
+ {
+  "nummer": "5058",
+  "navn": "Åfjord",
+  "publicSlug": "afjord"
+ },
+ {
+  "nummer": "3328",
+  "navn": "Ål",
+  "publicSlug": "al"
+ },
+ {
+  "nummer": "1508",
+  "navn": "Ålesund",
+  "publicSlug": "alesund"
+ },
+ {
+  "nummer": "4217",
+  "navn": "Åmli",
+  "publicSlug": "amli"
+ },
+ {
+  "nummer": "3422",
+  "navn": "Åmot",
+  "publicSlug": "amot"
+ },
+ {
+  "nummer": "4643",
+  "navn": "Årdal",
+  "publicSlug": "ardal"
+ },
+ {
+  "nummer": "3218",
+  "navn": "Ås",
+  "publicSlug": "as"
+ },
+ {
+  "nummer": "4224",
+  "navn": "Åseral",
+  "publicSlug": "aseral"
+ },
+ {
+  "nummer": "3418",
+  "navn": "Åsnes",
+  "publicSlug": "asnes"
+ },
+ {
+  "nummer": "1868",
+  "navn": "Øksnes",
+  "publicSlug": "oksnes"
+ },
+ {
+  "nummer": "5057",
+  "navn": "Ørland",
+  "publicSlug": "orland"
+ },
+ {
+  "nummer": "1520",
+  "navn": "Ørsta",
+  "publicSlug": "orsta"
+ },
+ {
+  "nummer": "3442",
+  "navn": "Østre Toten",
+  "publicSlug": "ostre-toten"
+ },
+ {
+  "nummer": "3314",
+  "navn": "Øvre Eiker",
+  "publicSlug": "ovre-eiker"
+ },
+ {
+  "nummer": "3440",
+  "navn": "Øyer",
+  "publicSlug": "oyer"
+ },
+ {
+  "nummer": "4626",
+  "navn": "Øygarden",
+  "publicSlug": "oygarden"
+ },
+ {
+  "nummer": "3453",
+  "navn": "Øystre Slidre",
+  "publicSlug": "oystre-slidre"
+ }
+]

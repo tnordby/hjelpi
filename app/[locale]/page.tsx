@@ -7,7 +7,6 @@ import { HomeHero } from '@/components/home/HomeHero'
 import { CategoryGrid } from '@/components/home/CategoryGrid'
 import { HowItWorksSection } from '@/components/home/HowItWorksSection'
 import { CitiesSection } from '@/components/home/CitiesSection'
-import { TestimonialsSection } from '@/components/home/TestimonialsSection'
 import { SellerCtaSection } from '@/components/home/SellerCtaSection'
 import { withPageSeo } from '@/lib/seo/build-metadata'
 
@@ -43,7 +42,6 @@ export default async function HomePage({
         <CategoryGrid />
         <HowItWorksSection />
         <CitiesSection />
-        <TestimonialsSection />
         <SellerCtaSection />
       </main>
       <Footer />

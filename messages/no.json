@@ -42,9 +42,19 @@
       "popularLabel": "Populært:",
       "popularTags": {
         "photographer": "Fotograf",
-        "dogSitting": "hundepasser",
+        "dogSitting": "Hundepasser",
         "moveClean": "Flyttevask"
-      }
+      },
+      "trust": {
+        "verified": "BankID-verifiserte hjelpere",
+        "local": "Lokale hjelpere der du bor",
+        "free": "Gratis å be om tilbud"
+      },
+      "imageAlt1": "Fotograf i arbeid på gaten med kamera",
+      "imageAlt2": "To glade hunder som løper i solnedgang",
+      "locationPlaceholder": "Hvor?",
+      "useMyLocation": "Bruk min posisjon",
+      "locating": "Finner posisjonen din…"
     },
     "categories": {
       "title": "Populære kategorier",
@@ -53,45 +63,45 @@
       "fotografi": {
         "title": "Fotografering",
         "description": "Bryllup, portrett eller eiendom – finn den rette linsen for ditt øyeblikk.",
-        "imageAlt": "Profesjonelt kamera på stativ i et lyst studio, minimalistisk uttrykk og varmt lys."
+        "imageAlt": "Brudepar som holder hender under bryllupsfotografering"
       },
       "hundepasning": {
-        "title": "hundepasser",
-        "imageAlt": "Glad person som går tur med to hunder i en grønn norsk park i solnedgang."
+        "title": "Dyrepass",
+        "imageAlt": "Golden retriever med en blomst i munnen"
       },
       "tryllekunstnere": {
-        "title": "Tryllekunstnere",
-        "imageAlt": "Elegant tryllekunstnerhatt og tryllestav på fløyelsbord, stemningsfull belysning."
+        "title": "Underholdning",
+        "imageAlt": "Konfetti over publikum på et arrangement"
       },
       "renhold": {
         "title": "Renhold",
-        "imageAlt": "Miljøvennlige rengjøringsmidler i en kurv på et rent eikegulv i et lyst nordisk hjem."
+        "imageAlt": "Person som vasker vinduslemmer i et hjem"
       },
       "handverker": {
         "title": "Håndverker",
-        "imageAlt": "Elektriker som arbeider presist i et moderne hjem med jevnt, lyst lys."
+        "imageAlt": "Elektriker med hjelm som arbeider på det elektriske anlegget"
       }
     },
     "howItWorks": {
       "title": "Slik fungerer det",
-      "subtitle": "Det har aldri vært enklere å få ting gjort. Tre steg for å realisere prosjektet ditt.",
+      "subtitle": "Tre steg for å realisere prosjektet ditt.",
       "step1": {
-        "title": "1. Beskriv behovet",
+        "title": "Beskriv behovet",
         "body": "Fortell oss hva du trenger hjelp til, når det passer og hvor du befinner deg."
       },
       "step2": {
-        "title": "2. Få tilbud",
+        "title": "Få tilbud",
         "body": "Motta pristilbud fra kvalifiserte fagpersoner. Sammenlign profiler, vurderinger og porteføljer."
       },
       "step3": {
-        "title": "3. Velg din ekspert",
+        "title": "Velg din ekspert",
         "body": "Velg hjelperen som passer deg best og avtal tidspunkt. Trygt, enkelt og effektivt."
-      }
+      },
+      "headline": "Det har aldri vært enklere å få ting gjort."
     },
     "cities": {
       "title": "Vi er tilstede i hele landet",
       "seeAll": "Se alle byer",
-      "expertCount": "{count}+ eksperter",
       "bySlug": {
         "oslo": "Oslo",
         "bergen": "Bergen",
@@ -101,7 +111,8 @@
         "drammen": "Drammen",
         "tromso": "Tromsø",
         "fredrikstad": "Fredrikstad"
-      }
+      },
+      "cardTagline": "Finn lokale hjelpere"
     },
     "testimonials": {
       "title": "Hva våre brukere sier",
@@ -120,7 +131,7 @@
       "avatarAlt3": "Portrett av Erik T."
     },
     "cta": {
-      "title": "Er du en ekspert?",
+      "title": "Er du en hjelper?",
       "subtitle": "Bli en del av Norges raskest voksende nettverk av tjenesteytere. Vis frem ditt talent og få nye kunder hver uke.",
       "primary": "Bli en hjelper",
       "secondary": "Les mer"
@@ -178,7 +189,7 @@
       "allCities": "Alle byer",
       "allServices": "Alle tjenester",
       "photography": "Fotografering",
-      "dogSitting": "hundepasser",
+      "dogSitting": "Hundepasser",
       "entertainment": "Underholdning",
       "homeService": "Hjemmeservice",
       "about": "Om oss",

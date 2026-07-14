@@ -1,0 +1,99 @@
+/**
+ * Search synonyms: what people actually type → taxonomy slugs.
+ * Key = normalized search term (see normalize.ts); value = list of targets,
+ * each either "kategori" or "kategori/subkategori".
+ * Extend this from PostHog `search_no_results` events over time.
+ */
+export const SEARCH_SYNONYMS: Record<string, string[]> = {
+  // Renhold
+  vaskehjelp: ['renhold'],
+  hjemmevask: ['renhold'],
+  husvask: ['renhold'],
+  utvask: ['renhold/flyttevask'],
+  nedvask: ['renhold/flyttevask'],
+  flyttevask: ['renhold/flyttevask'],
+  vindusvask: ['renhold/vindusvaskere'],
+  vinduspuss: ['renhold/vindusvaskere'],
+  // Håndverker & bygg
+  snekker: ['snekker', 'handverker'],
+  tomrer: ['snekker', 'handverker'],
+  montering: ['smareparasjoner'],
+  'ikea montering': ['smareparasjoner'],
+  vaktmester: ['vaktmestertjenester'],
+  roerlegger: ['rorlegger-og-vvs'],
+  rorlegger: ['rorlegger-og-vvs'],
+  vvs: ['rorlegger-og-vvs'],
+  maler: ['maler-og-tapetsering'],
+  tapetserer: ['maler-og-tapetsering'],
+  flislegger: ['handverker'],
+  flislegging: ['handverker'],
+  // Flytting & transport
+  flyttebyra: ['flytting-og-transport'],
+  flyttehjelp: ['flytting-og-transport'],
+  varetransport: ['flytting-og-transport'],
+  bud: ['flytting-og-transport'],
+  bortkjoring: ['avfall-og-bortkjoring'],
+  soppel: ['avfall-og-bortkjoring'],
+  container: ['avfall-og-bortkjoring/leie-av-avfallscontainer'],
+  dodsbo: ['avfall-og-bortkjoring/rydding-av-dodsbo'],
+  // Dyr
+  hundepasser: ['dyrepass'],
+  hundelufting: ['dyrepass'],
+  hundepass: ['dyrepass'],
+  kattepass: ['dyrepass'],
+  dyrepasser: ['dyrepass'],
+  // Barn & omsorg
+  barnepass: ['barnevakt'],
+  dagmamma: ['barnevakt'],
+  // Undervisning
+  leksehjelp: ['undervisning-og-kurs'],
+  privatlaerer: ['undervisning-og-kurs'],
+  spansklaerer: ['undervisning-og-kurs'],
+  norskkurs: ['undervisning-og-kurs'],
+  pianotimer: ['musikkundervisning'],
+  gitartimer: ['musikkundervisning'],
+  sangtimer: ['musikkundervisning'],
+  // Mat
+  catering: ['mat-og-catering'],
+  kokk: ['mat-og-catering'],
+  privatkokk: ['mat-og-catering'],
+  // Event & foto
+  fotograf: ['fotografi'],
+  bryllupsfotograf: ['fotografi'],
+  dj: ['musikk', 'arrangement'],
+  tryllekunstner: ['underholdning'],
+  klovn: ['underholdning'],
+  // Helse & velvære
+  massasje: ['helse-og-velvare'],
+  fysioterapeut: ['helse-og-velvare'],
+  pt: ['personlig-trener'],
+  trener: ['personlig-trener'],
+  // Kjøretøy
+  bilvask: ['bilpleie'],
+  polering: ['bilpleie'],
+  dekkskift: ['bilpleie/dekkskift'],
+  mekaniker: ['bilverksted-og-mekaniker'],
+  sykkelservice: ['sykkelreparasjon'],
+  // Ute & vinter
+  snomaking: ['hage-og-landskap/snomaking'],
+  snorydding: ['hage-og-landskap/snomaking'],
+  snobroyting: ['hage-og-landskap/snobroyting'],
+  gartner: ['hage-og-landskap'],
+  hagearbeid: ['hage-og-landskap'],
+  gressklipping: ['hage-og-landskap'],
+  // Diverse
+  skadedyr: ['skadedyrkontroll'],
+  rotter: ['skadedyrkontroll/mus-og-rotter'],
+  veggedyr: ['skadedyrkontroll/veggedyr'],
+  skredder: ['som-og-skredder'],
+  som: ['som-og-skredder'],
+  sminke: ['stylist'],
+  makeup: ['stylist'],
+  frisor: ['frisor'],
+  advokat: ['juridisk-radgivning'],
+  regnskapsforer: ['regnskap'],
+  'pc hjelp': ['it-hjelp'],
+  datahjelp: ['it-hjelp'],
+  laasesmed: ['lasesmed'],
+  lasesmed: ['lasesmed'],
+}

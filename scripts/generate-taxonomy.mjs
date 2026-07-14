@@ -136,8 +136,27 @@ function slugify(s) {
 const SERVICE_TO_CANONICAL = {
   Rengjøring: 'Renhold og rengjøring',
   Renhold: 'Renhold og rengjøring',
-  'Språkundervisning': 'Språk',
-  IKEA: 'Småreparasjoner',
+  IKEA: 'Montering og småreparasjoner',
+  'Småreparasjoner': 'Montering og småreparasjoner',
+  // Food: one entry point for "catering til festen"
+  Mat: 'Mat og catering',
+  Kokk: 'Mat og catering',
+  // Health: "Behandling" alone was ambiguous
+  Behandling: 'Helse og velvære',
+  Helse: 'Helse og velvære',
+  // Education: three entry points for lessons → one umbrella
+  'Språk': 'Undervisning og kurs',
+  'Språkundervisning': 'Undervisning og kurs',
+  Privatundervisning: 'Undervisning og kurs',
+  'Kurs og opplæring': 'Undervisning og kurs',
+  // Moving: flyttehjelp + transport split the same demand
+  Flyttehjelp: 'Flytting og transport',
+  'Transport og bud': 'Flytting og transport',
+  // Trades: flislegging is a Håndverker discipline, not a peer
+  Flislegging: 'Håndverker',
+  // Performance vs. lessons — make the split legible
+  Musikk: 'Musikere og DJ',
+  Stylist: 'Stylist og makeup',
 }
 
 /** Canonical slug overrides (stable URLs for featured/home links) */
@@ -146,7 +165,7 @@ const CATEGORY_SLUG_OVERRIDES = {
   Fotografi: 'fotografi',
   Dyrepass: 'dyrepass',
   Underholdning: 'underholdning',
-  'Småreparasjoner': 'smareparasjoner',
+  'Montering og småreparasjoner': 'smareparasjoner',
   Håndverker: 'handverker',
   Boligstyling: 'boligstyling',
   'Bilverksted og mekaniker': 'bilverksted-og-mekaniker',
@@ -155,6 +174,32 @@ const CATEGORY_SLUG_OVERRIDES = {
   'Maler og tapetsering': 'maler-og-tapetsering',
   'Rørlegger og VVS': 'rorlegger-og-vvs',
   'Tak og tekking': 'tak-og-tekking',
+  'Musikere og DJ': 'musikk',
+  'Stylist og makeup': 'stylist',
+  'Mat og catering': 'mat-og-catering',
+  'Helse og velvære': 'helse-og-velvare',
+  'Undervisning og kurs': 'undervisning-og-kurs',
+  'Flytting og transport': 'flytting-og-transport',
+}
+
+/**
+ * Slugs that can never be category slugs: they live in the same /[kategori]
+ * URL segment as city landings and app routes. Extended from
+ * data/kommuner.json (public slugs) when that file exists.
+ */
+const RESERVED_LOCATION_SLUGS = new Set([
+  'oslo', 'bergen', 'trondheim', 'stavanger', 'kristiansand', 'drammen',
+  'tromso', 'fredrikstad', 'byer', 'tjenester', 'sok', 'hjelpere',
+])
+try {
+  const kommuner = JSON.parse(
+    fs.readFileSync(path.join(root, 'data/kommuner.json'), 'utf8'),
+  )
+  for (const k of kommuner) {
+    if (k.publicSlug) RESERVED_LOCATION_SLUGS.add(k.publicSlug)
+  }
+} catch {
+  // data/kommuner.json is optional — the hard-coded list above still guards
 }
 
 const SKIP_SUBS = new Set([
@@ -165,6 +210,8 @@ const SKIP_SUBS = new Set([
   // Covered by Fotografi / Bryllup
   'arrangement|kommersielle-og-bedriftsfotografer',
   'arrangement|bryllups-dj',
+  // Moved to Avfall og bortkjøring
+  'renhold|leie-av-avfallscontainer',
 ])
 
 /** Per-category label display fixes (typos / spacing from source CSV) */
@@ -249,9 +296,22 @@ const categories = [...buckets.entries()]
   })
   .sort((a, b) => a.title.localeCompare(b.title, 'nb'))
 
+// Guard: categories share the /[kategori] URL segment with city landings —
+// a colliding slug would shadow a city page (or vice versa).
+for (const c of categories) {
+  if (RESERVED_LOCATION_SLUGS.has(c.slug)) {
+    console.error(
+      `✗ category slug "${c.slug}" (${c.title}) collides with a reserved location/route slug — rename it via CATEGORY_SLUG_OVERRIDES`,
+    )
+    process.exit(1)
+  }
+}
+
 const ts = `/**
  * Auto-generated from data/markedsplass-tjenester.csv — run: node scripts/generate-taxonomy.mjs
- * Merges: Rengjøring→Renhold, Språkundervisning→Språk, IKEA→Småreparasjoner.
+ * Merges: Rengjøring→Renhold, IKEA→Montering og småreparasjoner, Mat+Kokk→Mat og catering,
+ * Behandling+Helse→Helse og velvære, Språk(undervisning)+Privatundervisning+Kurs→Undervisning og kurs,
+ * Flyttehjelp+Transport og bud→Flytting og transport, Flislegging→Håndverker.
  * Dedupes: dronefotografi, illustratør, arrangement bedriftsfoto/bryllups-DJ.
  */
 
