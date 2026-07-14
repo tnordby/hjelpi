@@ -1,83 +1,60 @@
-# Design System Strategy: The Scandinavian Concierge
+# Design System: Hjelpi Ink
 
 ## 1. Overview & Creative North Star
-The North Star for this design system is **"The Digital Curator."** 
+Inspiration: **bark.com / thumbtack.com** (white canvas, light neutral section blocks, hairline card borders, left-aligned hero, real photography, zero fluff), **hjem.no** (ink-black type, black-outline pill search), **nettbil.no** (sticker highlights, sparkles, dotted step connectors, social proof up front).
 
-Moving beyond the utilitarian "bulletin board" feel of traditional marketplaces, this system adopts a high-end editorial approach rooted in Scandinavian minimalism. It prioritizes clarity, intentionality, and a sense of calm. We break the "standard template" look by rejecting rigid borders and dense grids in favor of **Tonal Layering** and **Intentional Asymmetry**. 
+The North Star: **a modern Norwegian marketplace that feels light, airy and trustworthy** — ink on white, one loud accent color, real photos of real people working. Confident and playful, never corporate, never "AI-generated".
 
-By utilizing generous white space (inspired by high-end lifestyle magazines) and overlapping elements, we transform a service directory into a premium experience. The UI doesn't just list services; it curates trust through sophisticated depth and breathing room.
+The brand mark is the wordmark **Hjelpi** in ink black — clean, no glyphs or symbols attached (a ✳ spark was tried and rejected). Playfulness comes from the terracotta sticker highlight and the 4-point sparkle SVGs, never from the wordmark itself.
 
 ---
 
 ## 2. Color & Tonal Architecture
-The palette is built on a foundation of "Deep Teal" (`primary: #00606c`) and "Soft Azure" (`secondary: #29657a`), balanced by a sophisticated range of neutral surfaces.
+All colors live as semantic tokens in `tailwind.config.ts`. Never hard-code hex in components.
 
-### The "No-Line" Rule
-To achieve a premium, seamless aesthetic, **1px solid borders are prohibited for sectioning.** Boundaries must be defined solely through background color shifts. 
-- *Application:* A section containing "Recommended Pros" should use `surface-container-low (#eff4ff)` to distinguish itself from the main `background (#f8f9ff)`, rather than using a stroke.
+- **`primary` #201c16 (Blekk / warm ink):** the brand color. Wordmark, headlines (via `on-surface`, same hex), pill buttons, CTA panel, footer. Black is the identity — like hjem.no.
+- **`secondary` #c2521d (Terrakotta):** THE accent. Sticker highlights behind headline words, step-number tags, trust icons, sparkles, CTA buttons on dark panels. If something needs to pop, it's terracotta — nothing else.
+- **`tertiary` #9a6b14 (Oker / gold):** review stars and small-caps eyebrow labels only.
+- **`mint` #8fd6b4:** tiny sparkle accents on dark ink panels (nettbil's green sparkle move). Decorative only, never text.
+- **Surfaces:** white and light — `background/surface` #ffffff, `surface-container-low` #f7f6f3 (section blocks), `surface-container-lowest` #ffffff (cards), inputs #f0efeb.
+- **Text:** `on-surface` #1f1c17, `on-surface-variant` #605b51.
 
-### Surface Hierarchy & Nesting
-Treat the UI as a physical environment of stacked materials.
-- **Level 0 (Base):** `surface (#f8f9ff)` – The primary canvas.
-- **Level 1 (Sections):** `surface-container-low (#eff4ff)` – For large logical blocks.
-- **Level 2 (Cards):** `surface-container-lowest (#ffffff)` – Provides a "lifted" feel for interactive elements.
-- **Level 3 (Modals/Popovers):** `surface-bright (#f8f9ff)` – For the highest prominence.
+### Lines & separation
+Sections separate via background shifts (white ↔ #f7f6f3). White-on-white cards get a **hairline ring** (`ring-1 ring-outline-variant` #e3e0d8) plus a soft ambient shadow — the Thumbtack card treatment. Statement strokes: the **2px ink outline** on the search pill (hjem.no signature) and 2px `primary-fixed` outlines on dark-panel secondary buttons.
 
-### The "Glass & Gradient" Rule
-Standard flat colors feel static. Use `primary` to `primary-container` gradients for hero buttons to add "soul." For floating navigation or search bars, employ **Glassmorphism**:
-- **Background:** `surface` at 70% opacity.
-- **Backdrop-blur:** 12px–20px.
-- This allows high-quality service imagery to bleed through the UI, creating an integrated, modern atmosphere.
+### Section rhythm (homepage)
+White hero → light-gray categories → white how-it-works → light-gray cities → white testimonials → ink CTA card → ink footer.
 
 ---
 
-## 3. Typography: Editorial Authority
-We pair **Manrope** (Display/Headlines) with **Inter** (Body/Labels) to balance character with utility.
+## 3. Typography
+- **Display / headlines — Schibsted Grotesk** (`font-headline`, var `--font-display`). A Norwegian-designed grotesque. Weight 700–800, `tracking-tight`, `leading-[1.06]` for heroes. Headlines are `text-on-surface` (ink), never colored.
+- **Body / UI — Instrument Sans** (`font-body`, var `--font-body`).
+- **Eyebrows:** 12px bold uppercase `tracking-[0.2em]` `text-tertiary`, preceded by terracotta ✳.
+- **The sticker highlight** is the signature move: the emotional phrase of a headline sits on a solid terracotta rounded rectangle (`bg-secondary`, `-rotate-1`, `rounded-2xl`, `text-on-secondary`). One sticker per page.
 
-- **Display & Headlines (Manrope):** Large scales like `display-lg (3.5rem)` should be used with tight letter-spacing (-0.02em) to create a bold, authoritative editorial look. 
-- **Body (Inter):** High readability is paramount. Use `body-lg (1rem)` for descriptions to ensure accessibility for all age groups.
-- **Hierarchy as Identity:** Use `tertiary (#745100)` for small, all-caps `label-md` snippets (e.g., "CERTIFIED PRO") to add a touch of warmth and craftsmanship against the cool teals.
+## 4. Imagery — real photos only
+Unsplash photography (host already allowed in `next.config.js`): warm light, real people mid-task, shallow depth. **No AI-generated or illustration-style images.** Photo shapes: the **arch** (`rounded-t-full` + big bottom radius) for hero portraits, `rounded-[2rem]` with thick `border-surface` frame for secondary photos, floating white review cards layered on top. Category cards: photo + ink gradient scrim + white type.
 
----
-
-## 4. Elevation & Depth
-We eschew traditional "Drop Shadows" in favor of **Ambient Tonal Layering**.
-
-- **The Layering Principle:** Instead of a shadow, place a `surface-container-lowest` card on a `surface-container` background. The slight delta in hex value creates a natural, soft separation.
-- **Ambient Shadows:** For floating elements (like the Search Bar), use a multi-layered shadow: `0px 10px 30px rgba(11, 28, 48, 0.05)`. Note the use of `on-surface (#0b1c30)` as the shadow tint rather than pure black.
-- **The "Ghost Border" Fallback:** If a border is required for accessibility (e.g., input fields), use `outline-variant (#bdc8cb)` at **20% opacity**. Never use 100% opaque lines.
+## 5. Elevation & Depth
+Warm ambient shadows only (`shadow-ambient*`, tinted rgba(58,48,24,…)). Hover = shadow + slight translate/rotate, not borders.
 
 ---
 
-## 5. Signature Components
+## 6. Signature Components
+- **Search pill:** white, 2px ink outline, rounded-full, ink circle submit button.
+- **Buttons:** ink pills (primary), peach `secondary-container` chips, terracotta CTAs on dark panels. See `lib/button-classes.ts`.
+- **Step tags:** tilted terracotta rounded squares with bold numbers + dotted terracotta connector line (nettbil's 1-2-3).
+- **Sparkles:** 4-point star SVGs — terracotta on cream, mint on ink. Decorative, small, max 2–3 per section.
+- **Trust row:** filled terracotta icons + BankID/rating/free-quote copy directly under hero search.
+- **CTA panel / footer:** ink with soft terracotta/mint radial glows and `primary-fixed` (#e6dcc6) supporting text.
 
-### Search Bar (The "Entry Point")
-- **Style:** A floating, wide-pill container (`rounded-full`) using Glassmorphism. 
-- **Detail:** Use a `surface-container-lowest` background with a subtle ambient shadow. No border. Use `primary` for the search icon to draw focus.
-
-### Service Cards
-- **Construction:** Strictly **no dividers**. 
-- **Separation:** Content within the card is separated by the Spacing Scale (e.g., `spacing-3` between title and price). 
-- **Interaction:** On hover, the card should transition from `surface-container-lowest` to a slightly brighter `surface-bright` with a soft ambient shadow, creating a "magnetic" lift.
-
-### City Navigation & Chips
-- **Style:** Use `secondary-container (#ace5fe)` for unselected states and `primary (#00606c)` with `on-primary (#ffffff)` for active states. 
-- **Shape:** `rounded-md (0.75rem)` for a modern, friendly geometry.
-
-### Trust Signals (Badges & Reviews)
-- **Review Stars:** Use `tertiary (#745100)`—the gold-toned teal complement—to signify value and quality.
-- **Badges:** Small `rounded-full` pills with a `surface-variant` background to keep them subtle but legible.
+### Icons
+Material Symbols with variable FILL axis (0..1) — `MaterialIcon filled` works. Icons support, type leads.
 
 ---
 
-## 6. Do’s and Don’ts
+## 7. Do's and Don'ts
+**Do:** left-aligned heroes; asymmetric 7/5 grids; one terracotta sticker per page; real warm photography; capitalized Norwegian labels ("Hundepasser"); social proof high on the page.
 
-### Do:
-- **Use Asymmetric Spacing:** Offset images or text blocks (using `spacing-16` or `spacing-20`) to create an editorial, high-end magazine feel.
-- **Embrace White Space:** If in doubt, increase the padding. The "Scandinavian" feel relies on the UI having room to breathe.
-- **Use High-Quality Imagery:** The system relies on "Airbnb-style" photography. UI elements should feel like transparent overlays on top of beautiful, real-world service environments.
-
-### Don't:
-- **No Hard Dividers:** Never use a solid line to separate two items in a list. Use `spacing-4` or a subtle `surface-container` shift instead.
-- **No Pure Black Shadows:** Shadows should always be a low-opacity tint of the `on-surface` color to maintain tonal harmony.
-- **No Default System Fonts:** Always ensure Manrope and Inter are properly loaded to maintain the brand’s sophisticated "Digital Curator" identity.
+**Don't:** blue anywhere; serif type; AI-looking imagery; hard dividers; pure black (#000) — ink is #201c16; more than one accent color per element; icon-first sections.

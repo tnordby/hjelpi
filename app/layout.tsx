@@ -1,18 +1,18 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { Manrope, Inter } from 'next/font/google'
+import { Schibsted_Grotesk, Instrument_Sans } from 'next/font/google'
 import './globals.css'
 import { getMetadataBase } from '@/lib/seo/build-metadata'
 
-const manrope = Manrope({
+const schibstedGrotesk = Schibsted_Grotesk({
   subsets: ['latin'],
-  variable: '--font-manrope',
+  variable: '--font-display',
   display: 'swap',
 })
 
-const inter = Inter({
+const instrumentSans = Instrument_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-body',
   display: 'swap',
 })
 
@@ -32,11 +32,11 @@ export default function RootLayout({ children }: Props) {
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0&display=swap"
         />
       </head>
       <body
-        className={`${manrope.variable} ${inter.variable} min-h-dvh bg-background font-body text-on-background antialiased`}
+        className={`${schibstedGrotesk.variable} ${instrumentSans.variable} min-h-dvh bg-background font-body text-on-background antialiased`}
       >
         {children}
       </body>

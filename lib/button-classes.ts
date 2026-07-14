@@ -1,6 +1,6 @@
 /**
- * Shared button styles aligned with the Scandinavian Concierge design system
- * (see DESIGN.md): primary → primary-container gradient, secondary-container
+ * Shared button styles aligned with the Nordisk Varme design system
+ * (see design/DESIGN.md): primary → primary-container gradient, secondary-container
  * secondary actions, rounded-xl for standard controls, rounded-full for nav pills.
  */
 const hjPrimarySurface =

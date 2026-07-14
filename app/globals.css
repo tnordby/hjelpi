@@ -7,6 +7,16 @@
   --hj-navbar-height: 4.5rem;
 }
 
+::selection {
+  background: #f2d9bd;
+  color: #201c16;
+}
+
+:focus-visible {
+  outline: 2px solid #c2521d;
+  outline-offset: 2px;
+}
+
 /* No elastic overscroll past the document end (avoids “scrolling past” the footer). */
 html {
   overscroll-behavior-y: none;

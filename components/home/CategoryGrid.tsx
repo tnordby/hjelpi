@@ -13,7 +13,7 @@ export async function CategoryGrid() {
       <div className="mx-auto w-full max-w-7xl px-6">
         <div className="mb-12 flex flex-col items-end justify-between gap-6 md:flex-row">
           <div>
-            <h2 className="mb-4 font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
+            <h2 className="mb-4 font-headline text-3xl font-extrabold tracking-tight text-on-surface md:text-[2.6rem]">
               {t('categories.title')}
             </h2>
             <p className="max-w-md text-on-surface-variant">
@@ -22,10 +22,13 @@ export async function CategoryGrid() {
           </div>
           <Link
             href="/tjenester"
-            className="flex items-center gap-2 font-bold text-primary underline-offset-8 hover:underline"
+            className="group flex items-center gap-2 rounded-full bg-surface-container-lowest px-5 py-2.5 text-sm font-bold text-primary shadow-ambient-soft ring-1 ring-outline-variant transition-shadow hover:shadow-ambient"
           >
             {t('categories.seeAll')}
-            <MaterialIcon name="arrow_forward" />
+            <MaterialIcon
+              name="arrow_forward"
+              className="text-lg transition-transform group-hover:translate-x-0.5"
+            />
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
@@ -75,15 +78,18 @@ export async function CategoryGrid() {
                 >
                   <MaterialIcon
                     name={cat.icon}
-                    className={cn('mb-2 text-white', cat.large ? 'text-4xl' : 'text-3xl')}
+                    className={cn('mb-2 text-white/90', cat.large ? 'text-3xl' : 'text-2xl')}
                   />
                   <h3
-                    className={cn('font-bold', cat.large ? 'mb-2 text-2xl' : 'text-xl')}
+                    className={cn(
+                      'font-headline font-bold tracking-tight',
+                      cat.large ? 'mb-2 text-3xl' : 'text-2xl',
+                    )}
                   >
                     {title}
                   </h3>
                   {description ? (
-                    <p className="max-w-xs text-sm text-white/80">{description}</p>
+                    <p className="max-w-xs text-sm text-white/85">{description}</p>
                   ) : null}
                 </div>
               </Link>

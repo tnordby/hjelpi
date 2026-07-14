@@ -36,11 +36,11 @@ export function NavbarClient({
   const dashboardModeToggle = isLoggedIn && modeToggle && isDashboard
 
   return (
-    <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/50 bg-white/95 shadow-sm backdrop-blur-md">
+    <nav className="fixed top-0 z-50 w-full border-b border-outline-variant/40 bg-surface/90 backdrop-blur-md">
       <div className="mx-auto flex min-h-[var(--hj-navbar-height)] w-full max-w-7xl flex-wrap items-center gap-x-4 gap-y-3 px-6 py-3 sm:py-4 md:flex-nowrap md:justify-between">
         <Link
           href="/"
-          className="shrink-0 font-headline text-2xl font-black tracking-tighter text-primary"
+          className="shrink-0 font-headline text-[1.7rem] font-bold tracking-tight text-primary"
         >
           {t('brand')}
         </Link>

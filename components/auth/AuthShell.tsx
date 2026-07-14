@@ -18,7 +18,7 @@ export async function AuthShell({ children, title, subtitle, backLink }: Props) 
         <div className="mb-8 text-center">
           <Link
             href="/"
-            className="font-headline text-2xl font-black tracking-tighter text-primary"
+            className="font-headline text-[1.7rem] font-bold tracking-tight text-primary"
           >
             {tNav('brand')}
           </Link>
@@ -31,7 +31,7 @@ export async function AuthShell({ children, title, subtitle, backLink }: Props) 
             </Link>
           ) : null}
         </div>
-        <div className="rounded-3xl bg-surface-container-lowest p-8 shadow-ambient md:p-10">
+        <div className="rounded-3xl bg-surface-container-lowest p-8 shadow-ambient ring-1 ring-outline-variant md:p-10">
           <h1
             className={`font-headline text-2xl font-extrabold tracking-tight text-primary md:text-3xl ${subtitle ? 'mb-2' : 'mb-8'}`}
           >
