@@ -1,0 +1,91 @@
+/**
+ * Hjelpi Ink — design tokens.
+ * Single source of truth for the brand. The app's tailwind.config.ts mirrors
+ * these values; when a token changes, change it here first.
+ *
+ * Aesthetic: modern Nordic marketplace — white canvas, ink-black type and
+ * primary actions, terracotta as the single loud accent, ochre-gold for
+ * ratings, mint reserved for sparkle decorations on dark panels.
+ */
+
+@font-face {
+  font-family: 'Schibsted Grotesk';
+  src: url('../fonts/schibsted-grotesk.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Instrument Sans';
+  src: url('../fonts/instrument-sans.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ------ color: canvas & surfaces ------ */
+  --hj-color-canvas: #ffffff;
+  --hj-color-surface: #ffffff;
+  --hj-color-section: #f7f6f3; /* light neutral section blocks */
+  --hj-color-well: #f0efeb; /* input wells, subtle fills */
+  --hj-color-hairline: #e3e0d8; /* card rings, dividers */
+
+  /* ------ color: ink (text & primary actions) ------ */
+  --hj-color-ink: #1f1c17;
+  --hj-color-ink-soft: #37332b; /* hover on ink fills */
+  --hj-color-ink-muted: #605b51; /* secondary text */
+  --hj-color-on-ink: #ffffff;
+  --hj-color-on-ink-soft: #e9e6df; /* light text on ink panels */
+
+  /* ------ color: accents ------ */
+  --hj-color-accent: #c2521d; /* terracotta — THE accent */
+  --hj-color-accent-strong: #a84616; /* hover */
+  --hj-color-on-accent: #fffcf5;
+  --hj-color-accent-tint: #f9e8d8; /* chips, sticker fills */
+  --hj-color-on-accent-tint: #8a4a1b;
+  --hj-color-gold: #9a6b14; /* rating stars, eyebrows */
+  --hj-color-mint: #8fd6b4; /* sparkles on dark panels only */
+
+  /* ------ color: feedback ------ */
+  --hj-color-danger: #ba1a1a;
+  --hj-color-danger-tint: #ffdad6;
+  --hj-color-on-danger-tint: #93000a;
+  --hj-color-success: #1c6b47;
+  --hj-color-success-tint: #d9f0e3;
+
+  /* ------ typography ------ */
+  --hj-font-display: 'Schibsted Grotesk', system-ui, sans-serif;
+  --hj-font-body: 'Instrument Sans', system-ui, sans-serif;
+
+  /* ------ radii ------ */
+  --hj-radius-sm: 0.5rem;
+  --hj-radius-md: 0.75rem;
+  --hj-radius-lg: 1rem;
+  --hj-radius-xl: 1.5rem;
+  --hj-radius-2xl: 2rem;
+  --hj-radius-pill: 9999px;
+
+  /* ------ elevation (warm-tinted, never pure black) ------ */
+  --hj-shadow-soft: 0px 10px 30px rgba(31, 28, 23, 0.04);
+  --hj-shadow-ambient: 0px 10px 30px rgba(31, 28, 23, 0.07);
+  --hj-shadow-lifted: 0px 12px 34px rgba(31, 28, 23, 0.1);
+
+  /* ------ spacing scale ------ */
+  --hj-space-1: 0.25rem;
+  --hj-space-2: 0.5rem;
+  --hj-space-3: 0.75rem;
+  --hj-space-4: 1rem;
+  --hj-space-5: 1.25rem;
+  --hj-space-6: 1.5rem;
+  --hj-space-8: 2rem;
+  --hj-space-10: 2.5rem;
+  --hj-space-12: 3rem;
+  --hj-space-16: 4rem;
+  --hj-space-20: 5rem;
+  --hj-space-24: 6rem;
+
+  /* ------ focus ------ */
+  --hj-focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px var(--hj-color-accent);
+}

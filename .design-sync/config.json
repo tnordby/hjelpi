@@ -1,0 +1,12 @@
+{
+  "projectId": "63cae003-9252-4dc9-ac32-c540b4daa2d4",
+  "shape": "package",
+  "pkg": "@hjelpi/ds",
+  "globalName": "HjelpiDS",
+  "buildCmd": "cd packages/ds && node build.mjs && ../../node_modules/.bin/tsc -p tsconfig.json --emitDeclarationOnly",
+  "cssEntry": "./dist/styles.css",
+  "provider": {
+    "component": "HjRoot"
+  },
+  "readmeHeader": ".design-sync/conventions.md"
+}
