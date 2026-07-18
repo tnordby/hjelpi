@@ -2111,6 +2111,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Skreddersydde møbler"
       },
       {
+        "slug": "terrassebygging",
+        "title": "Terrassebygging"
+      },
+      {
         "slug": "utvendig-kledning",
         "title": "Utvendig kledning"
       }
@@ -2325,8 +2329,8 @@ export const TAXONOMY: TaxonomyCategory[] = [
         "title": "Tryllekunstner"
       },
       {
-        "slug": "utleie-av-lokalesnekker",
-        "title": "Utleie av lokaleSnekker"
+        "slug": "utleie-av-lokale",
+        "title": "Utleie av lokale"
       }
     ]
   },

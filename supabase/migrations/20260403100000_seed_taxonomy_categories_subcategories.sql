@@ -867,6 +867,7 @@ CROSS JOIN (VALUES
   ('Innredningssnekring', 'innredningssnekring', 'fixed'),
   ('Listverk og dører', 'listverk-og-dorer', 'fixed'),
   ('Skreddersydde møbler', 'skreddersydde-mobler', 'fixed'),
+  ('Terrassebygging', 'terrassebygging', 'fixed'),
   ('Utvendig kledning', 'utvendig-kledning', 'fixed')) AS v(name, slug, pricing)
 WHERE c.slug = 'snekker'
 ON CONFLICT (category_id, slug) DO UPDATE SET
@@ -973,7 +974,7 @@ CROSS JOIN (VALUES
   ('Standupkomiker', 'standupkomiker', 'quote'),
   ('Tatovør', 'tatovor', 'quote'),
   ('Tryllekunstner', 'tryllekunstner', 'quote'),
-  ('Utleie av lokaleSnekker', 'utleie-av-lokalesnekker', 'quote')) AS v(name, slug, pricing)
+  ('Utleie av lokale', 'utleie-av-lokale', 'quote')) AS v(name, slug, pricing)
 WHERE c.slug = 'underholdning'
 ON CONFLICT (category_id, slug) DO UPDATE SET
   name = EXCLUDED.name,
