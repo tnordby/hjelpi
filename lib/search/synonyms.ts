@@ -81,6 +81,13 @@ export const SEARCH_SYNONYMS: Record<string, string[]> = {
   gartner: ['hage-og-landskap'],
   hagearbeid: ['hage-og-landskap'],
   gressklipping: ['hage-og-landskap'],
+  // Bolig-salg
+  verdivurdering: ['takstmann-og-tilstandsrapport'],
+  takst: ['takstmann-og-tilstandsrapport'],
+  takstmann: ['takstmann-og-tilstandsrapport'],
+  boligsalgsrapport: ['takstmann-og-tilstandsrapport/tilstandsrapport'],
+  utleiehjelp: ['vaktmestertjenester'],
+  utleiemegler: ['vaktmestertjenester'],
   // Diverse
   skadedyr: ['skadedyrkontroll'],
   rotter: ['skadedyrkontroll/mus-og-rotter'],

@@ -35,6 +35,7 @@ const ICON_BY_CATEGORY: Record<string, string> = {
   snekker: 'carpenter',
   stylist: 'brush',
   sykkelreparasjon: 'pedal_bike',
+  'takstmann-og-tilstandsrapport': 'fact_check',
   'som-og-skredder': 'checkroom',
   'tak-og-tekking': 'home_work',
   underholdning: 'stars',

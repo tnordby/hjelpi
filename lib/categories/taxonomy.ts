@@ -2229,6 +2229,32 @@ export const TAXONOMY: TaxonomyCategory[] = [
     ]
   },
   {
+    "slug": "takstmann-og-tilstandsrapport",
+    "title": "Takstmann og tilstandsrapport",
+    "subs": [
+      {
+        "slug": "e-takst",
+        "title": "E-takst"
+      },
+      {
+        "slug": "forhandstakst",
+        "title": "Forhåndstakst"
+      },
+      {
+        "slug": "skadetakst",
+        "title": "Skadetakst"
+      },
+      {
+        "slug": "tilstandsrapport",
+        "title": "Tilstandsrapport"
+      },
+      {
+        "slug": "verditakst",
+        "title": "Verditakst"
+      }
+    ]
+  },
+  {
     "slug": "underholdning",
     "title": "Underholdning",
     "subs": [
@@ -2545,8 +2571,16 @@ export const TAXONOMY: TaxonomyCategory[] = [
     "title": "Vaktmestertjenester",
     "subs": [
       {
+        "slug": "inn-og-utflyttingsbefaring",
+        "title": "Inn- og utflyttingsbefaring"
+      },
+      {
         "slug": "klargjoring-av-utleiebolig",
         "title": "Klargjøring av utleiebolig"
+      },
+      {
+        "slug": "lopende-utleieoppfolging",
+        "title": "Løpende utleieoppfølging"
       },
       {
         "slug": "lopende-vedlikehold",
@@ -2559,6 +2593,10 @@ export const TAXONOMY: TaxonomyCategory[] = [
       {
         "slug": "tilsyn-av-eiendom",
         "title": "Tilsyn av eiendom"
+      },
+      {
+        "slug": "visninger-for-utleie",
+        "title": "Visninger for utleie"
       }
     ]
   }
